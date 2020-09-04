@@ -2,15 +2,17 @@ package models
 
 import (
 	"fmt"
-	"go-admin/global"
 	"io/ioutil"
 	"strings"
+
+	"go-admin/global"
+	"go-admin/tools/config"
 )
 
 func InitDb() error {
 	filePath := "config/db.sql"
 	err := ExecSql(filePath)
-	if global.Driver == "postgres" {
+	if config.DatabaseConfig.Driver == "postgres" {
 		filePath = "config/pg.sql"
 		err = ExecSql(filePath)
 	}
@@ -31,7 +33,7 @@ func ExecSql(filePath string) error {
 		}
 		sql := strings.Replace(sqlList[i]+";", "\n", "", 0)
 		sql = strings.TrimSpace(sql)
-		if err = global.Eloquent.Exec(sql).Error; err != nil {
+		if err = global.DB.Exec(sql).Error; err != nil {
 			if !strings.Contains(err.Error(), "Query was empty") {
 				return err
 			}
@@ -42,7 +44,7 @@ func ExecSql(filePath string) error {
 
 func Ioutil(filePath string) (string, error) {
 	if contents, err := ioutil.ReadFile(filePath); err == nil {
-		//因为contents是[]byte类型，直接转换成string类型后会多一行空格,需要使用strings.Replace替换换行符
+		// 因为contents是[]byte类型，直接转换成string类型后会多一行空格,需要使用strings.Replace替换换行符
 		result := strings.Replace(string(contents), "\n", "", 1)
 		fmt.Println("Use ioutil.ReadFile to read a file:", result)
 		return result, nil

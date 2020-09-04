@@ -2,13 +2,14 @@ package ws
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/gorilla/websocket"
-	uuid "github.com/satori/go.uuid"
 	"log"
 	"net/http"
 	"sync"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
+	uuid "github.com/satori/go.uuid"
 )
 
 // Manager 所有 websocket 信息
@@ -120,7 +121,7 @@ func (manager *Manager) Start() {
 					delete(manager.Group[client.Group], client.Id)
 					manager.clientCount -= 1
 					if len(manager.Group[client.Group]) == 0 {
-						//log.Printf("delete empty group [%s]", client.Group)
+						// log.Printf("delete empty group [%s]", client.Group)
 						delete(manager.Group, client.Group)
 						manager.groupCount -= 1
 					}
@@ -129,7 +130,7 @@ func (manager *Manager) Start() {
 			manager.Lock.Unlock()
 
 			// 发送广播数据到某个组的 channel 变量 Send 中
-			//case data := <-manager.boardCast:
+			// case data := <-manager.boardCast:
 			//	if groupMap, ok := manager.wsGroup[data.GroupId]; ok {
 			//		for _, conn := range groupMap {
 			//			conn.Send <- data.Data
@@ -271,7 +272,7 @@ func (manager *Manager) WsClient(ctx *gin.Context) {
 		return
 	}
 
-	fmt.Println("token: ",ctx.Query("token"))
+	fmt.Println("token: ", ctx.Query("token"))
 
 	client := &Client{
 		Id:      uuid.NewV4().String(),
@@ -281,11 +282,11 @@ func (manager *Manager) WsClient(ctx *gin.Context) {
 	}
 
 	manager.RegisterClient(client)
-	//go client.Read()
+	// go client.Read()
 	go client.Write()
 	time.Sleep(time.Second * 15)
 	// 测试单个 client 发送数据
-	//manager.Send(client.Id, client.Group, []byte("Send message ----"+time.Now().Format("2006-01-02 15:04:05")))
+	// manager.Send(client.Id, client.Group, []byte("Send message ----"+time.Now().Format("2006-01-02 15:04:05")))
 }
 
 // 测试组广播
@@ -306,6 +307,6 @@ func TestSendAll() {
 }
 
 func SendAll(msg string) {
-	WebsocketManager.SendAll([]byte("{\"code\":200,\"data\":"+msg+"}"))
+	WebsocketManager.SendAll([]byte("{\"code\":200,\"data\":" + msg + "}"))
 	fmt.Println(WebsocketManager.Info())
 }

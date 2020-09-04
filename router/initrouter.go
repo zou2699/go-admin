@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+
 	"go-admin/global"
 	"go-admin/handler"
 	"go-admin/middleware"

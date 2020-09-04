@@ -1,27 +1,29 @@
 package middleware
 
 import (
-	"fmt"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
+
+	"go-admin/global"
 	mycasbin "go-admin/pkg/casbin"
 	"go-admin/pkg/jwtauth"
 	_ "go-admin/pkg/jwtauth"
 	"go-admin/tools"
-	"net/http"
 )
 
-//权限检查中间件
+// 权限检查中间件
 func AuthCheckRole() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		data, _ := c.Get("JWT_PAYLOAD")
 		v := data.(jwtauth.MapClaims)
 		e, err := mycasbin.Casbin()
 		tools.HasError(err, "", 500)
-		//检查权限
+		// 检查权限
 		res, err := e.Enforce(v["rolekey"], c.Request.URL.Path, c.Request.Method)
 		tools.HasError(err, "", 500)
 
-		fmt.Printf("%s [INFO] %s %s %s \r\n",
+		global.Logger.Infof("%s  method: %s, url: %s, role: %s",
 			tools.GetCurrentTimeStr(),
 			c.Request.Method,
 			c.Request.URL.Path,

@@ -1,14 +1,15 @@
 package captcha
 
 import (
+	"image/color"
+
 	"github.com/google/uuid"
 	"github.com/mojocn/base64Captcha"
-	"image/color"
 )
 
 var store = base64Captcha.DefaultMemStore
 
-//configJsonBody json request body.
+// configJsonBody json request body.
 type configJsonBody struct {
 	Id            string
 	CaptchaType   string
@@ -25,8 +26,8 @@ func DriverStringFunc() (id, b64s string, err error) {
 	e.Id = uuid.New().String()
 	e.DriverString = base64Captcha.NewDriverString(46, 140, 2, 2, 4, "234567890abcdefghjkmnpqrstuvwxyz", &color.RGBA{240, 240, 246, 246}, []string{"wqy-microhei.ttc"})
 	driver := e.DriverString.ConvertFonts()
-	cap := base64Captcha.NewCaptcha(driver, store)
-	return cap.Generate()
+	captcha := base64Captcha.NewCaptcha(driver, store)
+	return captcha.Generate()
 }
 
 func DriverDigitFunc() (id, b64s string, err error) {
@@ -34,6 +35,6 @@ func DriverDigitFunc() (id, b64s string, err error) {
 	e.Id = uuid.New().String()
 	e.DriverDigit = base64Captcha.DefaultDriverDigit
 	driver := e.DriverDigit
-	cap := base64Captcha.NewCaptcha(driver, store)
-	return cap.Generate()
+	captcha := base64Captcha.NewCaptcha(driver, store)
+	return captcha.Generate()
 }

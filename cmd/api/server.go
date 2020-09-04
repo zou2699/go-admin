@@ -3,22 +3,23 @@ package api
 import (
 	"context"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-	"go-admin/database"
-	"go-admin/global"
-	"go-admin/jobs"
-	mycasbin "go-admin/pkg/casbin"
-	"go-admin/pkg/logger"
-	"go-admin/router"
-	"go-admin/tools"
-	"go-admin/tools/config"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+
+	"go-admin/database"
+	"go-admin/global"
+	mycasbin "go-admin/pkg/casbin"
+	"go-admin/pkg/logger"
+	"go-admin/router"
+	"go-admin/tools"
+	"go-admin/tools/config"
 )
 
 var (
@@ -49,13 +50,13 @@ func init() {
 
 func setup() {
 
-	//1. 读取配置
+	// 1. 读取配置
 	config.Setup(configYml)
-	//2. 设置日志
+	// 2. 设置日志
 	logger.Setup()
-	//3. 初始化数据库链接
+	// 3. 初始化数据库链接
 	database.Setup(config.DatabaseConfig.Driver)
-	//4. 接口访问控制加载
+	// 4. 接口访问控制加载
 	mycasbin.Setup()
 
 	usageStr := `starting api server`
@@ -69,18 +70,17 @@ func run() error {
 	}
 
 	r := router.InitRouter()
-	defer global.Eloquent.Close()
+	defer global.DB.Close()
 
 	srv := &http.Server{
 		Addr:    config.ApplicationConfig.Host + ":" + config.ApplicationConfig.Port,
 		Handler: r,
 	}
 	go func() {
-		jobs.InitJob()
-		jobs.Setup()
+		// jobs.InitJob()
+		// jobs.Setup()
 
 	}()
-
 
 	go func() {
 		// 服务连接

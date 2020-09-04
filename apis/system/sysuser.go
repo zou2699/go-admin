@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/google/uuid"
+
 	"go-admin/global"
 	"go-admin/models"
 	"go-admin/tools"
@@ -98,11 +99,11 @@ func GetSysUserProfile(c *gin.Context) {
 	var SysRole models.SysRole
 	var Post models.Post
 	var Dept models.SysDept
-	//获取角色列表
+	// 获取角色列表
 	roles, err := SysRole.GetList()
-	//获取职位列表
+	// 获取职位列表
 	posts, err := Post.GetList()
-	//获取部门列表
+	// 获取部门列表
 	Dept.DeptId = result.DeptId
 	dept, err := Dept.Get()
 

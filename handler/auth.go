@@ -1,15 +1,17 @@
 package handler
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/mojocn/base64Captcha"
 	"github.com/mssola/user_agent"
+
 	"go-admin/global"
 	"go-admin/models"
 	jwt "go-admin/pkg/jwtauth"
 	"go-admin/tools"
 	"go-admin/tools/config"
-	"net/http"
 )
 
 var store = base64Captcha.DefaultMemStore
@@ -88,7 +90,7 @@ func Authenticator(c *gin.Context) (interface{}, error) {
 		msg = "登录失败"
 		status = "1"
 		LoginLogToDB(c, status, msg, username)
-		global.RequestLogger.Println(e.Error())
+		global.Logger.Println(e.Error())
 	}
 	return nil, jwt.ErrFailedAuthentication
 }

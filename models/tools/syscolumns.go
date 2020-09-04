@@ -48,7 +48,7 @@ func (SysColumns) TableName() string {
 func (e *SysColumns) GetList() ([]SysColumns, error) {
 	var doc []SysColumns
 
-	table := orm.Eloquent.Select("*").Table("sys_columns")
+	table := orm.DB.Select("*").Table("sys_columns")
 
 	table = table.Where("table_id = ?", e.TableId)
 
@@ -60,7 +60,7 @@ func (e *SysColumns) GetList() ([]SysColumns, error) {
 
 func (e *SysColumns) Create() (SysColumns, error) {
 	var doc SysColumns
-	result := orm.Eloquent.Table("sys_columns").Create(&e)
+	result := orm.DB.Table("sys_columns").Create(&e)
 	if result.Error != nil {
 		err := result.Error
 		return doc, err
@@ -70,13 +70,13 @@ func (e *SysColumns) Create() (SysColumns, error) {
 }
 
 func (e *SysColumns) Update() (update SysColumns, err error) {
-	if err = orm.Eloquent.Table("sys_columns").First(&update, e.ColumnId).Error; err != nil {
+	if err = orm.DB.Table("sys_columns").First(&update, e.ColumnId).Error; err != nil {
 		return
 	}
 
-	//参数1:是要修改的数据
-	//参数2:是修改的数据
-	if err = orm.Eloquent.Table("sys_columns").Model(&update).Updates(&e).Error; err != nil {
+	// 参数1:是要修改的数据
+	// 参数2:是修改的数据
+	if err = orm.DB.Table("sys_columns").Model(&update).Updates(&e).Error; err != nil {
 		return
 	}
 

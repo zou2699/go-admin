@@ -2,7 +2,9 @@ package tools
 
 import (
 	"errors"
+
 	"github.com/jinzhu/gorm"
+
 	orm "go-admin/global"
 	"go-admin/tools"
 	config2 "go-admin/tools/config"
@@ -24,7 +26,7 @@ func (e *DBTables) GetPage(pageSize int, pageIndex int) ([]DBTables, int, error)
 	var count int
 
 	if config2.DatabaseConfig.Driver == "mysql" {
-		table = orm.Eloquent.Select("*").Table("information_schema.tables")
+		table = orm.DB.Select("*").Table("information_schema.tables")
 		table = table.Where("TABLE_NAME not in (select table_name from " + config2.GenConfig.DBName + ".sys_tables) ")
 		table = table.Where("table_schema= ? ", config2.GenConfig.DBName)
 
@@ -46,7 +48,7 @@ func (e *DBTables) Get() (DBTables, error) {
 	var doc DBTables
 	table := new(gorm.DB)
 	if config2.DatabaseConfig.Driver == "mysql" {
-		table = orm.Eloquent.Select("*").Table("information_schema.tables")
+		table = orm.DB.Select("*").Table("information_schema.tables")
 		table = table.Where("table_schema= ? ", config2.GenConfig.DBName)
 		if e.TableName == "" {
 			return doc, errors.New("table name cannot be empty！")

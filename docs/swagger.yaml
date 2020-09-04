@@ -646,7 +646,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.SysConfig'
-          type: object
       responses:
         "200":
           description: '{"code": -1, "message": "添加失败"}'
@@ -805,7 +804,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.SysDept'
-          type: object
       responses:
         "200":
           description: '{"code": -1, "message": "添加失败"}'
@@ -832,7 +830,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.SysDept'
-          type: object
       responses:
         "200":
           description: '{"code": -1, "message": "添加失败"}'
@@ -920,7 +917,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.SysConfig'
-          type: object
       responses:
         "200":
           description: '{"code": -1, "message": "添加失败"}'
@@ -942,7 +938,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.DictType'
-          type: object
       responses:
         "200":
           description: '{"code": -1, "message": "添加失败"}'
@@ -1053,7 +1048,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.DictType'
-          type: object
       responses:
         "200":
           description: '{"code": -1, "message": "添加失败"}'
@@ -1075,7 +1069,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.DictType'
-          type: object
       responses:
         "200":
           description: '{"code": -1, "message": "添加失败"}'
@@ -1167,7 +1160,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.LoginLog'
-          type: object
       responses:
         "200":
           description: '{"code": -1, "message": "添加失败"}'
@@ -1189,7 +1181,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.LoginLog'
-          type: object
       responses:
         "200":
           description: '{"code": -1, "message": "添加失败"}'
@@ -1364,7 +1355,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.Menu'
-          type: object
       responses:
         "200":
           description: '{"code": -1, "message": "修改失败"}'
@@ -1458,7 +1448,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.SysOperLog'
-          type: object
       responses:
         "200":
           description: '{"code": -1, "message": "添加失败"}'
@@ -1580,7 +1569,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.Post'
-          type: object
       responses:
         "200":
           description: '{"code": -1, "message": "添加失败"}'
@@ -1603,7 +1591,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.Post'
-          type: object
       responses:
         "200":
           description: '{"code": -1, "message": "添加失败"}'
@@ -1682,7 +1669,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.SysRole'
-          type: object
       responses:
         "200":
           description: '{"code": -1, "message": "添加失败"}'
@@ -1702,7 +1688,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.SysRole'
-          type: object
       responses:
         "200":
           description: '{"code": -1, "message": "修改失败"}'
@@ -1801,6 +1786,28 @@ paths:
       summary: 删除用户菜单数据
       tags:
       - 角色菜单
+  /api/v1/setting:
+    get:
+      description: 获取JSON
+      responses:
+        "200":
+          description: '{"code": -1, "message": "添加失败"}'
+          schema:
+            type: string
+      summary: 查询系统信息
+      tags:
+      - 系统信息
+  /api/v1/settings/serverInfo:
+    get:
+      description: 获取JSON
+      responses:
+        "200":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: 系统信息
+      tags:
+      - 系统信息
   /api/v1/sys/tables/info:
     post:
       consumes:
@@ -1832,7 +1839,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/tools.SysTables'
-          type: object
       responses:
         "200":
           description: '{"code": -1, "message": "添加失败"}'
@@ -1926,7 +1932,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.SysUser'
-          type: object
       responses:
         "200":
           description: '{"code": -1, "message": "添加失败"}'
@@ -1972,6 +1977,24 @@ paths:
       summary: 列表用户信息数据
       tags:
       - 用户
+  /api/v1/system/setting:
+    post:
+      description: 获取JSON
+      parameters:
+      - description: body
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.SysUser'
+      responses:
+        "200":
+          description: '{"code": -1, "message": "添加失败"}'
+          schema:
+            type: string
+      summary: 更新或提交系统信息
+      tags:
+      - 系统信息
   /api/v1/sysuser/{userId}:
     delete:
       description: 删除数据
@@ -2000,7 +2023,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.SysUser'
-          type: object
       responses:
         "200":
           description: '{"code": -1, "message": "修改失败"}'
@@ -2059,7 +2081,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.Login'
-          type: object
       responses:
         "200":
           description: '{"code": 200, "expire": "2019-08-07T12:45:48+08:00", "token":

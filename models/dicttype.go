@@ -2,20 +2,21 @@ package models
 
 import (
 	"errors"
+
 	orm "go-admin/global"
 	"go-admin/tools"
 )
 
 type DictType struct {
 	DictId    int    `gorm:"primary_key;AUTO_INCREMENT" json:"dictId"`
-	DictName  string `gorm:"size:128;" json:"dictName"` //字典名称
-	DictType  string `gorm:"size:128;" json:"dictType"` //字典类型
-	Status    string `gorm:"size:4;" json:"status"`     //状态
+	DictName  string `gorm:"size:128;" json:"dictName"` // 字典名称
+	DictType  string `gorm:"size:128;" json:"dictType"` // 字典类型
+	Status    string `gorm:"size:4;" json:"status"`     // 状态
 	DataScope string `gorm:"-" json:"dataScope"`        //
 	Params    string `gorm:"-" json:"params"`           //
-	CreateBy  string `gorm:"size:11;" json:"createBy"`  //创建者
-	UpdateBy  string `gorm:"size:11;" json:"updateBy"`  //更新者
-	Remark    string `gorm:"size:255;" json:"remark"`   //备注
+	CreateBy  string `gorm:"size:11;" json:"createBy"`  // 创建者
+	UpdateBy  string `gorm:"size:11;" json:"updateBy"`  // 更新者
+	Remark    string `gorm:"size:255;" json:"remark"`   // 备注
 	BaseModel
 }
 
@@ -27,12 +28,12 @@ func (e *DictType) Create() (DictType, error) {
 	var doc DictType
 
 	i := 0
-	orm.Eloquent.Table(e.TableName()).Where("dict_name=? or dict_type = ?", e.DictName, e.DictType).Count(&i)
+	orm.DB.Table(e.TableName()).Where("dict_name=? or dict_type = ?", e.DictName, e.DictType).Count(&i)
 	if i > 0 {
 		return doc, errors.New("字典名称或者字典类型已经存在！")
 	}
 
-	result := orm.Eloquent.Table(e.TableName()).Create(&e)
+	result := orm.DB.Table(e.TableName()).Create(&e)
 	if result.Error != nil {
 		err := result.Error
 		return doc, err
@@ -44,7 +45,7 @@ func (e *DictType) Create() (DictType, error) {
 func (e *DictType) Get() (DictType, error) {
 	var doc DictType
 
-	table := orm.Eloquent.Table(e.TableName())
+	table := orm.DB.Table(e.TableName())
 	if e.DictId != 0 {
 		table = table.Where("dict_id = ?", e.DictId)
 	}
@@ -64,7 +65,7 @@ func (e *DictType) Get() (DictType, error) {
 func (e *DictType) GetList() ([]DictType, error) {
 	var doc []DictType
 
-	table := orm.Eloquent.Table(e.TableName())
+	table := orm.DB.Table(e.TableName())
 	if e.DictId != 0 {
 		table = table.Where("dict_id = ?", e.DictId)
 	}
@@ -84,12 +85,15 @@ func (e *DictType) GetList() ([]DictType, error) {
 func (e *DictType) GetPage(pageSize int, pageIndex int) ([]DictType, int, error) {
 	var doc []DictType
 
-	table := orm.Eloquent.Select("*").Table(e.TableName())
+	table := orm.DB.Select("*").Table(e.TableName())
 	if e.DictId != 0 {
 		table = table.Where("dict_id = ?", e.DictId)
 	}
 	if e.DictName != "" {
-		table = table.Where("dict_name = ?", e.DictName)
+		table = table.Where("dict_name like ?", "%"+e.DictName+"%")
+	}
+	if e.DictType != "" {
+		table = table.Where("dict_type like ?", "%"+e.DictType+"%")
 	}
 
 	// 数据权限控制
@@ -109,7 +113,7 @@ func (e *DictType) GetPage(pageSize int, pageIndex int) ([]DictType, int, error)
 }
 
 func (e *DictType) Update(id int) (update DictType, err error) {
-	if err = orm.Eloquent.Table(e.TableName()).First(&update, id).Error; err != nil {
+	if err = orm.DB.Table(e.TableName()).First(&update, id).Error; err != nil {
 		return
 	}
 
@@ -121,16 +125,16 @@ func (e *DictType) Update(id int) (update DictType, err error) {
 		return update, errors.New("类型不允许修改！")
 	}
 
-	//参数1:是要修改的数据
-	//参数2:是修改的数据
-	if err = orm.Eloquent.Table(e.TableName()).Model(&update).Updates(&e).Error; err != nil {
+	// 参数1:是要修改的数据
+	// 参数2:是修改的数据
+	if err = orm.DB.Table(e.TableName()).Model(&update).Updates(&e).Error; err != nil {
 		return
 	}
 	return
 }
 
 func (e *DictType) Delete(id int) (success bool, err error) {
-	if err = orm.Eloquent.Table(e.TableName()).Where("dict_id = ?", id).Delete(&DictData{}).Error; err != nil {
+	if err = orm.DB.Table(e.TableName()).Where("dict_id = ?", id).Delete(&DictData{}).Error; err != nil {
 		success = false
 		return
 	}
@@ -139,7 +143,7 @@ func (e *DictType) Delete(id int) (success bool, err error) {
 }
 
 func (e *DictType) BatchDelete(id []int) (Result bool, err error) {
-	if err = orm.Eloquent.Table(e.TableName()).Where("dict_id in (?)", id).Delete(&DictType{}).Error; err != nil {
+	if err = orm.DB.Table(e.TableName()).Where("dict_id in (?)", id).Delete(&DictType{}).Error; err != nil {
 		return
 	}
 	Result = true

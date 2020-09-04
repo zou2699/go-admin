@@ -3,9 +3,11 @@
 package database
 
 import (
+	"log"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
-	"log"
+
 	"go-admin/global"
 	"go-admin/tools/config"
 )
@@ -18,9 +20,9 @@ func (e *SqLite) Setup() {
 	var db Database
 
 	db = new(SqLite)
-	global.Source = db.GetConnect()
-	log.Info(global.Source)
-	global.Eloquent, err = db.Open(db.GetDriver(), db.GetConnect())
+	source := db.GetConnect()
+	global.Logger.Info(tools.Green(source))
+	global.DB, err = db.Open(db.GetDriver(), db.GetConnect())
 
 	if err != nil {
 		log.Fatalf("%s connect error %v", db.GetDriver(), err)
@@ -28,11 +30,14 @@ func (e *SqLite) Setup() {
 		log.Printf("%s connect success!", db.GetDriver())
 	}
 
-	if global.Eloquent.Error != nil {
-		log.Fatalf("database error %v", global.Eloquent.Error)
+	if global.DB.Error != nil {
+		log.Fatalf("database error %v", global.DB.Error)
 	}
 
-	global.Eloquent.LogMode(true)
+	if db.GetDebugModel() {
+		global.Logger.Debug("enabled gorm debug model")
+		global.DB.LogMode(db.GetDebugModel())
+	}
 }
 
 // 打开数据库连接

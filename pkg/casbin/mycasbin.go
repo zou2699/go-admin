@@ -1,11 +1,13 @@
 package mycasbin
 
 import (
+	"log"
+
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/model"
 	gormAdapter "github.com/casbin/gorm-adapter/v2"
 	_ "github.com/go-sql-driver/mysql"
-	"log"
+
 	"go-admin/global"
 )
 
@@ -25,7 +27,7 @@ m = r.sub == p.sub && (keyMatch2(r.obj, p.obj) || keyMatch(r.obj, p.obj)) && (r.
 `
 
 func Setup() {
-	Apter, err := gormAdapter.NewAdapterByDB(global.Eloquent)
+	Apter, err := gormAdapter.NewAdapterByDB(global.DB)
 	if err != nil {
 		panic(err)
 	}

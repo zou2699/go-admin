@@ -1,11 +1,14 @@
 package database
 
 import (
+	"log"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+
 	"go-admin/global"
+	"go-admin/tools"
 	"go-admin/tools/config"
-	"log"
 )
 
 type PgSql struct {
@@ -16,20 +19,23 @@ func (e *PgSql) Setup() {
 	var db Database
 
 	db = new(PgSql)
-	global.Source = db.GetConnect()
-	log.Println(global.Source)
-	global.Eloquent, err = db.Open(db.GetDriver(), db.GetConnect())
+	source := db.GetConnect()
+	global.Logger.Info(tools.Green(source))
+	global.DB, err = db.Open(db.GetDriver(), db.GetConnect())
 	if err != nil {
 		log.Fatalf("%s connect error %v", db.GetDriver(), err)
 	} else {
 		log.Printf("%s connect success!", db.GetDriver())
 	}
 
-	if global.Eloquent.Error != nil {
-		log.Fatalf("database error %v", global.Eloquent.Error)
+	if global.DB.Error != nil {
+		log.Fatalf("database error %v", global.DB.Error)
 	}
 
-	global.Eloquent.LogMode(true)
+	if db.GetDebugModel() {
+		global.Logger.Debug("enabled gorm debug model")
+		global.DB.LogMode(db.GetDebugModel())
+	}
 }
 
 // 打开数据库连接
@@ -44,4 +50,8 @@ func (e *PgSql) GetConnect() string {
 
 func (e *PgSql) GetDriver() string {
 	return config.DatabaseConfig.Driver
+}
+
+func (e *PgSql) GetDebugModel() bool {
+	return config.DatabaseConfig.Debug
 }

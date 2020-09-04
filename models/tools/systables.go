@@ -6,16 +6,16 @@ import (
 )
 
 type SysTables struct {
-	TableId             int          `gorm:"primary_key;auto_increment" json:"tableId"`    //表编码
-	TBName              string       `gorm:"column:table_name;size:255;" json:"tableName"` //表名称
-	TableComment        string       `gorm:"size:255;" json:"tableComment"`                //表备注
-	ClassName           string       `gorm:"size:255;" json:"className"`                   //类名
+	TableId             int          `gorm:"primary_key;auto_increment" json:"tableId"`    // 表编码
+	TBName              string       `gorm:"column:table_name;size:255;" json:"tableName"` // 表名称
+	TableComment        string       `gorm:"size:255;" json:"tableComment"`                // 表备注
+	ClassName           string       `gorm:"size:255;" json:"className"`                   // 类名
 	TplCategory         string       `gorm:"size:255;" json:"tplCategory"`
-	PackageName         string       `gorm:"size:255;" json:"packageName"` //包名
-	ModuleName          string       `gorm:"size:255;" json:"moduleName"`  //模块名
+	PackageName         string       `gorm:"size:255;" json:"packageName"` // 包名
+	ModuleName          string       `gorm:"size:255;" json:"moduleName"`  // 模块名
 	BusinessName        string       `gorm:"size:255;" json:"businessName"`
-	FunctionName        string       `gorm:"size:255;" json:"functionName"`   //功能名称
-	FunctionAuthor      string       `gorm:"size:255;" json:"functionAuthor"` //功能作者
+	FunctionName        string       `gorm:"size:255;" json:"functionName"`   // 功能名称
+	FunctionAuthor      string       `gorm:"size:255;" json:"functionAuthor"` // 功能作者
 	PkColumn            string       `gorm:"size:255;" json:"pkColumn"`
 	PkGoField           string       `gorm:"size:255;" json:"pkGoField"`
 	PkJsonField         string       `gorm:"size:255;" json:"pkJsonField"`
@@ -51,7 +51,7 @@ type Params struct {
 func (e *SysTables) GetPage(pageSize int, pageIndex int) ([]SysTables, int, error) {
 	var doc []SysTables
 
-	table := orm.Eloquent.Select("*").Table("sys_tables")
+	table := orm.DB.Select("*").Table("sys_tables")
 
 	if e.TBName != "" {
 		table = table.Where("table_name = ?", e.TBName)
@@ -72,7 +72,7 @@ func (e *SysTables) GetPage(pageSize int, pageIndex int) ([]SysTables, int, erro
 func (e *SysTables) Get() (SysTables, error) {
 	var doc SysTables
 	var err error
-	table := orm.Eloquent.Select("*").Table("sys_tables")
+	table := orm.DB.Select("*").Table("sys_tables")
 
 	if e.TBName != "" {
 		table = table.Where("table_name = ?", e.TBName)
@@ -98,7 +98,7 @@ func (e *SysTables) Get() (SysTables, error) {
 
 func (e *SysTables) Create() (SysTables, error) {
 	var doc SysTables
-	result := orm.Eloquent.Table("sys_tables").Create(&e)
+	result := orm.DB.Table("sys_tables").Create(&e)
 	if result.Error != nil {
 		err := result.Error
 		return doc, err
@@ -114,13 +114,13 @@ func (e *SysTables) Create() (SysTables, error) {
 }
 
 func (e *SysTables) Update() (update SysTables, err error) {
-	if err = orm.Eloquent.Table("sys_tables").First(&update, e.TableId).Error; err != nil {
+	if err = orm.DB.Table("sys_tables").First(&update, e.TableId).Error; err != nil {
 		return
 	}
 
-	//参数1:是要修改的数据
-	//参数2:是修改的数据
-	if err = orm.Eloquent.Table("sys_tables").Model(&update).Updates(&e).Error; err != nil {
+	// 参数1:是要修改的数据
+	// 参数2:是修改的数据
+	if err = orm.DB.Table("sys_tables").Model(&update).Updates(&e).Error; err != nil {
 		return
 	}
 
@@ -131,11 +131,11 @@ func (e *SysTables) Update() (update SysTables, err error) {
 }
 
 func (e *SysTables) Delete() (success bool, err error) {
-	if err = orm.Eloquent.Table("sys_tables").Delete(SysTables{}, "table_id = ?", e.TableId).Error; err != nil {
+	if err = orm.DB.Table("sys_tables").Delete(SysTables{}, "table_id = ?", e.TableId).Error; err != nil {
 		success = false
 		return
 	}
-	if err = orm.Eloquent.Table("sys_columns").Delete(SysColumns{}, "table_id = ?", e.TableId).Error; err != nil {
+	if err = orm.DB.Table("sys_columns").Delete(SysColumns{}, "table_id = ?", e.TableId).Error; err != nil {
 		success = false
 		return
 	}
@@ -144,7 +144,7 @@ func (e *SysTables) Delete() (success bool, err error) {
 }
 
 func (e *SysTables) BatchDelete(id []int) (Result bool, err error) {
-	if err = orm.Eloquent.Unscoped().Table(e.TableName()).Where(" table_id in (?)", id).Delete(&SysColumns{}).Error; err != nil {
+	if err = orm.DB.Unscoped().Table(e.TableName()).Where(" table_id in (?)", id).Delete(&SysColumns{}).Error; err != nil {
 		return
 	}
 	Result = true

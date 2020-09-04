@@ -2,11 +2,12 @@ package config
 
 import (
 	"fmt"
-	"github.com/spf13/viper"
 	"io/ioutil"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/spf13/viper"
 )
 
 // 数据库配置项
@@ -27,7 +28,7 @@ var cfgSsl *viper.Viper
 // 代码生成配置项 非必须
 var cfgGen *viper.Viper
 
-//载入配置文件
+// 载入配置文件
 func Setup(path string) {
 	viper.SetConfigFile(path)
 	content, err := ioutil.ReadFile(path)
@@ -35,7 +36,7 @@ func Setup(path string) {
 		log.Fatal(fmt.Sprintf("Read config file fail: %s", err.Error()))
 	}
 
-	//Replace environment variables
+	// Replace environment variables
 	err = viper.ReadConfig(strings.NewReader(os.ExpandEnv(string(content))))
 	if err != nil {
 		log.Fatal(fmt.Sprintf("Parse config file fail: %s", err.Error()))
@@ -81,4 +82,3 @@ func Setup(path string) {
 	}
 	GenConfig = InitGen(cfgGen)
 }
-

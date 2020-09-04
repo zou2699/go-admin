@@ -15,7 +15,7 @@ import (
 // @in header
 // @name Authorization
 
-//func main() {
+// func main() {
 //	configName := "settings"
 //
 //
@@ -66,7 +66,7 @@ import (
 //		log.Fatal("Server Shutdown:", err)
 //	}
 //	log.Println("Server exiting")
-//}
+// }
 
 func main() {
 	cmd.Execute()

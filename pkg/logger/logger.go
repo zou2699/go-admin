@@ -2,37 +2,31 @@ package logger
 
 import (
 	"github.com/gogf/gf/os/glog"
+
 	"go-admin/global"
-	"go-admin/tools"
 	"go-admin/tools/config"
 )
 
+const (
+	green   = "\033[97;42m"
+	white   = "\033[90;47m"
+	yellow  = "\033[90;43m"
+	red     = "\033[97;41m"
+	blue    = "\033[97;44m"
+	magenta = "\033[97;45m"
+	cyan    = "\033[97;46m"
+	reset   = "\033[0m"
+)
+
 var Logger *glog.Logger
-var JobLogger *glog.Logger
-var RequestLogger *glog.Logger
 
 func Setup() {
 	Logger = glog.New()
-	_ = Logger.SetPath(config.LoggerConfig.Path + "/bus")
-	Logger.SetStdoutPrint(config.LoggerConfig.EnabledBUS && config.LoggerConfig.Stdout)
-	Logger.SetFile("bus-{Ymd}.log")
+	Logger.SetPrefix("\u001B[97;42m SYS \u001B[0m")
+	Logger.SetFlags(glog.F_FILE_SHORT)
 	_ = Logger.SetLevelStr(config.LoggerConfig.Level)
 
-	JobLogger = glog.New()
-	_ = JobLogger.SetPath(config.LoggerConfig.Path + "/job")
-	JobLogger.SetStdoutPrint(false)
-	JobLogger.SetFile("db-{Ymd}.log")
-	_ = JobLogger.SetLevelStr(config.LoggerConfig.Level)
+	Logger.Info("Logger init success!")
 
-	RequestLogger = glog.New()
-	_ = RequestLogger.SetPath(config.LoggerConfig.Path + "/request")
-	RequestLogger.SetStdoutPrint(false)
-	RequestLogger.SetFile("access-{Ymd}.log")
-	_ = RequestLogger.SetLevelStr(config.LoggerConfig.Level)
-
-	Logger.Info(tools.Green("Logger init success!"))
-
-	global.Logger = Logger.Line()
-	global.JobLogger = JobLogger.Line()
-	global.RequestLogger = RequestLogger.Line()
+	global.Logger = Logger.Stdout()
 }

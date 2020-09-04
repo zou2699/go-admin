@@ -3,12 +3,16 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 
+	"go-admin/tools/config"
 )
 
-
 func InitMiddleware(r *gin.Engine) {
-	// 日志处理
-	r.Use(LoggerToFile())
+	// 记录日志到db
+	if config.LoggerConfig.EnabledDB {
+		r.Use(OperLogToDB())
+	}
+	// 使用gin自带的logger
+	r.Use(gin.Logger())
 	// 自定义错误处理
 	r.Use(CustomError)
 	// NoCache is a middleware function that appends headers

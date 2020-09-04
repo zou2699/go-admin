@@ -2,21 +2,22 @@ package models
 
 import (
 	"errors"
+	_ "time"
+
 	orm "go-admin/global"
 	"go-admin/tools"
-	_ "time"
 )
 
 type SysDept struct {
-	DeptId    int       `json:"deptId" gorm:"primary_key;AUTO_INCREMENT"` //部门编码
-	ParentId  int       `json:"parentId" gorm:""`                         //上级部门
+	DeptId    int       `json:"deptId" gorm:"primary_key;AUTO_INCREMENT"` // 部门编码
+	ParentId  int       `json:"parentId" gorm:""`                         // 上级部门
 	DeptPath  string    `json:"deptPath" gorm:"size:255;"`                //
-	DeptName  string    `json:"deptName"  gorm:"size:128;"`               //部门名称
-	Sort      int       `json:"sort" gorm:""`                             //排序
-	Leader    string    `json:"leader" gorm:"size:128;"`                  //负责人
-	Phone     string    `json:"phone" gorm:"size:11;"`                    //手机
-	Email     string    `json:"email" gorm:"size:64;"`                    //邮箱
-	Status    string    `json:"status" gorm:"size:4;"`                    //状态
+	DeptName  string    `json:"deptName"  gorm:"size:128;"`               // 部门名称
+	Sort      int       `json:"sort" gorm:""`                             // 排序
+	Leader    string    `json:"leader" gorm:"size:128;"`                  // 负责人
+	Phone     string    `json:"phone" gorm:"size:11;"`                    // 手机
+	Email     string    `json:"email" gorm:"size:64;"`                    // 邮箱
+	Status    string    `json:"status" gorm:"size:4;"`                    // 状态
 	CreateBy  string    `json:"createBy" gorm:"size:64;"`
 	UpdateBy  string    `json:"updateBy" gorm:"size:64;"`
 	DataScope string    `json:"dataScope" gorm:"-"`
@@ -37,7 +38,7 @@ type DeptLable struct {
 
 func (e *SysDept) Create() (SysDept, error) {
 	var doc SysDept
-	result := orm.Eloquent.Table(e.TableName()).Create(&e)
+	result := orm.DB.Table(e.TableName()).Create(&e)
 	if result.Error != nil {
 		err := result.Error
 		return doc, err
@@ -45,14 +46,14 @@ func (e *SysDept) Create() (SysDept, error) {
 	deptPath := "/" + tools.IntToString(e.DeptId)
 	if int(e.ParentId) != 0 {
 		var deptP SysDept
-		orm.Eloquent.Table(e.TableName()).Where("dept_id = ?", e.ParentId).First(&deptP)
+		orm.DB.Table(e.TableName()).Where("dept_id = ?", e.ParentId).First(&deptP)
 		deptPath = deptP.DeptPath + deptPath
 	} else {
 		deptPath = "/0" + deptPath
 	}
 	var mp = map[string]string{}
 	mp["deptPath"] = deptPath
-	if err := orm.Eloquent.Table(e.TableName()).Where("dept_id = ?", e.DeptId).Update(mp).Error; err != nil {
+	if err := orm.DB.Table(e.TableName()).Where("dept_id = ?", e.DeptId).Update(mp).Error; err != nil {
 		err := result.Error
 		return doc, err
 	}
@@ -64,7 +65,7 @@ func (e *SysDept) Create() (SysDept, error) {
 func (e *SysDept) Get() (SysDept, error) {
 	var doc SysDept
 
-	table := orm.Eloquent.Table(e.TableName())
+	table := orm.DB.Table(e.TableName())
 	if e.DeptId != 0 {
 		table = table.Where("dept_id = ?", e.DeptId)
 	}
@@ -81,7 +82,7 @@ func (e *SysDept) Get() (SysDept, error) {
 func (e *SysDept) GetList() ([]SysDept, error) {
 	var doc []SysDept
 
-	table := orm.Eloquent.Table(e.TableName())
+	table := orm.DB.Table(e.TableName())
 	if e.DeptId != 0 {
 		table = table.Where("dept_id = ?", e.DeptId)
 	}
@@ -101,7 +102,7 @@ func (e *SysDept) GetList() ([]SysDept, error) {
 func (e *SysDept) GetPage(bl bool) ([]SysDept, error) {
 	var doc []SysDept
 
-	table := orm.Eloquent.Select("*").Table(e.TableName())
+	table := orm.DB.Select("*").Table(e.TableName())
 	if e.DeptId != 0 {
 		table = table.Where("dept_id = ?", e.DeptId)
 	}
@@ -175,14 +176,14 @@ func Digui(deptlist *[]SysDept, menu SysDept) SysDept {
 }
 
 func (e *SysDept) Update(id int) (update SysDept, err error) {
-	if err = orm.Eloquent.Table(e.TableName()).Where("dept_id = ?", id).First(&update).Error; err != nil {
+	if err = orm.DB.Table(e.TableName()).Where("dept_id = ?", id).First(&update).Error; err != nil {
 		return
 	}
 
 	deptPath := "/" + tools.IntToString(e.DeptId)
 	if int(e.ParentId) != 0 {
 		var deptP SysDept
-		orm.Eloquent.Table(e.TableName()).Where("dept_id = ?", e.ParentId).First(&deptP)
+		orm.DB.Table(e.TableName()).Where("dept_id = ?", e.ParentId).First(&deptP)
 		deptPath = deptP.DeptPath + deptPath
 	} else {
 		deptPath = "/0" + deptPath
@@ -193,10 +194,10 @@ func (e *SysDept) Update(id int) (update SysDept, err error) {
 		return update, errors.New("上级部门不允许修改！")
 	}
 
-	//参数1:是要修改的数据
-	//参数2:是修改的数据
+	// 参数1:是要修改的数据
+	// 参数2:是修改的数据
 
-	if err = orm.Eloquent.Table(e.TableName()).Model(&update).Updates(&e).Error; err != nil {
+	if err = orm.DB.Table(e.TableName()).Model(&update).Updates(&e).Error; err != nil {
 		return
 	}
 
@@ -211,7 +212,7 @@ func (e *SysDept) Delete(id int) (success bool, err error) {
 	tools.HasError(err, "", 500)
 	tools.Assert(len(userlist) <= 0, "当前部门存在用户，不能删除！", 500)
 
-	tx := orm.Eloquent.Begin()
+	tx := orm.DB.Begin()
 	defer func() {
 		if r := recover(); r != nil {
 			tx.Rollback()

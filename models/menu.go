@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+
 	orm "go-admin/global"
 	"go-admin/tools"
 )
@@ -81,7 +82,7 @@ type MS []Menu
 
 func (e *Menu) GetByMenuId() (Menu Menu, err error) {
 
-	table := orm.Eloquent.Table(e.TableName())
+	table := orm.DB.Table(e.TableName())
 	table = table.Where("menu_id = ?", e.MenuId)
 	if err = table.Find(&Menu).Error; err != nil {
 		return
@@ -204,7 +205,7 @@ func (e *Menu) SetMenuRole(rolename string) (m []Menu, err error) {
 }
 
 func (e *MenuRole) Get() (Menus []MenuRole, err error) {
-	table := orm.Eloquent.Table(e.TableName())
+	table := orm.DB.Table(e.TableName())
 	if e.MenuName != "" {
 		table = table.Where("menu_name = ?", e.MenuName)
 	}
@@ -215,7 +216,7 @@ func (e *MenuRole) Get() (Menus []MenuRole, err error) {
 }
 
 func (e *Menu) GetByRoleName(rolename string) (Menus []Menu, err error) {
-	table := orm.Eloquent.Table(e.TableName()).Select("sys_menu.*").Joins("left join sys_role_menu on sys_role_menu.menu_id=sys_menu.menu_id")
+	table := orm.DB.Table(e.TableName()).Select("sys_menu.*").Joins("left join sys_role_menu on sys_role_menu.menu_id=sys_menu.menu_id")
 	table = table.Where("sys_role_menu.role_name=? and menu_type in ('M','C')", rolename)
 	if err = table.Order("sort").Find(&Menus).Error; err != nil {
 		return
@@ -224,7 +225,7 @@ func (e *Menu) GetByRoleName(rolename string) (Menus []Menu, err error) {
 }
 
 func (e *Menu) Get() (Menus []Menu, err error) {
-	table := orm.Eloquent.Table(e.TableName())
+	table := orm.DB.Table(e.TableName())
 	if e.MenuName != "" {
 		table = table.Where("menu_name = ?", e.MenuName)
 	}
@@ -245,7 +246,7 @@ func (e *Menu) Get() (Menus []Menu, err error) {
 }
 
 func (e *Menu) GetPage() (Menus []Menu, err error) {
-	table := orm.Eloquent.Table(e.TableName())
+	table := orm.DB.Table(e.TableName())
 	if e.MenuName != "" {
 		table = table.Where("menu_name = ?", e.MenuName)
 	}
@@ -273,7 +274,7 @@ func (e *Menu) GetPage() (Menus []Menu, err error) {
 }
 
 func (e *Menu) Create() (id int, err error) {
-	result := orm.Eloquent.Table(e.TableName()).Create(&e)
+	result := orm.DB.Table(e.TableName()).Create(&e)
 	if result.Error != nil {
 		err = result.Error
 		return
@@ -289,7 +290,7 @@ func (e *Menu) Create() (id int, err error) {
 func InitPaths(menu *Menu) (err error) {
 	parentMenu := new(Menu)
 	if int(menu.ParentId) != 0 {
-		orm.Eloquent.Table("sys_menu").Where("menu_id = ?", menu.ParentId).First(parentMenu)
+		orm.DB.Table("sys_menu").Where("menu_id = ?", menu.ParentId).First(parentMenu)
 		if parentMenu.Paths == "" {
 			err = errors.New("父级paths异常，请尝试对当前节点父级菜单进行更新操作！")
 			return
@@ -298,18 +299,18 @@ func InitPaths(menu *Menu) (err error) {
 	} else {
 		menu.Paths = "/0/" + tools.IntToString(menu.MenuId)
 	}
-	orm.Eloquent.Table("sys_menu").Where("menu_id = ?", menu.MenuId).Update("paths", menu.Paths)
+	orm.DB.Table("sys_menu").Where("menu_id = ?", menu.MenuId).Update("paths", menu.Paths)
 	return
 }
 
 func (e *Menu) Update(id int) (update Menu, err error) {
-	if err = orm.Eloquent.Table(e.TableName()).First(&update, id).Error; err != nil {
+	if err = orm.DB.Table(e.TableName()).First(&update, id).Error; err != nil {
 		return
 	}
 
-	//参数1:是要修改的数据
-	//参数2:是修改的数据
-	if err = orm.Eloquent.Table(e.TableName()).Model(&update).Updates(&e).Error; err != nil {
+	// 参数1:是要修改的数据
+	// 参数2:是修改的数据
+	if err = orm.DB.Table(e.TableName()).Model(&update).Updates(&e).Error; err != nil {
 		return
 	}
 	err = InitPaths(e)
@@ -320,7 +321,7 @@ func (e *Menu) Update(id int) (update Menu, err error) {
 }
 
 func (e *Menu) Delete(id int) (success bool, err error) {
-	if err = orm.Eloquent.Table(e.TableName()).Where("menu_id = ?", id).Delete(&Menu{}).Error; err != nil {
+	if err = orm.DB.Table(e.TableName()).Where("menu_id = ?", id).Delete(&Menu{}).Error; err != nil {
 		success = false
 		return
 	}

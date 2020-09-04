@@ -1,18 +1,17 @@
 package middleware
 
 import (
-	"fmt"
-	"github.com/gin-gonic/gin"
-	"go-admin/global"
-	"go-admin/models"
-	"go-admin/tools"
-	config2 "go-admin/tools/config"
 	"strings"
 	"time"
+
+	"github.com/gin-gonic/gin"
+
+	"go-admin/models"
+	"go-admin/tools"
 )
 
 // 日志记录到文件
-func LoggerToFile() gin.HandlerFunc {
+func OperLogToDB() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
 		// 开始时间
@@ -40,18 +39,18 @@ func LoggerToFile() gin.HandlerFunc {
 		clientIP := c.ClientIP()
 
 		// 日志格式
-		fmt.Printf("%s [INFO] %s %s %3d %13v %15s \r\n",
-			startTime.Format("2006-01-02 15:04:05"),
-			reqMethod,
-			reqUri,
-			statusCode,
-			latencyTime,
-			clientIP,
-		)
+		// fmt.Printf("%s [INFO] %s %s %3d %13v %15s \r\n",
+		// 	startTime.Format("2006-01-02 15:04:05"),
+		// 	reqMethod,
+		// 	reqUri,
+		// 	statusCode,
+		// 	latencyTime,
+		// 	clientIP,
+		// )
 
-		global.RequestLogger.Info(statusCode, latencyTime, clientIP, reqMethod, reqUri)
+		// global.ApiLog.Infof("%3d %13v %15s %8s %-7s",statusCode, latencyTime, clientIP, reqMethod, reqUri)
 
-		if c.Request.Method != "GET" && c.Request.Method != "OPTIONS" && config2.LoggerConfig.EnabledDB {
+		if c.Request.Method != "GET" && c.Request.Method != "OPTIONS" {
 			SetDBOperLog(c, clientIP, statusCode, reqUri, reqMethod, latencyTime)
 		}
 	}

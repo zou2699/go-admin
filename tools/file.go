@@ -32,12 +32,12 @@ func FileCreate(content bytes.Buffer, name string) {
 		log.Println(err)
 	}
 	file.WriteString(content.String())
-	//for i := 0; i < len(content); i++ {
+	// for i := 0; i < len(content); i++ {
 	//	//写入byte的slice数据
 	//	file.Write(content)
 	//	//写入字符串
 	//	//
-	//}
+	// }
 	file.Close()
 }
 
@@ -56,7 +56,7 @@ func FileRemove(name string) {
 }
 
 func FileZip(dst, src string, notContPath string) (err error) {
-	//创建准备写入的文件
+	// 创建准备写入的文件
 	fw, err := os.Create(dst)
 	defer fw.Close()
 	if err != nil {
@@ -115,9 +115,9 @@ func FileZip(dst, src string, notContPath string) (err error) {
 }
 
 type ReplaceHelper struct {
-	Root    string //路径
-	OldText string //需要替换的文本
-	NewText string //新的文本
+	Root    string // 路径
+	OldText string // 需要替换的文本
+	NewText string // 新的文本
 }
 
 func (h *ReplaceHelper) DoWrok() error {
@@ -139,21 +139,21 @@ func (h ReplaceHelper) walkCallback(path string, f os.FileInfo, err error) error
 		return nil
 	}
 
-	//文件类型需要进行过滤
+	// 文件类型需要进行过滤
 
 	buf, err := ioutil.ReadFile(path)
 	if err != nil {
-		//err
+		// err
 		return err
 	}
 	content := string(buf)
 	log.Printf("h.OldText: %s \n", h.OldText)
 	log.Printf("h.NewText: %s \n", h.NewText)
 
-	//替换
+	// 替换
 	newContent := strings.Replace(content, h.OldText, h.NewText, -1)
 
-	//重新写入
+	// 重新写入
 	ioutil.WriteFile(path, []byte(newContent), 0)
 
 	return err

@@ -3,10 +3,12 @@ package models
 import (
 	"errors"
 	"log"
+	"strings"
+
+	"golang.org/x/crypto/bcrypt"
+
 	orm "go-admin/global"
 	"go-admin/tools"
-	"golang.org/x/crypto/bcrypt"
-	"strings"
 )
 
 // User
@@ -43,15 +45,15 @@ type SysUserB struct {
 	NickName  string `gorm:"size:128" json:"nickName"` // 昵称
 	Phone     string `gorm:"size:11" json:"phone"`     // 手机号
 	RoleId    int    `gorm:"" json:"roleId"`           // 角色编码
-	Salt      string `gorm:"size:255" json:"salt"`     //盐
-	Avatar    string `gorm:"size:255" json:"avatar"`   //头像
-	Sex       string `gorm:"size:255" json:"sex"`      //性别
-	Email     string `gorm:"size:128" json:"email"`    //邮箱
-	DeptId    int    `gorm:"" json:"deptId"`           //部门编码
-	PostId    int    `gorm:"" json:"postId"`           //职位编码
+	Salt      string `gorm:"size:255" json:"salt"`     // 盐
+	Avatar    string `gorm:"size:255" json:"avatar"`   // 头像
+	Sex       string `gorm:"size:255" json:"sex"`      // 性别
+	Email     string `gorm:"size:128" json:"email"`    // 邮箱
+	DeptId    int    `gorm:"" json:"deptId"`           // 部门编码
+	PostId    int    `gorm:"" json:"postId"`           // 职位编码
 	CreateBy  string `gorm:"size:128" json:"createBy"` //
 	UpdateBy  string `gorm:"size:128" json:"updateBy"` //
-	Remark    string `gorm:"size:255" json:"remark"`   //备注
+	Remark    string `gorm:"size:255" json:"remark"`   // 备注
 	Status    string `gorm:"size:4;" json:"status"`
 	DataScope string `gorm:"-" json:"dataScope"`
 	Params    string `gorm:"-" json:"params"`
@@ -91,7 +93,7 @@ type SysUserView struct {
 // 获取用户数据
 func (e *SysUser) Get() (SysUserView SysUserView, err error) {
 
-	table := orm.Eloquent.Table(e.TableName()).Select([]string{"sys_user.*", "sys_role.role_name"})
+	table := orm.DB.Table(e.TableName()).Select([]string{"sys_user.*", "sys_role.role_name"})
 	table = table.Joins("left join sys_role on sys_user.role_id=sys_role.role_id")
 	if e.UserId != 0 {
 		table = table.Where("user_id = ?", e.UserId)
@@ -127,7 +129,7 @@ func (e *SysUser) Get() (SysUserView SysUserView, err error) {
 
 func (e *SysUser) GetUserInfo() (SysUserView SysUserView, err error) {
 
-	table := orm.Eloquent.Table(e.TableName()).Select([]string{"sys_user.*", "sys_role.role_name"})
+	table := orm.DB.Table(e.TableName()).Select([]string{"sys_user.*", "sys_role.role_name"})
 	table = table.Joins("left join sys_role on sys_user.role_id=sys_role.role_id")
 	if e.UserId != 0 {
 		table = table.Where("user_id = ?", e.UserId)
@@ -161,7 +163,7 @@ func (e *SysUser) GetUserInfo() (SysUserView SysUserView, err error) {
 
 func (e *SysUser) GetList() (SysUserView []SysUserView, err error) {
 
-	table := orm.Eloquent.Table(e.TableName()).Select([]string{"sys_user.*", "sys_role.role_name"})
+	table := orm.DB.Table(e.TableName()).Select([]string{"sys_user.*", "sys_role.role_name"})
 	table = table.Joins("left join sys_role on sys_user.role_id=sys_role.role_id")
 	if e.UserId != 0 {
 		table = table.Where("user_id = ?", e.UserId)
@@ -195,7 +197,7 @@ func (e *SysUser) GetList() (SysUserView []SysUserView, err error) {
 
 func (e *SysUser) GetPage(pageSize int, pageIndex int) ([]SysUserPage, int, error) {
 	var doc []SysUserPage
-	table := orm.Eloquent.Select("sys_user.*,sys_dept.dept_name").Table(e.TableName())
+	table := orm.DB.Select("sys_user.*,sys_dept.dept_name").Table(e.TableName())
 	table = table.Joins("left join sys_dept on sys_dept.dept_id = sys_user.dept_id")
 
 	if e.Username != "" {
@@ -229,7 +231,7 @@ func (e *SysUser) GetPage(pageSize int, pageIndex int) ([]SysUserPage, int, erro
 	return doc, count, nil
 }
 
-//加密
+// 加密
 func (e *SysUser) Encrypt() (err error) {
 	if e.Password == "" {
 		return
@@ -244,7 +246,7 @@ func (e *SysUser) Encrypt() (err error) {
 	}
 }
 
-//添加
+// 添加
 func (e SysUser) Insert() (id int, err error) {
 	if err = e.Encrypt(); err != nil {
 		return
@@ -252,44 +254,44 @@ func (e SysUser) Insert() (id int, err error) {
 
 	// check 用户名
 	var count int
-	orm.Eloquent.Table(e.TableName()).Where("username = ?", e.Username).Count(&count)
+	orm.DB.Table(e.TableName()).Where("username = ?", e.Username).Count(&count)
 	if count > 0 {
 		err = errors.New("账户已存在！")
 		return
 	}
 
-	//添加数据
-	if err = orm.Eloquent.Table(e.TableName()).Create(&e).Error; err != nil {
+	// 添加数据
+	if err = orm.DB.Table(e.TableName()).Create(&e).Error; err != nil {
 		return
 	}
 	id = e.UserId
 	return
 }
 
-//修改
+// 修改
 func (e *SysUser) Update(id int) (update SysUser, err error) {
 	if e.Password != "" {
 		if err = e.Encrypt(); err != nil {
 			return
 		}
 	}
-	if err = orm.Eloquent.Table(e.TableName()).First(&update, id).Error; err != nil {
+	if err = orm.DB.Table(e.TableName()).First(&update, id).Error; err != nil {
 		return
 	}
 	if e.RoleId == 0 {
 		e.RoleId = update.RoleId
 	}
 
-	//参数1:是要修改的数据
-	//参数2:是修改的数据
-	if err = orm.Eloquent.Table(e.TableName()).Model(&update).Updates(&e).Error; err != nil {
+	// 参数1:是要修改的数据
+	// 参数2:是修改的数据
+	if err = orm.DB.Table(e.TableName()).Model(&update).Updates(&e).Error; err != nil {
 		return
 	}
 	return
 }
 
 func (e *SysUser) BatchDelete(id []int) (Result bool, err error) {
-	if err = orm.Eloquent.Table(e.TableName()).Where("user_id in (?)", id).Delete(&SysUser{}).Error; err != nil {
+	if err = orm.DB.Table(e.TableName()).Where("user_id in (?)", id).Delete(&SysUser{}).Error; err != nil {
 		return
 	}
 	Result = true

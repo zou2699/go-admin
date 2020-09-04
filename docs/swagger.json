@@ -33,7 +33,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/models.SysConfig"
                         }
                     }
@@ -291,7 +290,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/models.SysDept"
                         }
                     }
@@ -326,7 +324,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/models.SysDept"
                         }
                     }
@@ -467,7 +464,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/models.DictType"
                         }
                     }
@@ -502,7 +498,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/models.SysConfig"
                         }
                     }
@@ -679,7 +674,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/models.DictType"
                         }
                     }
@@ -714,7 +708,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/models.DictType"
                         }
                     }
@@ -860,7 +853,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/models.LoginLog"
                         }
                     }
@@ -895,7 +887,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/models.LoginLog"
                         }
                     }
@@ -1144,7 +1135,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/models.Menu"
                         }
                     }
@@ -1322,7 +1312,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/models.SysOperLog"
                         }
                     }
@@ -1516,7 +1505,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/models.Post"
                         }
                     }
@@ -1553,7 +1541,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/models.Post"
                         }
                     }
@@ -1674,7 +1661,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/models.SysRole"
                         }
                     }
@@ -1704,7 +1690,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/models.SysRole"
                         }
                     }
@@ -1861,6 +1846,40 @@
                 }
             }
         },
+        "/api/v1/setting": {
+            "get": {
+                "description": "获取JSON",
+                "tags": [
+                    "系统信息"
+                ],
+                "summary": "查询系统信息",
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": -1, \"message\": \"添加失败\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/settings/serverInfo": {
+            "get": {
+                "description": "获取JSON",
+                "tags": [
+                    "系统信息"
+                ],
+                "summary": "系统信息",
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/sys/tables/info": {
             "put": {
                 "security": [
@@ -1883,7 +1902,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/tools.SysTables"
                         }
                     }
@@ -2058,7 +2076,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/models.SysUser"
                         }
                     }
@@ -2134,6 +2151,34 @@
                 }
             }
         },
+        "/api/v1/system/setting": {
+            "post": {
+                "description": "获取JSON",
+                "tags": [
+                    "系统信息"
+                ],
+                "summary": "更新或提交系统信息",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SysUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": -1, \"message\": \"添加失败\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/sysuser/{userId}": {
             "put": {
                 "description": "获取JSON",
@@ -2151,7 +2196,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/models.SysUser"
                         }
                     }
@@ -2255,7 +2299,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/models.Login"
                         }
                     }

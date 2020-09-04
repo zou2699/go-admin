@@ -29,7 +29,7 @@ func (SysJob) TableName() string {
 // 创建SysJob
 func (e *SysJob) Create() (SysJob, error) {
 	var doc SysJob
-	result := orm.Eloquent.Table(e.TableName()).Create(&e)
+	result := orm.DB.Table(e.TableName()).Create(&e)
 	if result.Error != nil {
 		err := result.Error
 		return doc, err
@@ -41,7 +41,7 @@ func (e *SysJob) Create() (SysJob, error) {
 // 获取SysJob
 func (e *SysJob) Get() (SysJob, error) {
 	var doc SysJob
-	table := orm.Eloquent.Table(e.TableName())
+	table := orm.DB.Table(e.TableName())
 
 	if e.JobId != 0 {
 		table = table.Where("job_id = ?", e.JobId)
@@ -77,7 +77,7 @@ func (e *SysJob) Get() (SysJob, error) {
 func (e *SysJob) GetPage(pageSize int, pageIndex int) ([]SysJob, int, error) {
 	var doc []SysJob
 
-	table := orm.Eloquent.Select("*").Table(e.TableName())
+	table := orm.DB.Select("*").Table(e.TableName())
 
 	if e.JobId != 0 {
 		table = table.Where("job_id = ?", e.JobId)
@@ -122,7 +122,7 @@ func (e *SysJob) GetPage(pageSize int, pageIndex int) ([]SysJob, int, error) {
 func (e *SysJob) GetList() ([]SysJob, error) {
 	var doc []SysJob
 
-	table := orm.Eloquent.Select("*").Table(e.TableName())
+	table := orm.DB.Select("*").Table(e.TableName())
 
 	table = table.Where("status = ?", 2)
 
@@ -134,13 +134,13 @@ func (e *SysJob) GetList() ([]SysJob, error) {
 
 // 更新SysJob
 func (e *SysJob) Update(id int) (update SysJob, err error) {
-	if err = orm.Eloquent.Table(e.TableName()).Where("job_id = ?", id).First(&update).Error; err != nil {
+	if err = orm.DB.Table(e.TableName()).Where("job_id = ?", id).First(&update).Error; err != nil {
 		return
 	}
 
-	//参数1:是要修改的数据
-	//参数2:是修改的数据
-	if err = orm.Eloquent.Table(e.TableName()).Model(&update).Updates(&e).Error; err != nil {
+	// 参数1:是要修改的数据
+	// 参数2:是修改的数据
+	if err = orm.DB.Table(e.TableName()).Model(&update).Updates(&e).Error; err != nil {
 		return
 	}
 	return
@@ -148,9 +148,9 @@ func (e *SysJob) Update(id int) (update SysJob, err error) {
 
 func (e *SysJob) RemoveAllEntryID() (update SysJob, err error) {
 
-	//参数1:是要修改的数据
-	//参数2:是修改的数据
-	if err = orm.Eloquent.Table(e.TableName()).Updates(map[string]interface{}{"entry_id": 0}).Error; err != nil {
+	// 参数1:是要修改的数据
+	// 参数2:是修改的数据
+	if err = orm.DB.Table(e.TableName()).Updates(map[string]interface{}{"entry_id": 0}).Error; err != nil {
 		return
 	}
 	return
@@ -158,9 +158,9 @@ func (e *SysJob) RemoveAllEntryID() (update SysJob, err error) {
 
 func (e *SysJob) RemoveEntryID(entryID int) (update SysJob, err error) {
 
-	//参数1:是要修改的数据
-	//参数2:是修改的数据
-	if err = orm.Eloquent.Table(e.TableName()).Where("entry_id = ?", entryID).Updates(map[string]interface{}{"entry_id": 0}).Error; err != nil {
+	// 参数1:是要修改的数据
+	// 参数2:是修改的数据
+	if err = orm.DB.Table(e.TableName()).Where("entry_id = ?", entryID).Updates(map[string]interface{}{"entry_id": 0}).Error; err != nil {
 		return
 	}
 	return
@@ -168,7 +168,7 @@ func (e *SysJob) RemoveEntryID(entryID int) (update SysJob, err error) {
 
 // 删除SysJob
 func (e *SysJob) Delete(id int) (success bool, err error) {
-	if err = orm.Eloquent.Table(e.TableName()).Where("job_id = ?", id).Delete(&SysJob{}).Error; err != nil {
+	if err = orm.DB.Table(e.TableName()).Where("job_id = ?", id).Delete(&SysJob{}).Error; err != nil {
 		success = false
 		return
 	}
@@ -176,9 +176,9 @@ func (e *SysJob) Delete(id int) (success bool, err error) {
 	return
 }
 
-//批量删除
+// 批量删除
 func (e *SysJob) BatchDelete(id []int) (Result bool, err error) {
-	if err = orm.Eloquent.Table(e.TableName()).Where("job_id in (?)", id).Delete(&SysJob{}).Error; err != nil {
+	if err = orm.DB.Table(e.TableName()).Where("job_id in (?)", id).Delete(&SysJob{}).Error; err != nil {
 		return
 	}
 	Result = true

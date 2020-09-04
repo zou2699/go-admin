@@ -3,6 +3,7 @@ package config
 import (
 	"encoding/json"
 	"fmt"
+
 	"go-admin/tools/config"
 
 	"github.com/spf13/cobra"
@@ -28,31 +29,31 @@ func init() {
 func run() {
 	config.Setup(configYml)
 
-	application, errs := json.MarshalIndent(config.ApplicationConfig, "", "   ") //转换成JSON返回的是byte[]
+	application, errs := json.MarshalIndent(config.ApplicationConfig, "", "   ") // 转换成JSON返回的是byte[]
 	if errs != nil {
 		fmt.Println(errs.Error())
 	}
 	fmt.Println("application:", string(application))
 
-	jwt, errs := json.MarshalIndent(config.JwtConfig, "", "   ") //转换成JSON返回的是byte[]
+	jwt, errs := json.MarshalIndent(config.JwtConfig, "", "   ") // 转换成JSON返回的是byte[]
 	if errs != nil {
 		fmt.Println(errs.Error())
 	}
 	fmt.Println("jwt:", string(jwt))
 
-	database, errs := json.MarshalIndent(config.DatabaseConfig, "", "   ") //转换成JSON返回的是byte[]
+	database, errs := json.MarshalIndent(config.DatabaseConfig, "", "   ") // 转换成JSON返回的是byte[]
 	if errs != nil {
 		fmt.Println(errs.Error())
 	}
 	fmt.Println("database:", string(database))
 
-	gen, errs := json.MarshalIndent(config.GenConfig, "", "   ") //转换成JSON返回的是byte[]
+	gen, errs := json.MarshalIndent(config.GenConfig, "", "   ") // 转换成JSON返回的是byte[]
 	if errs != nil {
 		fmt.Println(errs.Error())
 	}
 	fmt.Println("gen:", string(gen))
 
-	loggerConfig, errs := json.MarshalIndent(config.LoggerConfig, "", "   ") //转换成JSON返回的是byte[]
+	loggerConfig, errs := json.MarshalIndent(config.LoggerConfig, "", "   ") // 转换成JSON返回的是byte[]
 	if errs != nil {
 		fmt.Println(errs.Error())
 	}

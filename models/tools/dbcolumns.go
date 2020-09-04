@@ -2,7 +2,9 @@ package tools
 
 import (
 	"errors"
+
 	"github.com/jinzhu/gorm"
+
 	orm "go-admin/global"
 	"go-admin/tools"
 	config2 "go-admin/tools/config"
@@ -29,7 +31,7 @@ func (e *DBColumns) GetPage(pageSize int, pageIndex int) ([]DBColumns, int, erro
 	table := new(gorm.DB)
 
 	if config2.DatabaseConfig.Driver == "mysql" {
-		table = orm.Eloquent.Select("*").Table("information_schema.`COLUMNS`")
+		table = orm.DB.Select("*").Table("information_schema.`COLUMNS`")
 		table = table.Where("table_schema= ? ", config2.GenConfig.DBName)
 
 		if e.TableName != "" {
@@ -56,7 +58,7 @@ func (e *DBColumns) GetList() ([]DBColumns, error) {
 	}
 
 	if config2.DatabaseConfig.Driver == "mysql" {
-		table = orm.Eloquent.Select("*").Table("information_schema.columns")
+		table = orm.DB.Select("*").Table("information_schema.columns")
 		table = table.Where("table_schema= ? ", config2.GenConfig.DBName)
 
 		table = table.Where("TABLE_NAME = ?", e.TableName)

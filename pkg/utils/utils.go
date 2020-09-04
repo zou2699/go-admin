@@ -4,11 +4,12 @@ import (
 	"crypto/md5"
 	"encoding/base64"
 	"encoding/hex"
-	uuid "github.com/satori/go.uuid"
 	"io/ioutil"
 	"os"
 	"strings"
 	"time"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 func Hmac(data string) string {
@@ -23,7 +24,7 @@ func IsStringEmpty(str string) bool {
 
 func GetUUID() string {
 	u := uuid.NewV4()
-	return strings.ReplaceAll(u.String(),"-","")
+	return strings.ReplaceAll(u.String(), "-", "")
 }
 
 func PathExists(path string) bool {
@@ -76,10 +77,7 @@ func GetCurrentTimeStamp() int64 {
 	return time.Now().UnixNano() / 1e6
 }
 
-
-
-
-//slice去重
+// slice去重
 func RemoveRepByMap(slc []string) []string {
 	result := []string{}
 	tempMap := map[string]byte{}
