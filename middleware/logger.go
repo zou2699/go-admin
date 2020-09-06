@@ -70,15 +70,8 @@ func SetDBOperLog(c *gin.Context, clientIP string, statusCode int, reqUri string
 	sysOperLog.OperName = tools.GetUserName(c)
 	sysOperLog.RequestMethod = c.Request.Method
 	sysOperLog.OperUrl = reqUri
-	if reqUri == "/login" {
-		sysOperLog.BusinessType = "10"
-		sysOperLog.Title = "用户登录"
-		sysOperLog.OperName = "-"
-	} else if strings.Contains(reqUri, "/api/v1/logout") {
-		sysOperLog.BusinessType = "11"
-	} else if strings.Contains(reqUri, "/api/v1/getCaptcha") {
-		sysOperLog.BusinessType = "12"
-		sysOperLog.Title = "验证码"
+	if reqUri == "/login" || strings.Contains(reqUri, "/api/v1/logout") { // 不在这里记录登录登出
+		return
 	} else {
 		if reqMethod == "POST" {
 			sysOperLog.BusinessType = "1"
@@ -98,7 +91,7 @@ func SetDBOperLog(c *gin.Context, clientIP string, statusCode int, reqUri string
 	sysOperLog.OperTime = tools.GetCurrentTime()
 	sysOperLog.LatencyTime = (latencyTime).String()
 	sysOperLog.UserAgent = c.Request.UserAgent()
-	if c.Err() == nil {
+	if c.Err() == nil && statusCode <= 400 {
 		sysOperLog.Status = "0"
 	} else {
 		sysOperLog.Status = "1"

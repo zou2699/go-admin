@@ -33,7 +33,7 @@ func AuthCheckRole() gin.HandlerFunc {
 		if res {
 			c.Next()
 		} else {
-			c.JSON(http.StatusOK, gin.H{
+			c.JSON(http.StatusForbidden, gin.H{
 				"code": 403,
 				"msg":  "对不起，您没有该接口访问权限，请联系管理员",
 			})

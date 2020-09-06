@@ -8,7 +8,7 @@ import (
 	"go-admin/middleware"
 	_ "go-admin/pkg/jwtauth"
 	"go-admin/tools"
-	config2 "go-admin/tools/config"
+	"go-admin/tools/config"
 )
 
 func InitRouter() *gin.Engine {
@@ -18,7 +18,7 @@ func InitRouter() *gin.Engine {
 	} else {
 		r = global.GinEngine
 	}
-	if config2.SslConfig.Enable {
+	if config.SslConfig.Enable {
 		r.Use(handler.TlsHandler())
 	}
 	middleware.InitMiddleware(r)
