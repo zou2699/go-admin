@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gogf/gf/os/glog"
 	"github.com/jinzhu/gorm"
+	"k8s.io/client-go/kubernetes"
 )
 
 // go-admin Version Info
@@ -17,3 +18,6 @@ var CasbinEnforcer *casbin.SyncedEnforcer
 var DB *gorm.DB
 
 var Logger *glog.Logger
+
+// k8s client
+var K8sClient *kubernetes.Clientset

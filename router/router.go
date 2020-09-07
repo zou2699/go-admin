@@ -37,4 +37,6 @@ func examplesCheckRoleRouter(r *gin.Engine, authMiddleware *jwtauth.GinJWTMiddle
 
 	// {{认证路由自动补充在此处请勿删除}}
 	registerArticleRouter(v1, authMiddleware)
+	k8sApi := r.Group("k8s-api")
+	registerKubernetesRouter(k8sApi, authMiddleware)
 }

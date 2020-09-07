@@ -3,7 +3,6 @@ package api
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"os/signal"
@@ -16,6 +15,7 @@ import (
 	"go-admin/database"
 	"go-admin/global"
 	mycasbin "go-admin/pkg/casbin"
+	"go-admin/pkg/kubernetes/client"
 	"go-admin/pkg/logger"
 	"go-admin/router"
 	"go-admin/tools"
@@ -58,7 +58,8 @@ func setup() {
 	database.Setup(config.DatabaseConfig.Driver)
 	// 4. 接口访问控制加载
 	mycasbin.Setup()
-
+    // 5. 初始化k8sClient
+    client.Setup(config.KubernetesConfig.Path)
 	usageStr := `starting api server`
 	global.Logger.Info(usageStr)
 
@@ -94,9 +95,9 @@ func run() error {
 			}
 		}
 	}()
-	content, _ := ioutil.ReadFile("./static/go-admin.txt")
-	fmt.Println(tools.Red(string(content)))
-	tip()
+	// content, _ := ioutil.ReadFile("./static/go-admin.txt")
+	// fmt.Println(tools.Red(string(content)))
+	// tip()
 	fmt.Println(tools.Green("Server run at:"))
 	fmt.Printf("-  Local:   http://localhost:%s/ \r\n", config.ApplicationConfig.Port)
 	fmt.Printf("-  Network: http://%s:%s/ \r\n", tools.GetLocaHonst(), config.ApplicationConfig.Port)
@@ -105,6 +106,8 @@ func run() error {
 	fmt.Printf("-  Network: http://%s:%s/swagger/index.html \r\n", tools.GetLocaHonst(), config.ApplicationConfig.Port)
 	fmt.Printf("%s Enter Control + C Shutdown Server \r\n", tools.GetCurrentTimeStr())
 	// 等待中断信号以优雅地关闭服务器（设置 5 秒的超时时间）
+	version, _ := global.K8sClient.ServerVersion()
+	fmt.Println("kubernetes version: ",version)
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt)
 	<-quit

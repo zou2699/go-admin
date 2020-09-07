@@ -28,6 +28,9 @@ var cfgSsl *viper.Viper
 // 代码生成配置项 非必须
 var cfgGen *viper.Viper
 
+// k8s 配置
+var cfgKubernetes *viper.Viper
+
 // 载入配置文件
 func Setup(path string) {
 	viper.SetConfigFile(path)
@@ -81,4 +84,10 @@ func Setup(path string) {
 		panic("No found settings.gen")
 	}
 	GenConfig = InitGen(cfgGen)
+
+	cfgKubernetes = viper.Sub("settings.kubernetes")
+	if cfgKubernetes == nil {
+		panic("No found settings.kubernetes in the configuration")
+	}
+	KubernetesConfig = InitKubernetes(cfgKubernetes)
 }
