@@ -9,6 +9,7 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 
+	"go-admin/apis/kubernetes/deployment"
 	"go-admin/apis/kubernetes/namespace"
 	"go-admin/apis/kubernetes/node"
 	"go-admin/middleware"
@@ -18,14 +19,20 @@ import (
 // 需认证的路由代码
 func registerKubernetesRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
 
-	r := v1.Group("/api/v1").Use(authMiddleware.MiddlewareFunc()).Use(middleware.AuthCheckRole())
+	apiv1 := v1.Group("/api/v1").Use(authMiddleware.MiddlewareFunc()).Use(middleware.AuthCheckRole())
 
 	// node
-	r.GET("/nodes", node.GetNodeList)
-	r.GET("/nodes/:nodeName", node.GetNode)
+	apiv1.GET("/nodes", node.GetNodeList)
+	apiv1.GET("/nodes/:nodeName", node.GetNode)
 
 	// namespace
-	r.GET("/namespaces", namespace.GetNamespaceList)
-	r.GET("/namespaces/:namespaceName", namespace.GetNamespace)
+	apiv1.GET("/namespaces", namespace.GetNamespaceList)
+	apiv1.GET("/namespaces/:namespaceName", namespace.GetNamespace)
 
+	r := v1.Group("/apis/apps/v1").Use(authMiddleware.MiddlewareFunc()).Use(middleware.AuthCheckRole())
+
+	// deployment
+	r.GET("/namespaces/:namespaceName/deployments", deployment.GetDeploymentList)
+	r.GET("/namespaces/:namespaceName/deployments/:deploymentName", deployment.GetDeployment)
+	r.PATCH("/namespaces/:namespaceName/deployments/:deploymentName", deployment.RestartDeployment)
 }
