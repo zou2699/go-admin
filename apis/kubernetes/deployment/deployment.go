@@ -56,7 +56,7 @@ func RestartDeployment(c *gin.Context) {
 	}
 
 	patchDataBytes, _ := json.Marshal(patchData)
-	result, err := global.K8sClient.AppsV1().Deployments(namespaceName).Patch(deploymentName, types.StrategicMergePatchType, patchDataBytes)
-	tools.HasError(err, "restart deployment err", -1)
-	app.OK(c, result, "")
+	_, err := global.K8sClient.AppsV1().Deployments(namespaceName).Patch(deploymentName, types.StrategicMergePatchType, patchDataBytes)
+	tools.HasError(err, "重启失败", -1)
+	app.OK(c, "", "重启成功")
 }
