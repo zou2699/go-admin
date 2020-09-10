@@ -12,6 +12,7 @@ import (
 	"go-admin/apis/kubernetes/deployment"
 	"go-admin/apis/kubernetes/namespace"
 	"go-admin/apis/kubernetes/node"
+	"go-admin/apis/kubernetes/service"
 	"go-admin/middleware"
 	jwt "go-admin/pkg/jwtauth"
 )
@@ -20,19 +21,26 @@ import (
 func registerKubernetesRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
 
 	apiv1 := v1.Group("/api/v1").Use(authMiddleware.MiddlewareFunc()).Use(middleware.AuthCheckRole())
+	{
+		// node
+		apiv1.GET("/nodes", node.GetNodeList)
+		apiv1.GET("/nodes/:nodeName", node.GetNode)
 
-	// node
-	apiv1.GET("/nodes", node.GetNodeList)
-	apiv1.GET("/nodes/:nodeName", node.GetNode)
+		// namespace
+		apiv1.GET("/namespaces", namespace.GetNamespaceList)
+		apiv1.GET("/namespaces/:namespaceName", namespace.GetNamespace)
 
-	// namespace
-	apiv1.GET("/namespaces", namespace.GetNamespaceList)
-	apiv1.GET("/namespaces/:namespaceName", namespace.GetNamespace)
+		// service
+		apiv1.GET("/namespaces/:namespaceName/services", service.GetServiceList)
+		apiv1.GET("/namespaces/:namespaceName/services/:serviceName", service.GetService)
+
+	}
 
 	r := v1.Group("/apis/apps/v1").Use(authMiddleware.MiddlewareFunc()).Use(middleware.AuthCheckRole())
-
-	// deployment
-	r.GET("/namespaces/:namespaceName/deployments", deployment.GetDeploymentList)
-	r.GET("/namespaces/:namespaceName/deployments/:deploymentName", deployment.GetDeployment)
-	r.PATCH("/namespaces/:namespaceName/deployments/:deploymentName", deployment.RestartDeployment)
+	{
+		// deployment
+		r.GET("/namespaces/:namespaceName/deployments", deployment.GetDeploymentList)
+		r.GET("/namespaces/:namespaceName/deployments/:deploymentName", deployment.GetDeployment)
+		r.PATCH("/namespaces/:namespaceName/deployments/:deploymentName", deployment.RestartDeployment)
+	}
 }
