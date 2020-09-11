@@ -7,6 +7,7 @@
 package client
 
 import (
+	versionedclient "istio.io/client-go/pkg/clientset/versioned"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 
@@ -20,6 +21,11 @@ func Setup(kubeconfigPath string) {
 	}
 
 	global.K8sClient, err = kubernetes.NewForConfig(config)
+	if err != nil {
+		panic(err)
+	}
+
+	global.IstioClient, err = versionedclient.NewForConfig(config)
 	if err != nil {
 		panic(err)
 	}

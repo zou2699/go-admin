@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gogf/gf/os/glog"
 	"github.com/jinzhu/gorm"
+	"istio.io/client-go/pkg/clientset/versioned"
 	"k8s.io/client-go/kubernetes"
 )
 
@@ -21,3 +22,5 @@ var Logger *glog.Logger
 
 // k8s client
 var K8sClient *kubernetes.Clientset
+
+var IstioClient *versioned.Clientset

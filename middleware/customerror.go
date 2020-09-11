@@ -27,11 +27,10 @@ func CustomError(c *gin.Context) {
 					}
 					c.Status(statusCode)
 					global.Logger.Warningf(
-						"method: %v, url: %v, statusCode: %d, uri: %v, clientIP: %v, errMsg: %v",
+						"method: %v, url: %v, statusCode: %d, clientIP: %v, errMsg: %v",
 						c.Request.Method,
 						c.Request.URL,
 						statusCode,
-						c.Request.RequestURI,
 						c.ClientIP(),
 						p[2],
 					)

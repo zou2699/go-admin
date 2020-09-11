@@ -35,7 +35,7 @@ require (
 	github.com/unrolled/secure v1.0.8
 	golang.org/x/crypto v0.0.0-20200323165209-0ec3e9974c59
 	golang.org/x/tools v0.0.0-20200402223321-bcf690261a44 // indirect
-	k8s.io/api v0.16.10
+	istio.io/client-go v0.0.0-20191113122552-9bd0ba57c3d2
 	k8s.io/apimachinery v0.16.10
 	k8s.io/client-go v0.16.10
 )
