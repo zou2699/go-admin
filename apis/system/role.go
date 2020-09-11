@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 
+	orm "go-admin/global"
 	"go-admin/models"
 	"go-admin/tools"
 	"go-admin/tools/app"
@@ -82,7 +83,8 @@ func InsertRole(c *gin.Context) {
 	data.RoleId = id
 	tools.HasError(err, "", -1)
 	var t models.RoleMenu
-	_, err = t.Insert(id, data.MenuIds)
+	tx := orm.DB.Begin()
+	err = t.Insert(tx, id, data.MenuIds)
 	tools.HasError(err, "", -1)
 	app.OK(c, data, "添加成功")
 }
@@ -104,10 +106,11 @@ func UpdateRole(c *gin.Context) {
 	result, err := data.Update(data.RoleId)
 	tools.HasError(err, "", -1)
 	var t models.RoleMenu
-	_, err = t.DeleteRoleMenu(data.RoleId)
-	tools.HasError(err, "添加失败1", -1)
-	_, err2 := t.Insert(data.RoleId, data.MenuIds)
-	tools.HasError(err2, "添加失败2", -1)
+	tx := orm.DB.Begin()
+	err = t.DeleteRoleMenu(tx, data.RoleId, true)
+	tools.HasError(err, "", 500)
+	err = t.Insert(tx, data.RoleId, data.MenuIds)
+	tools.HasError(err, "", 500)
 
 	app.OK(c, result, "修改成功")
 }

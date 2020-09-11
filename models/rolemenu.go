@@ -3,7 +3,9 @@ package models
 import (
 	"fmt"
 
-	orm "go-admin/global"
+	"github.com/jinzhu/gorm"
+
+	"go-admin/global"
 	"go-admin/tools"
 )
 
@@ -25,7 +27,7 @@ type MenuPath struct {
 
 func (rm *RoleMenu) Get() ([]RoleMenu, error) {
 	var r []RoleMenu
-	table := orm.DB.Table("sys_role_menu")
+	table := global.DB.Table("sys_role_menu")
 	if rm.RoleId != 0 {
 		table = table.Where("role_id = ?", rm.RoleId)
 
@@ -38,7 +40,7 @@ func (rm *RoleMenu) Get() ([]RoleMenu, error) {
 
 func (rm *RoleMenu) GetPermis() ([]string, error) {
 	var r []Menu
-	table := orm.DB.Select("sys_menu.permission").Table("sys_menu").Joins("left join sys_role_menu on sys_menu.menu_id = sys_role_menu.menu_id")
+	table := global.DB.Select("sys_menu.permission").Table("sys_menu").Joins("left join sys_role_menu on sys_menu.menu_id = sys_role_menu.menu_id")
 
 	table = table.Where("role_id = ?", rm.RoleId)
 
@@ -55,7 +57,7 @@ func (rm *RoleMenu) GetPermis() ([]string, error) {
 
 func (rm *RoleMenu) GetIDS() ([]MenuPath, error) {
 	var r []MenuPath
-	table := orm.DB.Select("sys_menu.path").Table("sys_role_menu")
+	table := global.DB.Select("sys_menu.path").Table("sys_role_menu")
 	table = table.Joins("left join sys_role on sys_role.role_id=sys_role_menu.role_id")
 	table = table.Joins("left join sys_menu on sys_menu.id=sys_role_menu.menu_id")
 	table = table.Where("sys_role.role_name = ? and sys_menu.type=1", rm.RoleName)
@@ -65,46 +67,46 @@ func (rm *RoleMenu) GetIDS() ([]MenuPath, error) {
 	return r, nil
 }
 
-func (rm *RoleMenu) DeleteRoleMenu(roleId int) (bool, error) {
-	tx := orm.DB.Begin()
+func (rm *RoleMenu) DeleteRoleMenu(tx *gorm.DB, roleId int, isContinue bool) error {
 	defer func() {
 		if r := recover(); r != nil {
-			tx.Rollback()
+			global.Logger.Error(tx.Rollback().Error)
 		}
 	}()
 
 	if err := tx.Error; err != nil {
-		return false, err
+		return err
 	}
 
 	if err := tx.Table("sys_role_dept").Where("role_id = ?", roleId).Delete(&rm).Error; err != nil {
-		tx.Rollback()
-		return false, err
+		global.Logger.Error(tx.Rollback().Error)
+		return err
 	}
 	if err := tx.Table("sys_role_menu").Where("role_id = ?", roleId).Delete(&rm).Error; err != nil {
 		tx.Rollback()
-		return false, err
+		return err
 	}
 	var role SysRole
 	if err := tx.Table("sys_role").Where("role_id = ?", roleId).First(&role).Error; err != nil {
 		tx.Rollback()
-		return false, err
+		return err
 	}
 	sql3 := "delete from casbin_rule where v0= '" + role.RoleKey + "';"
 	if err := tx.Exec(sql3).Error; err != nil {
-		tx.Rollback()
-		return false, err
+		global.Logger.Error(tx.Rollback().Error)
+		return err
 	}
-	if err := tx.Commit().Error; err != nil {
-		return false, err
+	if !isContinue {
+		if err := tx.Commit().Error; err != nil {
+			return err
+		}
 	}
-
-	return true, nil
+	return nil
 
 }
 
 func (rm *RoleMenu) BatchDeleteRoleMenu(roleIds []int) (bool, error) {
-	tx := orm.DB.Begin()
+	tx := global.DB.Begin()
 	defer func() {
 		if r := recover(); r != nil {
 			tx.Rollback()
@@ -139,9 +141,8 @@ func (rm *RoleMenu) BatchDeleteRoleMenu(roleIds []int) (bool, error) {
 
 }
 
-func (rm *RoleMenu) Insert(roleId int, menuId []int) (bool, error) {
+func (rm *RoleMenu) Insert(tx *gorm.DB, roleId int, menuId []int) error {
 	var role SysRole
-	tx := orm.DB.Begin()
 	defer func() {
 		if r := recover(); r != nil {
 			tx.Rollback()
@@ -149,16 +150,16 @@ func (rm *RoleMenu) Insert(roleId int, menuId []int) (bool, error) {
 	}()
 
 	if err := tx.Error; err != nil {
-		return false, err
+		return err
 	}
 	if err := tx.Table("sys_role").Where("role_id = ?", roleId).First(&role).Error; err != nil {
 		tx.Rollback()
-		return false, err
+		return err
 	}
 	var menu []Menu
 	if err := tx.Table("sys_menu").Where("menu_id in (?)", menuId).Find(&menu).Error; err != nil {
 		tx.Rollback()
-		return false, err
+		return err
 	}
 	// ORM不支持批量插入所以需要拼接 sql 串
 	sql := "INSERT INTO `sys_role_menu` (`role_id`,`menu_id`,`role_name`) VALUES "
@@ -180,22 +181,22 @@ func (rm *RoleMenu) Insert(roleId int, menuId []int) (bool, error) {
 	}
 	if err := tx.Exec(sql).Error; err != nil {
 		tx.Rollback()
-		return false, err
+		return err
 	}
 	sql2 = sql2[0:len(sql2)-1] + ";"
 	if err := tx.Exec(sql2).Error; err != nil {
 		tx.Rollback()
-		return false, err
+		return err
 	}
 	if err := tx.Commit().Error; err != nil {
-		return false, err
+		return err
 	}
-	return true, nil
+	return nil
 }
 
 func (rm *RoleMenu) Delete(RoleId string, MenuID string) (bool, error) {
 	rm.RoleId, _ = tools.StringToInt(RoleId)
-	table := orm.DB.Table("sys_role_menu").Where("role_id = ?", RoleId)
+	table := global.DB.Table("sys_role_menu").Where("role_id = ?", RoleId)
 	if MenuID != "" {
 		table = table.Where("menu_id = ?", MenuID)
 	}

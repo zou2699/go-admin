@@ -1,13 +1,13 @@
 package middleware
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/gin-gonic/gin"
+
+	"go-admin/global"
 )
 
 func CustomError(c *gin.Context) {
@@ -26,9 +26,8 @@ func CustomError(c *gin.Context) {
 						break
 					}
 					c.Status(statusCode)
-					fmt.Println(
-						time.Now().Format("2006-01-02 15:04:05"),
-						"[ERROR]",
+					global.Logger.Warningf(
+						"method: %v, url: %v, statusCode: %d, uri: %v, clientIP: %v, errMsg: %v",
 						c.Request.Method,
 						c.Request.URL,
 						statusCode,
