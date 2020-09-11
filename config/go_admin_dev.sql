@@ -11,7 +11,7 @@
  Target Server Version : 80021
  File Encoding         : 65001
 
- Date: 08/09/2020 17:48:28
+ Date: 11/09/2020 17:00:52
 */
 
 SET NAMES utf8mb4;
@@ -56,7 +56,7 @@ DROP TABLE IF EXISTS `casbin_rule`;
 CREATE TABLE `casbin_rule` (
   `p_type` varchar(100) DEFAULT NULL,
   `v0` varchar(100) DEFAULT NULL,
-  `v1` varchar(100) DEFAULT NULL,
+  `v1` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `v2` varchar(100) DEFAULT NULL,
   `v3` varchar(100) DEFAULT NULL,
   `v4` varchar(100) DEFAULT NULL,
@@ -67,30 +67,6 @@ CREATE TABLE `casbin_rule` (
 -- Records of casbin_rule
 -- ----------------------------
 BEGIN;
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/dict/databytype/', 'GET', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/sysUser/', 'GET', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/user/profile', 'GET', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/menurole', 'GET', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/roleMenuTreeselect/:id', 'GET', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/menuTreeselect', 'GET', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/dict/databytype/:id', 'GET', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/menuids', 'GET', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/getinfo', 'GET', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/roledatascope', 'PUT', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/roleDeptTreeselect/:id', 'GET', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/deptTree', 'GET', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/configKey/:id', 'GET', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/logout', 'POST', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/user/avatar', 'POST', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/user/pwd', 'PUT', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/dict/typeoptionselect', 'GET', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/articleList', 'GET', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/article/:id', 'GET', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/article', 'POST', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/article', 'PUT', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/article/:id', 'DELETE', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/k8s-api/api/v1/nodes', 'GET', NULL, NULL, NULL);
-INSERT INTO `casbin_rule` VALUES ('p', 'common', '/k8s-api/api/v1/nodes/:name', 'GET', NULL, NULL, NULL);
 INSERT INTO `casbin_rule` VALUES ('p', 'admin', '/api/v1/menulist', 'GET', NULL, NULL, NULL);
 INSERT INTO `casbin_rule` VALUES ('p', 'admin', '/api/v1/menu', 'POST', NULL, NULL, NULL);
 INSERT INTO `casbin_rule` VALUES ('p', 'admin', '/api/v1/dict/databytype/', 'GET', NULL, NULL, NULL);
@@ -171,6 +147,47 @@ INSERT INTO `casbin_rule` VALUES ('p', 'admin', '/k8s-api/api/v1/namespaces/:nam
 INSERT INTO `casbin_rule` VALUES ('p', 'admin', '/k8s-api/apis/apps/v1/namespaces/:namespaceName/deployments', 'GET', NULL, NULL, NULL);
 INSERT INTO `casbin_rule` VALUES ('p', 'admin', '/k8s-api/apis/apps/v1/namespaces/:namespaceName/deployments/:deploymentName', 'GET', NULL, NULL, NULL);
 INSERT INTO `casbin_rule` VALUES ('p', 'admin', '/k8s-api/apis/apps/v1/namespaces/:namespaceName/deployments/:deploymentName', 'PATCH', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'admin', '/k8s-api/api/v1/namespaces/:namespaceName/services', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'admin', '/k8s-api/api/v1/namespaces/:namespaceName/services/:serviceName', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'admin', '/k8s-api/apis/networking.istio.io/v1alpha3/namespaces/:namespaceName/gateways', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'admin', '/k8s-api/apis/networking.istio.io/v1alpha3/namespaces/:namespaceName/gateways/:gatewayName', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'admin', '/k8s-api/apis/networking.istio.io/v1alpha3/namespaces/:namespaceName/virtualservices', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'admin', '/k8s-api/apis/networking.istio.io/v1alpha3/namespaces/:namespaceName/virtualservices/:virtualServiceName', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'admin', '/k8s-api/apis/networking.istio.io/v1alpha3/namespaces/:namespaceName/serviceentries', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'admin', '/k8s-api/apis/networking.istio.io/v1alpha3/namespaces/:namespaceName/serviceentries/:serviceEntryName', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'admin', '/k8s-api/apis/networking.istio.io/v1alpha3/namespaces/:namespaceName/destinationrules', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'admin', '/k8s-api/apis/networking.istio.io/v1alpha3/namespaces/:namespaceName/destinationrules/:destinationRuleName', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/dict/databytype/', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/sysUser/', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/user/profile', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/menurole', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/roleMenuTreeselect/:id', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/menuTreeselect', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/dict/databytype/:id', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/menuids', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/getinfo', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/roledatascope', 'PUT', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/roleDeptTreeselect/:id', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/deptTree', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/configKey/:id', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/logout', 'POST', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/user/avatar', 'POST', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/user/pwd', 'PUT', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/dict/typeoptionselect', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/articleList', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/article/:id', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/article', 'POST', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/article', 'PUT', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/api/v1/article/:id', 'DELETE', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/k8s-api/api/v1/nodes', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/k8s-api/api/v1/nodes/:name', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/k8s-api/api/v1/namespaces', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/k8s-api/api/v1/namespaces/:name', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/k8s-api/apis/apps/v1/namespaces/:namespaceName/deployments', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/k8s-api/apis/apps/v1/namespaces/:namespaceName/deployments/:deploymentName', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/k8s-api/apis/apps/v1/namespaces/:namespaceName/deployments/:deploymentName', 'PATCH', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/k8s-api/api/v1/namespaces/:namespaceName/services', 'GET', NULL, NULL, NULL);
+INSERT INTO `casbin_rule` VALUES ('p', 'common', '/k8s-api/api/v1/namespaces/:namespaceName/services/:serviceName', 'GET', NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -441,7 +458,7 @@ CREATE TABLE `sys_loginlog` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`info_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of sys_loginlog
@@ -471,6 +488,25 @@ INSERT INTO `sys_loginlog` VALUES (21, 'admin', '0', '127.0.0.1', '内部IP', 'C
 INSERT INTO `sys_loginlog` VALUES (22, 'dev', '0', '127.0.0.1', '内部IP', 'Chrome 84.0.4147.135', 'Intel Mac OS X 10_15_6', 'Macintosh', '2020-09-08 12:55:36', '0', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36', '登录成功', '2020-09-08 12:55:36', '2020-09-08 12:55:36', NULL);
 INSERT INTO `sys_loginlog` VALUES (23, 'admin', '0', '127.0.0.1', '内部IP', 'Chrome 84.0.4147.135', 'Intel Mac OS X 10_15_6', 'Macintosh', '2020-09-08 12:58:59', '0', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36', '登录成功', '2020-09-08 12:58:59', '2020-09-08 12:58:59', NULL);
 INSERT INTO `sys_loginlog` VALUES (24, 'admin', '0', '127.0.0.1', '内部IP', 'Chrome 84.0.4147.135', 'Intel Mac OS X 10_15_6', 'Macintosh', '2020-09-08 12:59:08', '0', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36', '登录成功', '2020-09-08 12:59:08', '2020-09-08 12:59:08', NULL);
+INSERT INTO `sys_loginlog` VALUES (25, 'admin', '0', '127.0.0.1', '内部IP', 'Chrome 84.0.4147.135', 'Intel Mac OS X 10_15_6', 'Macintosh', '2020-09-09 09:10:11', '0', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36', '登录成功', '2020-09-09 09:10:11', '2020-09-09 09:10:11', NULL);
+INSERT INTO `sys_loginlog` VALUES (26, 'admin', '0', '127.0.0.1', '内部IP', 'Chrome 84.0.4147.135', 'Intel Mac OS X 10_15_6', 'Macintosh', '2020-09-09 09:28:22', '0', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36', '登录成功', '2020-09-09 09:28:22', '2020-09-09 09:28:22', NULL);
+INSERT INTO `sys_loginlog` VALUES (27, 'admin', '0', '127.0.0.1', '内部IP', 'Chrome 85.0.4183.83', 'Intel Mac OS X 10_15_6', 'Macintosh', '2020-09-09 09:45:49', '0', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '登录成功', '2020-09-09 09:45:49', '2020-09-09 09:45:49', NULL);
+INSERT INTO `sys_loginlog` VALUES (28, 'admin', '0', '192.168.1.134', '局域网-', 'Chrome 85.0.4183.83', 'Intel Mac OS X 10_15_6', 'Macintosh', '2020-09-09 11:28:23', '0', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '登录成功', '2020-09-09 11:28:23', '2020-09-09 11:28:23', NULL);
+INSERT INTO `sys_loginlog` VALUES (29, 'admin', '0', '127.0.0.1', '内部IP', 'Chrome 85.0.4183.83', 'Intel Mac OS X 10_15_6', 'Macintosh', '2020-09-09 17:12:49', '0', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '登录成功', '2020-09-09 17:12:49', '2020-09-09 17:12:49', NULL);
+INSERT INTO `sys_loginlog` VALUES (30, 'admin', '0', '127.0.0.1', '内部IP', 'Chrome 85.0.4183.83', 'Intel Mac OS X 10_15_6', 'Macintosh', '2020-09-10 09:17:49', '0', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '登录成功', '2020-09-10 09:17:49', '2020-09-10 09:17:49', NULL);
+INSERT INTO `sys_loginlog` VALUES (31, 'admin', '0', '127.0.0.1', '内部IP', 'Chrome 85.0.4183.83', 'Intel Mac OS X 10_15_6', 'Macintosh', '2020-09-10 15:04:51', '0', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '登录成功', '2020-09-10 15:04:51', '2020-09-10 15:04:51', NULL);
+INSERT INTO `sys_loginlog` VALUES (32, 'admin', '0', '127.0.0.1', '内部IP', 'Safari 13.1.2', 'Intel Mac OS X 10_15_6', 'Macintosh', '2020-09-10 15:35:04', '0', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Safari/605.1.15', '登录成功', '2020-09-10 15:35:04', '2020-09-10 15:35:04', NULL);
+INSERT INTO `sys_loginlog` VALUES (33, 'admin', '0', '127.0.0.1', '内部IP', 'Chrome 85.0.4183.83', 'Intel Mac OS X 10_15_6', 'Macintosh', '2020-09-11 10:28:27', '0', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '登录成功', '2020-09-11 10:28:27', '2020-09-11 10:28:27', NULL);
+INSERT INTO `sys_loginlog` VALUES (34, 'admin', '0', '127.0.0.1', '内部IP', 'Chrome 85.0.4183.83', 'Intel Mac OS X 10_15_6', 'Macintosh', '2020-09-11 10:29:45', '0', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '登录成功', '2020-09-11 10:29:45', '2020-09-11 10:29:45', NULL);
+INSERT INTO `sys_loginlog` VALUES (35, 'admin', '0', '127.0.0.1', '内部IP', 'Chrome 85.0.4183.83', 'Intel Mac OS X 10_15_6', 'Macintosh', '2020-09-11 10:41:44', '0', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '登录成功', '2020-09-11 10:41:44', '2020-09-11 10:41:44', NULL);
+INSERT INTO `sys_loginlog` VALUES (36, 'admin', '0', '127.0.0.1', '内部IP', 'Chrome 85.0.4183.83', 'Intel Mac OS X 10_15_6', 'Macintosh', '2020-09-11 16:17:25', '0', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '退出成功', '2020-09-11 16:17:25', '2020-09-11 16:17:25', NULL);
+INSERT INTO `sys_loginlog` VALUES (37, 'admin', '0', '127.0.0.1', '内部IP', 'Chrome 85.0.4183.83', 'Intel Mac OS X 10_15_6', 'Macintosh', '2020-09-11 16:17:34', '0', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '登录成功', '2020-09-11 16:17:34', '2020-09-11 16:17:34', NULL);
+INSERT INTO `sys_loginlog` VALUES (38, 'admin', '0', '127.0.0.1', '内部IP', 'Chrome 85.0.4183.83', 'Intel Mac OS X 10_15_6', 'Macintosh', '2020-09-11 16:21:56', '0', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '退出成功', '2020-09-11 16:21:56', '2020-09-11 16:21:56', NULL);
+INSERT INTO `sys_loginlog` VALUES (39, 'admin', '0', '127.0.0.1', '内部IP', 'Chrome 85.0.4183.83', 'Intel Mac OS X 10_15_6', 'Macintosh', '2020-09-11 16:22:22', '0', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '登录成功', '2020-09-11 16:22:22', '2020-09-11 16:22:22', NULL);
+INSERT INTO `sys_loginlog` VALUES (40, 'admin', '0', '127.0.0.1', '内部IP', 'Chrome 85.0.4183.83', 'Intel Mac OS X 10_15_6', 'Macintosh', '2020-09-11 16:37:55', '0', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '退出成功', '2020-09-11 16:37:55', '2020-09-11 16:37:55', NULL);
+INSERT INTO `sys_loginlog` VALUES (41, 'admin', '0', '127.0.0.1', '内部IP', 'Chrome 85.0.4183.83', 'Intel Mac OS X 10_15_6', 'Macintosh', '2020-09-11 16:38:05', '0', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '登录成功', '2020-09-11 16:38:05', '2020-09-11 16:38:05', NULL);
+INSERT INTO `sys_loginlog` VALUES (42, 'admin', '0', '127.0.0.1', '内部IP', 'Chrome 85.0.4183.83', 'Intel Mac OS X 10_15_6', 'Macintosh', '2020-09-11 16:49:18', '0', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '退出成功', '2020-09-11 16:49:18', '2020-09-11 16:49:18', NULL);
+INSERT INTO `sys_loginlog` VALUES (43, 'dev', '0', '127.0.0.1', '内部IP', 'Chrome 85.0.4183.83', 'Intel Mac OS X 10_15_6', 'Macintosh', '2020-09-11 16:56:35', '0', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '登录成功', '2020-09-11 16:56:35', '2020-09-11 16:56:35', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -500,7 +536,7 @@ CREATE TABLE `sys_menu` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=519 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=540 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -676,6 +712,24 @@ INSERT INTO `sys_menu` VALUES (515, '', 'deployment', 'tree-table', '', '/0/63/5
 INSERT INTO `sys_menu` VALUES (516, '', '获取列表', '', '/k8s-api/apis/apps/v1/namespaces/:namespaceName/deployments', '/0/63/506/515/516', 'A', 'GET', '', 515, 0, '', '', 0, '1', '1', '1', '1', '2020-09-08 15:38:31', '2020-09-08 15:38:42', NULL);
 INSERT INTO `sys_menu` VALUES (517, '', '获取详细信息', '', '/k8s-api/apis/apps/v1/namespaces/:namespaceName/deployments/:deploymentName', '/0/63/506/515/517', 'A', 'GET', '', 515, 0, '', '', 1, '1', '1', '1', '1', '2020-09-08 15:39:08', '2020-09-08 17:03:01', NULL);
 INSERT INTO `sys_menu` VALUES (518, '', '重启', '', '/k8s-api/apis/apps/v1/namespaces/:namespaceName/deployments/:deploymentName', '/0/63/506/515/518', 'A', 'PATCH', '', 515, 0, '', '', 3, '1', '1', '', '1', '2020-09-08 17:02:53', '2020-09-08 17:02:53', NULL);
+INSERT INTO `sys_menu` VALUES (519, 'deploymentInfo', 'deploymentInfo', 'eye', 'deployment/:namespace/:name', '/0/501/519', 'C', '', 'deployment:deployment:info', 501, 0, '', '/kubernetes/deployment/info', 4, '1', '1', '1', '0', '2020-09-09 15:26:03', '2020-09-10 11:20:56', NULL);
+INSERT INTO `sys_menu` VALUES (520, '', 'service', '', '', '/0/63/506/520', 'M', '', '', 506, 0, '', '', 4, '1', '1', '1', '1', '2020-09-10 10:18:15', '2020-09-10 10:18:20', NULL);
+INSERT INTO `sys_menu` VALUES (521, '', '获取列表', '', '/k8s-api/api/v1/namespaces/:namespaceName/services', '/0/63/506/520/521', 'A', 'GET', '', 520, 0, '', '', 0, '1', '1', '', '1', '2020-09-10 10:19:09', '2020-09-10 10:19:09', NULL);
+INSERT INTO `sys_menu` VALUES (522, '', '获取详细信息', '', '/k8s-api/api/v1/namespaces/:namespaceName/services/:serviceName', '/0/63/506/520/522', 'A', 'GET', '', 520, 0, '', '', 0, '1', '1', '', '1', '2020-09-10 10:19:41', '2020-09-10 10:19:41', NULL);
+INSERT INTO `sys_menu` VALUES (523, 'service', 'service', 'date-range', 'service', '/0/501/523', 'C', '', 'service:service:list', 501, 0, '', '/kubernetes/service/index', 5, '0', '1', '1', '1', '2020-09-10 11:20:22', '2020-09-11 15:42:28', NULL);
+INSERT INTO `sys_menu` VALUES (527, '', 'istio', '', '', '/0/63/506/527', 'M', '', '', 506, 0, '', '', 5, '1', '1', '1', '1', '2020-09-11 10:50:16', '2020-09-11 10:50:25', NULL);
+INSERT INTO `sys_menu` VALUES (528, '', '获取gw列表', '', '/k8s-api/apis/networking.istio.io/v1alpha3/namespaces/:namespaceName/gateways', '/0/63/506/527/528', 'A', 'GET', '', 527, 0, '', '', 1, '1', '1', '1', '1', '2020-09-11 10:50:57', '2020-09-11 10:51:42', NULL);
+INSERT INTO `sys_menu` VALUES (529, '', '获取gw', '', '/k8s-api/apis/networking.istio.io/v1alpha3/namespaces/:namespaceName/gateways/:gatewayName', '/0/63/506/527/529', 'A', 'GET', '', 527, 0, '', '', 2, '1', '1', '1', '1', '2020-09-11 10:51:33', '2020-09-11 10:57:28', NULL);
+INSERT INTO `sys_menu` VALUES (530, '', '获取vs列表', '', '/k8s-api/apis/networking.istio.io/v1alpha3/namespaces/:namespaceName/virtualservices', '/0/63/506/527/530', 'A', 'GET', '', 527, 0, '', '', 3, '1', '1', '1', '1', '2020-09-11 10:50:57', '2020-09-11 10:51:42', NULL);
+INSERT INTO `sys_menu` VALUES (531, '', '获取vs', '', '/k8s-api/apis/networking.istio.io/v1alpha3/namespaces/:namespaceName/virtualservices/:virtualServiceName', '/0/63/506/527/531', 'A', 'GET', '', 527, 0, '', '', 4, '1', '1', '1', '1', '2020-09-11 10:50:57', '2020-09-11 10:51:42', NULL);
+INSERT INTO `sys_menu` VALUES (532, '', '获取se列表', '', '/k8s-api/apis/networking.istio.io/v1alpha3/namespaces/:namespaceName/serviceentries', '/0/63/506/527/532', 'A', 'GET', '', 527, 0, '', '', 5, '1', '1', '1', '1', '2020-09-11 10:50:57', '2020-09-11 10:51:42', NULL);
+INSERT INTO `sys_menu` VALUES (533, '', '获取se', '', '/k8s-api/apis/networking.istio.io/v1alpha3/namespaces/:namespaceName/serviceentries/:serviceEntryName', '/0/63/506/527/533', 'A', 'GET', '', 527, 0, '', '', 6, '1', '1', '1', '1', '2020-09-11 10:50:57', '2020-09-11 10:51:42', NULL);
+INSERT INTO `sys_menu` VALUES (534, '', '获取dr列表', '', '/k8s-api/apis/networking.istio.io/v1alpha3/namespaces/:namespaceName/destinationrules', '/0/63/506/527/534', 'A', 'GET', '', 527, 0, '', '', 7, '1', '1', '1', '1', '2020-09-11 10:50:57', '2020-09-11 10:51:42', NULL);
+INSERT INTO `sys_menu` VALUES (535, '', '获取dr', '', '/k8s-api/apis/networking.istio.io/v1alpha3/namespaces/:namespaceName/destinationrules/:destinationRuleName', '/0/63/506/527/535', 'A', 'GET', '', 527, 0, '', '', 8, '1', '1', '1', '1', '2020-09-11 10:50:57', '2020-09-11 10:51:42', NULL);
+INSERT INTO `sys_menu` VALUES (536, 'gateway', 'gateway', 'dict', 'gateway', '/0/501/536', 'C', '', 'gateway: gateway:list', 501, 0, '', '/kubernetes/gateway/index', 6, '0', '1', '1', '1', '2020-09-10 11:20:22', '2020-09-11 15:42:38', NULL);
+INSERT INTO `sys_menu` VALUES (537, 'virtualService', 'virtualService', 'druid', 'virtualservice', '/0/501/537', 'C', '', 'virtualservice: virtualservice:list', 501, 0, '', '/kubernetes/virtualservice/index', 6, '0', '1', '1', '1', '2020-09-10 11:20:22', '2020-09-11 15:42:48', NULL);
+INSERT INTO `sys_menu` VALUES (538, 'serviceEntry', 'serviceentry', 'lock', 'serviceentry', '/0/501/538', 'C', '', 'serviceentry: serviceentry:list', 501, 0, '', '/kubernetes/serviceentry/index', 6, '0', '1', '1', '1', '2020-09-10 11:20:22', '2020-09-11 15:43:11', NULL);
+INSERT INTO `sys_menu` VALUES (539, 'destinationRule', 'destinationRule', 'component', 'destinationrule', '/0/501/539', 'C', '', 'destinationrule: destinationrule:list', 501, 0, '', '/kubernetes/destinationrule/index', 6, '0', '1', '1', '1', '2020-09-10 11:20:22', '2020-09-11 15:43:20', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -708,7 +762,7 @@ CREATE TABLE `sys_operlog` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`oper_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=96 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=226 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of sys_operlog
@@ -809,6 +863,136 @@ INSERT INTO `sys_operlog` VALUES (92, '', '3', '', 'DELETE', 'DELETE', '', '', '
 INSERT INTO `sys_operlog` VALUES (93, '', '', '', 'PATCH', 'PATCH', '', 'admin', '', '/k8s-api/apis/apps/v1/namespaces/default/deployments/demoapp', '127.0.0.1', '内部IP', 'null', '0', '2020-09-08 17:44:45', '', '0', '0', '', '26.519765ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36', '2020-09-08 17:44:45', '2020-09-08 17:44:45', NULL);
 INSERT INTO `sys_operlog` VALUES (94, '', '', '', 'PATCH', 'PATCH', '', 'admin', '', '/k8s-api/apis/apps/v1/namespaces/default/deployments/demoapp', '127.0.0.1', '内部IP', 'null', '0', '2020-09-08 17:45:36', '', '0', '0', '', '27.692107ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36', '2020-09-08 17:45:36', '2020-09-08 17:45:36', NULL);
 INSERT INTO `sys_operlog` VALUES (95, '', '', '', 'PATCH', 'PATCH', '', 'admin', '', '/k8s-api/apis/apps/v1/namespaces/default/deployments/demoapp', '127.0.0.1', '内部IP', 'null', '0', '2020-09-08 17:45:48', '', '0', '0', '', '22.017708ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36', '2020-09-08 17:45:48', '2020-09-08 17:45:48', NULL);
+INSERT INTO `sys_operlog` VALUES (96, '', '', '', 'PATCH', 'PATCH', '', 'admin', '', '/k8s-api/apis/apps/v1/namespaces/default/deployments/demoapp', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 09:10:34', '', '0', '0', '', '27.304254ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36', '2020-09-09 09:10:34', '2020-09-09 09:10:34', NULL);
+INSERT INTO `sys_operlog` VALUES (97, '', '', '', 'PATCH', 'PATCH', '', 'admin', '', '/k8s-api/apis/apps/v1/namespaces/default/deployments/demoapp', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 09:10:41', '', '0', '0', '', '15.74389ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36', '2020-09-09 09:10:41', '2020-09-09 09:10:41', NULL);
+INSERT INTO `sys_operlog` VALUES (98, '', '', '', 'PATCH', 'PATCH', '', 'admin', '', '/k8s-api/apis/apps/v1/namespaces/default/deployments/demoapp', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 09:12:36', '', '0', '0', '', '25.423163ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36', '2020-09-09 09:12:36', '2020-09-09 09:12:36', NULL);
+INSERT INTO `sys_operlog` VALUES (99, '', '', '', 'PATCH', 'PATCH', '', 'admin', '', '/k8s-api/apis/apps/v1/namespaces/default/deployments/demoapp', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 09:23:31', '', '0', '0', '', '20.133903ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36', '2020-09-09 09:23:31', '2020-09-09 09:23:31', NULL);
+INSERT INTO `sys_operlog` VALUES (100, '', '', '', 'PATCH', 'PATCH', '', 'admin', '', '/k8s-api/apis/apps/v1/namespaces/demo/deployments/example-foo', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 09:26:10', '', '0', '0', '', '127.660432ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36', '2020-09-09 09:26:10', '2020-09-09 09:26:10', NULL);
+INSERT INTO `sys_operlog` VALUES (101, '', '', '', 'PATCH', 'PATCH', '', 'admin', '', '/k8s-api/apis/apps/v1/namespaces/default/deployments/demoapp', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 09:28:30', '', '0', '0', '', '3.047255ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36', '2020-09-09 09:28:30', '2020-09-09 09:28:30', NULL);
+INSERT INTO `sys_operlog` VALUES (102, '', '', '', 'PATCH', 'PATCH', '', 'admin', '', '/k8s-api/apis/apps/v1/namespaces/default/deployments/demoapp', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 09:28:37', '', '0', '0', '', '3.721689ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36', '2020-09-09 09:28:37', '2020-09-09 09:28:37', NULL);
+INSERT INTO `sys_operlog` VALUES (103, '', '', '', 'PATCH', 'PATCH', '', 'admin', '', '/k8s-api/apis/apps/v1/namespaces/default/deployments/demoapp', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 09:32:00', '', '0', '0', '', '59.789319ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36', '2020-09-09 09:32:00', '2020-09-09 09:32:00', NULL);
+INSERT INTO `sys_operlog` VALUES (104, '', '', '', 'PATCH', 'PATCH', '', 'admin', '', '/k8s-api/apis/apps/v1/namespaces/default/deployments/demoapp', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 09:32:18', '', '0', '0', '', '24.190018ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36', '2020-09-09 09:32:18', '2020-09-09 09:32:18', NULL);
+INSERT INTO `sys_operlog` VALUES (105, '', '', '', 'PATCH', 'PATCH', '', 'admin', '', '/k8s-api/apis/apps/v1/namespaces/default/deployments/demoapp', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 09:36:46', '', '0', '0', '', '22.76269ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36', '2020-09-09 09:36:46', '2020-09-09 09:36:46', NULL);
+INSERT INTO `sys_operlog` VALUES (106, '', '', '', 'PATCH', 'PATCH', '', 'admin', '', '/k8s-api/apis/apps/v1/namespaces/default/deployments/demoapp', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 14:40:28', '', '0', '0', '', '77.082038ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 14:40:28', '2020-09-09 14:40:28', NULL);
+INSERT INTO `sys_operlog` VALUES (107, '', '', '', 'PATCH', 'PATCH', '', 'admin', '', '/k8s-api/apis/apps/v1/namespaces/default/deployments/demoapp', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:09:56', '', '0', '0', '', '17.723728ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:09:56', '2020-09-09 15:09:56', NULL);
+INSERT INTO `sys_operlog` VALUES (108, '新建菜单', '1', '', 'POST', 'POST', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:26:03', '', '0', '0', '', '11.267945ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:26:03', '2020-09-09 15:26:03', NULL);
+INSERT INTO `sys_operlog` VALUES (109, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:26:28', '', '0', '0', '', '32.818812ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:26:28', '2020-09-09 15:26:28', NULL);
+INSERT INTO `sys_operlog` VALUES (110, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:27:18', '', '0', '0', '', '7.738205ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:27:18', '2020-09-09 15:27:18', NULL);
+INSERT INTO `sys_operlog` VALUES (111, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:31:47', '', '0', '0', '', '11.185669ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:31:47', '2020-09-09 15:31:47', NULL);
+INSERT INTO `sys_operlog` VALUES (112, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:32:46', '', '0', '0', '', '9.257601ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:32:46', '2020-09-09 15:32:46', NULL);
+INSERT INTO `sys_operlog` VALUES (113, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:33:43', '', '0', '0', '', '9.096037ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:33:43', '2020-09-09 15:33:43', NULL);
+INSERT INTO `sys_operlog` VALUES (114, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:38:45', '', '0', '0', '', '11.815604ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:38:45', '2020-09-09 15:38:45', NULL);
+INSERT INTO `sys_operlog` VALUES (115, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:40:45', '', '0', '0', '', '8.228051ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:40:45', '2020-09-09 15:40:45', NULL);
+INSERT INTO `sys_operlog` VALUES (116, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:41:00', '', '0', '0', '', '20.966019ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:41:00', '2020-09-09 15:41:00', NULL);
+INSERT INTO `sys_operlog` VALUES (117, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:44:53', '', '0', '0', '', '8.374988ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:44:53', '2020-09-09 15:44:53', NULL);
+INSERT INTO `sys_operlog` VALUES (118, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:45:03', '', '0', '0', '', '6.81878ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:45:03', '2020-09-09 15:45:03', NULL);
+INSERT INTO `sys_operlog` VALUES (119, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:45:10', '', '0', '0', '', '14.57943ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:45:10', '2020-09-09 15:45:10', NULL);
+INSERT INTO `sys_operlog` VALUES (120, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:45:45', '', '0', '0', '', '7.174353ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:45:45', '2020-09-09 15:45:45', NULL);
+INSERT INTO `sys_operlog` VALUES (121, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:48:16', '', '0', '0', '', '7.14194ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:48:16', '2020-09-09 15:48:16', NULL);
+INSERT INTO `sys_operlog` VALUES (122, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:48:44', '', '0', '0', '', '8.014622ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:48:44', '2020-09-09 15:48:44', NULL);
+INSERT INTO `sys_operlog` VALUES (123, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:49:38', '', '0', '0', '', '5.39376ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:49:38', '2020-09-09 15:49:38', NULL);
+INSERT INTO `sys_operlog` VALUES (124, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:51:27', '', '0', '0', '', '10.164926ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:51:27', '2020-09-09 15:51:27', NULL);
+INSERT INTO `sys_operlog` VALUES (125, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:51:38', '', '0', '0', '', '8.47954ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:51:38', '2020-09-09 15:51:38', NULL);
+INSERT INTO `sys_operlog` VALUES (126, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:52:34', '', '0', '0', '', '6.76666ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:52:34', '2020-09-09 15:52:34', NULL);
+INSERT INTO `sys_operlog` VALUES (127, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:53:19', '', '0', '0', '', '8.115604ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:53:19', '2020-09-09 15:53:19', NULL);
+INSERT INTO `sys_operlog` VALUES (128, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:54:43', '', '0', '0', '', '7.294711ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:54:43', '2020-09-09 15:54:43', NULL);
+INSERT INTO `sys_operlog` VALUES (129, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:55:18', '', '0', '0', '', '11.211933ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:55:18', '2020-09-09 15:55:18', NULL);
+INSERT INTO `sys_operlog` VALUES (130, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:55:39', '', '0', '0', '', '9.609625ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:55:39', '2020-09-09 15:55:39', NULL);
+INSERT INTO `sys_operlog` VALUES (131, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:55:54', '', '0', '0', '', '6.60739ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:55:54', '2020-09-09 15:55:54', NULL);
+INSERT INTO `sys_operlog` VALUES (132, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 15:57:22', '', '0', '0', '', '7.475714ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 15:57:22', '2020-09-09 15:57:22', NULL);
+INSERT INTO `sys_operlog` VALUES (133, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 16:10:46', '', '0', '0', '', '5.976133ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 16:10:46', '2020-09-09 16:10:46', NULL);
+INSERT INTO `sys_operlog` VALUES (134, '', '', '', 'PATCH', 'PATCH', '', 'admin', '', '/k8s-api/apis/apps/v1/namespaces/default/deployments/demoapp', '127.0.0.1', '内部IP', 'null', '0', '2020-09-09 17:22:32', '', '0', '0', '', '38.836733ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-09 17:22:32', '2020-09-09 17:22:32', NULL);
+INSERT INTO `sys_operlog` VALUES (135, '新建菜单', '1', '', 'POST', 'POST', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-10 10:18:15', '', '0', '0', '', '10.32878ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-10 10:18:15', '2020-09-10 10:18:15', NULL);
+INSERT INTO `sys_operlog` VALUES (136, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-10 10:18:20', '', '0', '0', '', '8.794906ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-10 10:18:20', '2020-09-10 10:18:20', NULL);
+INSERT INTO `sys_operlog` VALUES (137, '新建菜单', '1', '', 'POST', 'POST', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-10 10:19:09', '', '0', '0', '', '9.870498ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-10 10:19:09', '2020-09-10 10:19:09', NULL);
+INSERT INTO `sys_operlog` VALUES (138, '新建菜单', '1', '', 'POST', 'POST', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-10 10:19:41', '', '0', '0', '', '20.459819ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-10 10:19:41', '2020-09-10 10:19:41', NULL);
+INSERT INTO `sys_operlog` VALUES (139, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-10 10:19:50', '', '0', '0', '', '31.768104ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-10 10:19:50', '2020-09-10 10:19:50', NULL);
+INSERT INTO `sys_operlog` VALUES (140, '新建菜单', '1', '', 'POST', 'POST', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-10 11:20:22', '', '0', '0', '', '19.051012ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-10 11:20:22', '2020-09-10 11:20:22', NULL);
+INSERT INTO `sys_operlog` VALUES (141, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-10 11:20:40', '', '0', '0', '', '21.423776ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-10 11:20:40', '2020-09-10 11:20:40', NULL);
+INSERT INTO `sys_operlog` VALUES (142, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-10 11:20:48', '', '0', '0', '', '16.132738ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-10 11:20:48', '2020-09-10 11:20:48', NULL);
+INSERT INTO `sys_operlog` VALUES (143, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-10 11:20:56', '', '0', '0', '', '27.458675ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-10 11:20:56', '2020-09-10 11:20:56', NULL);
+INSERT INTO `sys_operlog` VALUES (144, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-10 11:21:01', '', '0', '0', '', '13.415184ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-10 11:21:01', '2020-09-10 11:21:01', NULL);
+INSERT INTO `sys_operlog` VALUES (145, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-10 11:21:11', '', '0', '0', '', '45.642345ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-10 11:21:11', '2020-09-10 11:21:11', NULL);
+INSERT INTO `sys_operlog` VALUES (146, '', '', '', 'PATCH', 'PATCH', '', 'admin', '', '/k8s-api/apis/apps/v1/namespaces/default/deployments/demoapp', '127.0.0.1', '内部IP', 'null', '0', '2020-09-10 17:46:06', '', '0', '0', '', '25.358023ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-10 17:46:06', '2020-09-10 17:46:06', NULL);
+INSERT INTO `sys_operlog` VALUES (147, '新建菜单', '1', '', 'POST', 'POST', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 10:23:52', '', '0', '0', '', '20.905176ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 10:23:52', '2020-09-11 10:23:52', NULL);
+INSERT INTO `sys_operlog` VALUES (148, '新建菜单', '1', '', 'POST', 'POST', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 10:24:52', '', '0', '0', '', '11.895769ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 10:24:52', '2020-09-11 10:24:52', NULL);
+INSERT INTO `sys_operlog` VALUES (149, '新建菜单', '1', '', 'POST', 'POST', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 10:25:23', '', '0', '0', '', '9.35625ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 10:25:23', '2020-09-11 10:25:23', NULL);
+INSERT INTO `sys_operlog` VALUES (150, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 10:25:29', '', '0', '0', '', '10.40555ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 10:25:29', '2020-09-11 10:25:29', NULL);
+INSERT INTO `sys_operlog` VALUES (151, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 10:25:35', '', '0', '0', '', '10.068242ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 10:25:35', '2020-09-11 10:25:35', NULL);
+INSERT INTO `sys_operlog` VALUES (152, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 10:25:42', '', '0', '0', '', '39.564244ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 10:25:42', '2020-09-11 10:25:42', NULL);
+INSERT INTO `sys_operlog` VALUES (153, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '1', '2020-09-11 10:25:45', '', '0', '0', '', '2.197049ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 10:25:45', '2020-09-11 10:25:45', NULL);
+INSERT INTO `sys_operlog` VALUES (154, '新建菜单', '1', '', 'POST', 'POST', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 10:50:16', '', '0', '0', '', '7.358883ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 10:50:16', '2020-09-11 10:50:16', NULL);
+INSERT INTO `sys_operlog` VALUES (155, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 10:50:25', '', '0', '0', '', '6.44196ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 10:50:25', '2020-09-11 10:50:25', NULL);
+INSERT INTO `sys_operlog` VALUES (156, '新建菜单', '1', '', 'POST', 'POST', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 10:50:57', '', '0', '0', '', '7.227938ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 10:50:57', '2020-09-11 10:50:57', NULL);
+INSERT INTO `sys_operlog` VALUES (157, '新建菜单', '1', '', 'POST', 'POST', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 10:51:33', '', '0', '0', '', '4.889381ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 10:51:33', '2020-09-11 10:51:33', NULL);
+INSERT INTO `sys_operlog` VALUES (158, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 10:51:42', '', '0', '0', '', '5.460131ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 10:51:42', '2020-09-11 10:51:42', NULL);
+INSERT INTO `sys_operlog` VALUES (159, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 10:51:51', '', '0', '0', '', '8.341802ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 10:51:51', '2020-09-11 10:51:51', NULL);
+INSERT INTO `sys_operlog` VALUES (160, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 10:52:36', '', '0', '0', '', '19.8442ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 10:52:36', '2020-09-11 10:52:36', NULL);
+INSERT INTO `sys_operlog` VALUES (161, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 10:57:28', '', '0', '0', '', '8.252886ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 10:57:28', '2020-09-11 10:57:28', NULL);
+INSERT INTO `sys_operlog` VALUES (162, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 10:57:35', '', '0', '0', '', '22.276887ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 10:57:35', '2020-09-11 10:57:35', NULL);
+INSERT INTO `sys_operlog` VALUES (163, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '1', '2020-09-11 10:57:37', '', '0', '0', '', '716.805µs', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 10:57:37', '2020-09-11 10:57:37', NULL);
+INSERT INTO `sys_operlog` VALUES (164, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '1', '2020-09-11 11:03:45', '', '0', '0', '', '826.847µs', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:03:45', '2020-09-11 11:03:45', NULL);
+INSERT INTO `sys_operlog` VALUES (165, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:03:58', '', '0', '0', '', '17.512117ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:03:58', '2020-09-11 11:03:58', NULL);
+INSERT INTO `sys_operlog` VALUES (166, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '1', '2020-09-11 11:03:59', '', '0', '0', '', '1.469236ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:03:59', '2020-09-11 11:03:59', NULL);
+INSERT INTO `sys_operlog` VALUES (167, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '1', '2020-09-11 11:04:00', '', '0', '0', '', '828.583µs', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:04:00', '2020-09-11 11:04:00', NULL);
+INSERT INTO `sys_operlog` VALUES (168, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '1', '2020-09-11 11:04:06', '', '0', '0', '', '660.109µs', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:04:06', '2020-09-11 11:04:06', NULL);
+INSERT INTO `sys_operlog` VALUES (169, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:06:38', '', '0', '0', '', '25.55906ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:06:38', '2020-09-11 11:06:38', NULL);
+INSERT INTO `sys_operlog` VALUES (170, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '1', '2020-09-11 11:06:39', '', '0', '0', '', '1.693254ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:06:39', '2020-09-11 11:06:39', NULL);
+INSERT INTO `sys_operlog` VALUES (171, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '1', '2020-09-11 11:06:41', '', '0', '0', '', '1.532424ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:06:41', '2020-09-11 11:06:41', NULL);
+INSERT INTO `sys_operlog` VALUES (172, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '1', '2020-09-11 11:17:13', '', '0', '0', '', '1.137554ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:17:13', '2020-09-11 11:17:13', NULL);
+INSERT INTO `sys_operlog` VALUES (173, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:17:53', '', '0', '0', '', '7.502866ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:17:53', '2020-09-11 11:17:53', NULL);
+INSERT INTO `sys_operlog` VALUES (174, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:23:30', '', '0', '0', '', '23.523246ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:23:30', '2020-09-11 11:23:30', NULL);
+INSERT INTO `sys_operlog` VALUES (175, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:23:32', '', '0', '0', '', '20.854956ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:23:32', '2020-09-11 11:23:32', NULL);
+INSERT INTO `sys_operlog` VALUES (176, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:23:33', '', '0', '0', '', '21.364295ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:23:33', '2020-09-11 11:23:33', NULL);
+INSERT INTO `sys_operlog` VALUES (177, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:23:33', '', '0', '0', '', '20.145611ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:23:33', '2020-09-11 11:23:33', NULL);
+INSERT INTO `sys_operlog` VALUES (178, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:23:46', '', '0', '0', '', '22.995933ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:23:46', '2020-09-11 11:23:46', NULL);
+INSERT INTO `sys_operlog` VALUES (179, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:24:05', '', '0', '0', '', '22.504259ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:24:05', '2020-09-11 11:24:05', NULL);
+INSERT INTO `sys_operlog` VALUES (180, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:26:32', '', '0', '0', '', '28.202117ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:26:32', '2020-09-11 11:26:32', NULL);
+INSERT INTO `sys_operlog` VALUES (181, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:28:28', '', '0', '0', '', '1m7.879995351s', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:28:28', '2020-09-11 11:28:28', NULL);
+INSERT INTO `sys_operlog` VALUES (182, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:29:47', '', '0', '0', '', '4.47216238s', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:29:47', '2020-09-11 11:29:47', NULL);
+INSERT INTO `sys_operlog` VALUES (183, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:31:05', '', '0', '0', '', '53.907119ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:31:05', '2020-09-11 11:31:05', NULL);
+INSERT INTO `sys_operlog` VALUES (184, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:33:34', '', '0', '0', '', '3.125194223s', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:33:34', '2020-09-11 11:33:34', NULL);
+INSERT INTO `sys_operlog` VALUES (185, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:34:28', '', '0', '0', '', '3.03250355s', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:34:28', '2020-09-11 11:34:28', NULL);
+INSERT INTO `sys_operlog` VALUES (186, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:35:16', '', '0', '0', '', '63.566551ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:35:16', '2020-09-11 11:35:16', NULL);
+INSERT INTO `sys_operlog` VALUES (187, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:36:05', '', '0', '0', '', '47.245782ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:36:05', '2020-09-11 11:36:05', NULL);
+INSERT INTO `sys_operlog` VALUES (188, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:36:56', '', '0', '0', '', '38.786797ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:36:56', '2020-09-11 11:36:56', NULL);
+INSERT INTO `sys_operlog` VALUES (189, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:38:02', '', '0', '0', '', '43.331726ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:38:02', '2020-09-11 11:38:02', NULL);
+INSERT INTO `sys_operlog` VALUES (190, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:38:36', '', '0', '0', '', '35.924561ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:38:36', '2020-09-11 11:38:36', NULL);
+INSERT INTO `sys_operlog` VALUES (191, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:40:51', '', '0', '0', '', '27.511775789s', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:40:51', '2020-09-11 11:40:51', NULL);
+INSERT INTO `sys_operlog` VALUES (192, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:43:31', '', '0', '0', '', '46.507671ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:43:31', '2020-09-11 11:43:31', NULL);
+INSERT INTO `sys_operlog` VALUES (193, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:43:41', '', '0', '0', '', '38.3903ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:43:41', '2020-09-11 11:43:41', NULL);
+INSERT INTO `sys_operlog` VALUES (194, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:45:20', '', '0', '0', '', '134.123425ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:45:20', '2020-09-11 11:45:20', NULL);
+INSERT INTO `sys_operlog` VALUES (195, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:46:06', '', '0', '0', '', '14.300285939s', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:46:06', '2020-09-11 11:46:06', NULL);
+INSERT INTO `sys_operlog` VALUES (196, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:46:21', '', '0', '0', '', '4.370667822s', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:46:21', '2020-09-11 11:46:21', NULL);
+INSERT INTO `sys_operlog` VALUES (197, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:46:29', '', '0', '0', '', '2.455372825s', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:46:29', '2020-09-11 11:46:29', NULL);
+INSERT INTO `sys_operlog` VALUES (198, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 11:51:40', '', '0', '0', '', '2.857501392s', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 11:51:40', '2020-09-11 11:51:40', NULL);
+INSERT INTO `sys_operlog` VALUES (199, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 12:09:50', '', '0', '0', '', '54.061615ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 12:09:50', '2020-09-11 12:09:50', NULL);
+INSERT INTO `sys_operlog` VALUES (200, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 12:16:50', '', '0', '0', '', '38.844187ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 12:16:50', '2020-09-11 12:16:50', NULL);
+INSERT INTO `sys_operlog` VALUES (201, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 12:19:21', '', '0', '0', '', '43.025759ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 12:19:21', '2020-09-11 12:19:21', NULL);
+INSERT INTO `sys_operlog` VALUES (202, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 12:19:21', '', '0', '0', '', '37.298227ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 12:19:21', '2020-09-11 12:19:21', NULL);
+INSERT INTO `sys_operlog` VALUES (203, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 12:19:26', '', '0', '0', '', '41.478146ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 12:19:26', '2020-09-11 12:19:26', NULL);
+INSERT INTO `sys_operlog` VALUES (204, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 12:19:28', '', '0', '0', '', '62.637227ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 12:19:28', '2020-09-11 12:19:28', NULL);
+INSERT INTO `sys_operlog` VALUES (205, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 12:19:28', '', '0', '0', '', '31.869363ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 12:19:28', '2020-09-11 12:19:28', NULL);
+INSERT INTO `sys_operlog` VALUES (206, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 12:20:02', '', '0', '0', '', '80.475854ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 12:20:02', '2020-09-11 12:20:02', NULL);
+INSERT INTO `sys_operlog` VALUES (207, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 12:21:17', '', '0', '0', '', '54.252228ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 12:21:17', '2020-09-11 12:21:17', NULL);
+INSERT INTO `sys_operlog` VALUES (208, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 12:22:10', '', '0', '0', '', '56.318573ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 12:22:10', '2020-09-11 12:22:10', NULL);
+INSERT INTO `sys_operlog` VALUES (209, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 12:24:03', '', '0', '0', '', '47.065495ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 12:24:03', '2020-09-11 12:24:03', NULL);
+INSERT INTO `sys_operlog` VALUES (210, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 12:24:43', '', '0', '0', '', '59.609224ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 12:24:43', '2020-09-11 12:24:43', NULL);
+INSERT INTO `sys_operlog` VALUES (211, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 12:30:29', '', '0', '0', '', '40.931798ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 12:30:29', '2020-09-11 12:30:29', NULL);
+INSERT INTO `sys_operlog` VALUES (212, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 12:51:52', '', '0', '0', '', '22.41354ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 12:51:52', '2020-09-11 12:51:52', NULL);
+INSERT INTO `sys_operlog` VALUES (213, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 13:55:39', '', '0', '0', '', '34.215789ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 13:55:39', '2020-09-11 13:55:39', NULL);
+INSERT INTO `sys_operlog` VALUES (214, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 14:15:29', '', '0', '0', '', '31.870476ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 14:15:29', '2020-09-11 14:15:29', NULL);
+INSERT INTO `sys_operlog` VALUES (215, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 14:21:25', '', '0', '0', '', '35.450072ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 14:21:25', '2020-09-11 14:21:25', NULL);
+INSERT INTO `sys_operlog` VALUES (216, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 14:25:16', '', '0', '0', '', '29.456354ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 14:25:16', '2020-09-11 14:25:16', NULL);
+INSERT INTO `sys_operlog` VALUES (217, '', '', '', 'PATCH', 'PATCH', '', 'admin', '', '/k8s-api/apis/apps/v1/namespaces/default/deployments/demoapp', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 14:59:02', '', '0', '0', '', '69.341697ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 14:59:02', '2020-09-11 14:59:02', NULL);
+INSERT INTO `sys_operlog` VALUES (218, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 15:42:28', '', '0', '0', '', '12.475488ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 15:42:28', '2020-09-11 15:42:28', NULL);
+INSERT INTO `sys_operlog` VALUES (219, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 15:42:38', '', '0', '0', '', '9.411814ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 15:42:38', '2020-09-11 15:42:38', NULL);
+INSERT INTO `sys_operlog` VALUES (220, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 15:42:48', '', '0', '0', '', '11.974717ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 15:42:48', '2020-09-11 15:42:48', NULL);
+INSERT INTO `sys_operlog` VALUES (221, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 15:43:11', '', '0', '0', '', '11.080894ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 15:43:11', '2020-09-11 15:43:11', NULL);
+INSERT INTO `sys_operlog` VALUES (222, '修改菜单', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/menu', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 15:43:20', '', '0', '0', '', '11.704945ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 15:43:20', '2020-09-11 15:43:20', NULL);
+INSERT INTO `sys_operlog` VALUES (223, '修改管理员', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/sysUser', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 16:47:54', '', '0', '0', '', '13.278037ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 16:47:54', '2020-09-11 16:47:54', NULL);
+INSERT INTO `sys_operlog` VALUES (224, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 16:48:51', '', '0', '0', '', '23.544097ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 16:48:51', '2020-09-11 16:48:51', NULL);
+INSERT INTO `sys_operlog` VALUES (225, '修改角色', '2', '', 'PUT', 'PUT', '', 'admin', '', '/api/v1/role', '127.0.0.1', '内部IP', 'null', '0', '2020-09-11 16:57:49', '', '0', '0', '', '40.828556ms', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36', '2020-09-11 16:57:49', '2020-09-11 16:57:49', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -865,8 +1049,8 @@ CREATE TABLE `sys_role` (
 -- Records of sys_role
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_role` VALUES (1, '系统管理员', '0', 'admin', 1, NULL, '1', NULL, NULL, 0, '1', '2020-04-11 15:52:48', '2020-09-08 17:04:15', NULL);
-INSERT INTO `sys_role` VALUES (2, '普通角色', '0', 'common', 2, NULL, '1', NULL, NULL, 0, '3', '2020-04-11 15:52:48', '2020-09-08 12:56:46', NULL);
+INSERT INTO `sys_role` VALUES (1, '系统管理员', '0', 'admin', 1, NULL, '1', NULL, NULL, 0, '1', '2020-04-11 15:52:48', '2020-09-11 14:25:16', NULL);
+INSERT INTO `sys_role` VALUES (2, '普通角色', '0', 'common', 2, NULL, '1', NULL, NULL, 0, '3', '2020-04-11 15:52:48', '2020-09-11 16:57:49', NULL);
 INSERT INTO `sys_role` VALUES (3, '测试角色', '0', 'Tester', 3, '', '1', NULL, NULL, 0, NULL, '2020-04-11 15:52:48', '2020-04-12 14:10:52', NULL);
 COMMIT;
 
@@ -895,55 +1079,6 @@ CREATE TABLE `sys_role_menu` (
 -- Records of sys_role_menu
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_role_menu` VALUES (2, 60, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 61, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 63, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 71, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 76, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 80, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 92, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 93, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 94, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 110, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 142, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 252, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 253, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 254, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 255, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 256, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 257, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 258, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 259, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 260, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 261, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 262, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 263, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 264, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 267, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 269, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 473, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 474, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 475, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 476, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 477, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 485, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 486, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 487, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 488, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 489, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 490, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 491, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 492, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 493, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 494, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 495, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 496, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 501, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 502, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 506, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 507, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 508, 'common', NULL, NULL);
-INSERT INTO `sys_role_menu` VALUES (2, 509, 'common', NULL, NULL);
 INSERT INTO `sys_role_menu` VALUES (1, 2, 'admin', NULL, NULL);
 INSERT INTO `sys_role_menu` VALUES (1, 3, 'admin', NULL, NULL);
 INSERT INTO `sys_role_menu` VALUES (1, 43, 'admin', NULL, NULL);
@@ -1113,6 +1248,80 @@ INSERT INTO `sys_role_menu` VALUES (1, 515, 'admin', NULL, NULL);
 INSERT INTO `sys_role_menu` VALUES (1, 516, 'admin', NULL, NULL);
 INSERT INTO `sys_role_menu` VALUES (1, 517, 'admin', NULL, NULL);
 INSERT INTO `sys_role_menu` VALUES (1, 518, 'admin', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (1, 519, 'admin', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (1, 520, 'admin', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (1, 521, 'admin', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (1, 522, 'admin', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (1, 523, 'admin', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (1, 527, 'admin', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (1, 528, 'admin', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (1, 529, 'admin', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (1, 530, 'admin', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (1, 531, 'admin', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (1, 532, 'admin', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (1, 533, 'admin', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (1, 534, 'admin', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (1, 535, 'admin', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (1, 536, 'admin', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (1, 537, 'admin', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (1, 538, 'admin', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (1, 539, 'admin', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 63, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 71, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 76, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 80, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 92, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 93, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 94, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 110, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 142, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 252, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 253, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 254, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 255, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 256, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 257, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 258, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 259, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 260, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 263, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 267, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 485, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 486, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 487, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 488, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 489, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 490, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 491, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 492, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 493, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 494, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 495, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 496, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 501, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 502, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 506, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 507, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 508, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 509, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 510, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 511, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 512, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 513, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 514, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 515, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 516, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 517, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 518, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 519, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 520, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 521, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 522, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 523, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 536, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 537, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 538, 'common', NULL, NULL);
+INSERT INTO `sys_role_menu` VALUES (2, 539, 'common', NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -1133,7 +1342,7 @@ CREATE TABLE `sys_setting` (
 -- Records of sys_setting
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_setting` VALUES (1, 'go-admin管理系统', 'https://gitee.com/mydearzwj/image/raw/master/img/go-admin.png', '2020-08-05 14:27:34', '2020-08-07 10:13:31', NULL);
+INSERT INTO `sys_setting` VALUES (1, 'go-admin管理系统', 'https://img.zouhl.com/img/2020-09-09-go-admin.png', '2020-08-05 14:27:34', '2020-08-07 10:13:31', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -1213,7 +1422,7 @@ BEGIN;
 INSERT INTO `sys_user` VALUES (1, 'tux', '13818888888', 1, NULL, '', '0', '1@qq.com', 1, 1, '1', '1', NULL, '0', '2019-11-10 14:05:55', '2020-09-03 16:10:13', NULL, 'admin', '$2a$10$cKFFTCzGOvaIHHJY2K45Zuwt8TD6oPzYi4s5MzYIBAWCLL6ZhouP2');
 INSERT INTO `sys_user` VALUES (2, 'zhangwj', '13211111111', 3, NULL, NULL, '0', 'q@q.com', 8, 2, '1', '1', NULL, '0', '2019-11-12 18:28:27', '2020-03-14 20:08:43', '2020-09-03 15:04:47', 'zhangwj', '$2a$10$CqMwHahA3cNrNv16CoSxmeD4XMPU.BiKHPEAeaG5oXMavOKrjInXi');
 INSERT INTO `sys_user` VALUES (3, 'zouhl', '13312312311', 2, '', '', '0', 'zou2699@163.com', 1, 1, '1', '1', '', '0', '2020-09-03 16:01:10', '2020-09-03 16:33:58', NULL, 'zouhl', '$2a$10$vFA57ME3Vkvei0lMyHsyyuufPJta5CvVk.D3JaBwcMOTojA8fEi9e');
-INSERT INTO `sys_user` VALUES (4, 'dev', '13345678901', 2, '', '', '0', 'zou2699@163.com', 10, 1, '1', '1', '', '1', '2020-09-03 16:35:57', '2020-09-04 17:06:23', NULL, 'dev', '$2a$10$5jCGr0khr9J4OzQVUxT3n.8nOSgAAYwSc4LysRRfSnICPjhzWHtqW');
+INSERT INTO `sys_user` VALUES (4, 'dev', '13345678901', 2, '', '', '0', 'zou2699@163.com', 10, 1, '1', '1', '', '0', '2020-09-03 16:35:57', '2020-09-11 16:47:54', NULL, 'dev', '$2a$10$5jCGr0khr9J4OzQVUxT3n.8nOSgAAYwSc4LysRRfSnICPjhzWHtqW');
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
