@@ -34,6 +34,7 @@ func registerKubernetesRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMid
 		// service
 		apiv1.GET("/namespaces/:namespaceName/services", service.GetServiceList)
 		apiv1.GET("/namespaces/:namespaceName/services/:serviceName", service.GetService)
+		apiv1.PUT("/namespaces/:namespaceName/services/:serviceName", service.ChangeService)
 
 	}
 
