@@ -44,6 +44,7 @@ func registerKubernetesRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMid
 		appsv1.GET("/namespaces/:namespaceName/deployments", deployment.GetDeploymentList)
 		appsv1.GET("/namespaces/:namespaceName/deployments/:deploymentName", deployment.GetDeployment)
 		appsv1.PATCH("/namespaces/:namespaceName/deployments/:deploymentName", deployment.RestartDeployment)
+		appsv1.PUT("/namespaces/:namespaceName/deployments/:deploymentName", deployment.ChangeDeployment)
 	}
 
 	// istio
@@ -52,14 +53,21 @@ func registerKubernetesRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMid
 		// gw
 		istiov1alpha3.GET("/namespaces/:namespaceName/gateways", istio.GetGatewayList)
 		istiov1alpha3.GET("/namespaces/:namespaceName/gateways/:gatewayName", istio.GetGateway)
+		istiov1alpha3.PUT("/namespaces/:namespaceName/gateways/:gatewayName", istio.ChangeGateway)
+
 		// vs
 		istiov1alpha3.GET("/namespaces/:namespaceName/virtualservices", istio.GetVirtualServiceList)
 		istiov1alpha3.GET("/namespaces/:namespaceName/virtualservices/:virtualServiceName", istio.GetVirtualService)
+		istiov1alpha3.PUT("/namespaces/:namespaceName/virtualservices/:virtualServiceName", istio.ChangeVirtualService)
+
 		// se
 		istiov1alpha3.GET("/namespaces/:namespaceName/serviceentries", istio.GetServiceEntryList)
 		istiov1alpha3.GET("/namespaces/:namespaceName/serviceentries/:serviceEntryName", istio.GetServiceEntry)
+		istiov1alpha3.PUT("/namespaces/:namespaceName/serviceentries/:serviceEntryName", istio.ChangeServiceEntry)
+
 		// dr
 		istiov1alpha3.GET("/namespaces/:namespaceName/destinationrules", istio.GetDestinationRuleList)
 		istiov1alpha3.GET("/namespaces/:namespaceName/destinationrules/:destinationRuleName", istio.GetDestinationRule)
+		istiov1alpha3.PUT("/namespaces/:namespaceName/destinationrules/:destinationRuleName", istio.ChangeDestinationRule)
 	}
 }

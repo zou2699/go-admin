@@ -8,6 +8,7 @@ package istio
 
 import (
 	"github.com/gin-gonic/gin"
+	v1alpha3 "istio.io/client-go/pkg/apis/networking/v1alpha3"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"go-admin/global"
@@ -28,8 +29,20 @@ func GetGatewayList(c *gin.Context) {
 func GetGateway(c *gin.Context) {
 	namespaceName := c.Param("namespaceName")
 	gatewayName := c.Param("gatewayName")
-	vs, err := global.IstioClient.NetworkingV1alpha3().Gateways(namespaceName).Get(gatewayName, metav1.GetOptions{})
+	gw, err := global.IstioClient.NetworkingV1alpha3().Gateways(namespaceName).Get(gatewayName, metav1.GetOptions{})
 	tools.HasError(err, "抱歉未找到相关信息", -1)
 
-	app.OK(c, vs, "")
+	app.OK(c, gw, "")
+}
+
+func ChangeGateway(c *gin.Context) {
+	namespaceName := c.Param("namespaceName")
+	var gateway v1alpha3.Gateway
+	err := c.ShouldBindJSON(&gateway)
+	tools.HasError(err, "", -1)
+
+	gw, err := global.IstioClient.NetworkingV1alpha3().Gateways(namespaceName).Update(&gateway)
+	tools.HasError(err, "", -1)
+
+	app.OK(c, gw, "")
 }

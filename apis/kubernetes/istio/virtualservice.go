@@ -8,6 +8,7 @@ package istio
 
 import (
 	"github.com/gin-gonic/gin"
+	"istio.io/client-go/pkg/apis/networking/v1alpha3"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"go-admin/global"
@@ -32,4 +33,16 @@ func GetVirtualService(c *gin.Context) {
 	tools.HasError(err, "抱歉未找到相关信息", -1)
 
 	app.OK(c, gw, "")
+}
+
+func ChangeVirtualService(c *gin.Context) {
+	namespaceName := c.Param("namespaceName")
+	var virtualService v1alpha3.VirtualService
+	err := c.ShouldBindJSON(&virtualService)
+	tools.HasError(err, "", -1)
+
+	vs, err := global.IstioClient.NetworkingV1alpha3().VirtualServices(namespaceName).Update(&virtualService)
+	tools.HasError(err, "", -1)
+
+	app.OK(c, vs, "")
 }

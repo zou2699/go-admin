@@ -7,8 +7,6 @@
 package service
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -42,7 +40,6 @@ func ChangeService(c *gin.Context) {
 	var svc corev1.Service
 	err := c.ShouldBindJSON(&svc)
 	tools.HasError(err, "", -1)
-	fmt.Printf("%+v", svc)
 	service, err := global.K8sClient.CoreV1().Services(namespaceName).Update(&svc)
 	tools.HasError(err, "", -1)
 
