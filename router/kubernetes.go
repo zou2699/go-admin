@@ -9,7 +9,9 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 
+	"go-admin/apis/kubernetes/create"
 	"go-admin/apis/kubernetes/deployment"
+	"go-admin/apis/kubernetes/event"
 	"go-admin/apis/kubernetes/istio"
 	"go-admin/apis/kubernetes/namespace"
 	"go-admin/apis/kubernetes/node"
@@ -20,6 +22,9 @@ import (
 
 // 需认证的路由代码
 func registerKubernetesRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
+
+	// handle create resource
+	v1.POST("/namespaces/:namespaceName/kind/:kind", create.Resource)
 
 	apiv1 := v1.Group("/api/v1").Use(authMiddleware.MiddlewareFunc()).Use(middleware.AuthCheckRole())
 	{
@@ -36,6 +41,8 @@ func registerKubernetesRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMid
 		apiv1.GET("/namespaces/:namespaceName/services/:serviceName", service.GetService)
 		apiv1.PUT("/namespaces/:namespaceName/services/:serviceName", service.ChangeService)
 
+		// event
+		apiv1.GET("/namespaces/:namespaceName/events", event.GetEventList)
 	}
 
 	appsv1 := v1.Group("/apis/apps/v1").Use(authMiddleware.MiddlewareFunc()).Use(middleware.AuthCheckRole())
