@@ -18,8 +18,25 @@ import (
 func GetEventList(c *gin.Context) {
 	var err error
 	namespaceName := c.Param("namespaceName")
+	// watch 用于watch服务器的事件更新
+	watch := c.Query("watch")
+	if watch == "true" {
+		resourceVersion := c.Query("resourceVersion")
+		timeoutSeconds := c.Query("timeoutSeconds")
+		ts, err := tools.StringToInt64(timeoutSeconds)
+		if err != nil {
+			ts = 0
+		}
+		w, err := global.K8sClient.CoreV1().Events(namespaceName).Watch(metav1.ListOptions{Watch: true, ResourceVersion: resourceVersion, TimeoutSeconds: &ts})
+		tools.HasError(err, "", -1)
+		defer w.Stop()
+		res := <-w.ResultChan()
+		app.OK(c, res, "")
+		return
+	}
 
 	eventList, err := global.K8sClient.CoreV1().Events(namespaceName).List(metav1.ListOptions{})
+
 	tools.HasError(err, "", -1)
 
 	app.OK(c, eventList, "")
