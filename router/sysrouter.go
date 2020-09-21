@@ -43,7 +43,7 @@ func sysBaseRouter(r *gin.RouterGroup) {
 	go ws.WebsocketManager.SendService()
 	go ws.WebsocketManager.SendAllService()
 
-	r.GET("/", system.HelloWorld)
+	// r.GET("/", system.HelloWorld)
 
 	r.GET("/ws", ws.WebsocketManager.WsClient)
 
