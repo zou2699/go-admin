@@ -117,7 +117,7 @@ func run() error {
 	if err := srv.Shutdown(ctx); err != nil {
 		global.Logger.Fatal("Server Shutdown:", zap.Error(err))
 	}
-	global.Logger.Warn("Server exiting")
+	global.Logger.Info("Server exiting")
 
 	return nil
 }
