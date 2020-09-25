@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/jinzhu/gorm"
+	"go.uber.org/zap"
 
 	"go-admin/global"
 	"go-admin/tools"
@@ -70,7 +71,7 @@ func (rm *RoleMenu) GetIDS() ([]MenuPath, error) {
 func (rm *RoleMenu) DeleteRoleMenu(tx *gorm.DB, roleId int, isContinue bool) error {
 	defer func() {
 		if r := recover(); r != nil {
-			global.Logger.Error(tx.Rollback().Error)
+			global.Logger.Error("err", zap.Error(tx.Rollback().Error))
 		}
 	}()
 
@@ -79,7 +80,7 @@ func (rm *RoleMenu) DeleteRoleMenu(tx *gorm.DB, roleId int, isContinue bool) err
 	}
 
 	if err := tx.Table("sys_role_dept").Where("role_id = ?", roleId).Delete(&rm).Error; err != nil {
-		global.Logger.Error(tx.Rollback().Error)
+		global.Logger.Error("err", zap.Error(tx.Rollback().Error))
 		return err
 	}
 	if err := tx.Table("sys_role_menu").Where("role_id = ?", roleId).Delete(&rm).Error; err != nil {
@@ -93,7 +94,7 @@ func (rm *RoleMenu) DeleteRoleMenu(tx *gorm.DB, roleId int, isContinue bool) err
 	}
 	sql3 := "delete from casbin_rule where v0= '" + role.RoleKey + "';"
 	if err := tx.Exec(sql3).Error; err != nil {
-		global.Logger.Error(tx.Rollback().Error)
+		global.Logger.Error("err", zap.Error(tx.Rollback().Error))
 		return err
 	}
 	if !isContinue {

@@ -14,10 +14,10 @@ require (
 	github.com/go-openapi/swag v0.19.8 // indirect
 	github.com/go-redis/redis/v7 v7.4.0
 	github.com/go-sql-driver/mysql v1.5.0
-	github.com/gogf/gf v1.13.2
 	github.com/google/uuid v1.1.1
 	github.com/gorilla/websocket v1.4.1
 	github.com/jinzhu/gorm v1.9.10
+	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/mailru/easyjson v0.7.1 // indirect
 	github.com/matchstalk/redisqueue v1.0.3
 	github.com/matchstalk/utils v0.0.0-20200806172422-ecd38701b407
@@ -33,7 +33,10 @@ require (
 	github.com/swaggo/gin-swagger v1.2.0
 	github.com/swaggo/swag v1.6.5
 	github.com/unrolled/secure v1.0.8
+	go.uber.org/zap v1.10.0
 	golang.org/x/crypto v0.0.0-20200323165209-0ec3e9974c59
+	golang.org/x/net v0.0.0-20200602114024-627f9648deb9 // indirect
+	golang.org/x/sys v0.0.0-20200625212154-ddb9806d33ae // indirect
 	golang.org/x/tools v0.0.0-20200402223321-bcf690261a44 // indirect
 	istio.io/client-go v0.0.0-20191113122552-9bd0ba57c3d2
 	k8s.io/api v0.16.10

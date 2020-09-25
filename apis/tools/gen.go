@@ -6,6 +6,7 @@ import (
 	"text/template"
 
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 
 	"go-admin/global"
 	"go-admin/models"
@@ -119,14 +120,13 @@ func GenCode(c *gin.Context) {
 		NewText: newText,
 	}
 	if helper.OldText == helper.NewText {
-		global.Logger.Println("error !! the NewText isEqual the OldText")
+		global.Logger.Info("error !! the NewText isEqual the OldText")
 		return
 	}
 	if err := helper.DoWrok(); err != nil {
-		global.Logger.Print("error:", err.Error())
-
+		global.Logger.Error("helper.DoWrok error", zap.Error(err))
 	} else {
-		global.Logger.Print("done!")
+		global.Logger.Info("done!")
 	}
 
 	app.OK(c, "", "Code generated successfully！")

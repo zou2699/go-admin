@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/mojocn/base64Captcha"
 	"github.com/mssola/user_agent"
+	"go.uber.org/zap"
 
 	"go-admin/global"
 	"go-admin/models"
@@ -90,7 +91,7 @@ func Authenticator(c *gin.Context) (interface{}, error) {
 		msg = "登录失败"
 		status = "1"
 		LoginLogToDB(c, status, msg, username)
-		global.Logger.Println(e.Error())
+		global.Logger.Info("登录失败", zap.Error(e))
 	}
 	return nil, jwt.ErrFailedAuthentication
 }
@@ -112,7 +113,9 @@ func LoginLogToDB(c *gin.Context, status string, msg string, username string) {
 		loginlog.Os = ua.OS()
 		loginlog.Msg = msg
 		loginlog.Platform = ua.Platform()
-		_, _ = loginlog.Create()
+		_, err := loginlog.Create()
+		global.Logger.Warn("login log create err", zap.Error(err))
+
 	}
 }
 
@@ -140,7 +143,8 @@ func LogOut(c *gin.Context) {
 	loginlog.Platform = ua.Platform()
 	loginlog.Username = tools.GetUserName(c)
 	loginlog.Msg = "退出成功"
-	loginlog.Create()
+	_, err := loginlog.Create()
+	global.Logger.Warn("login log create err", zap.Error(err))
 
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,

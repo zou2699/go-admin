@@ -3,7 +3,10 @@ package tools
 import (
 	"strconv"
 
+	"go.uber.org/zap"
 	"golang.org/x/crypto/bcrypt"
+
+	"go-admin/global"
 )
 
 // 不建议使用的方法（即将过时）
@@ -43,6 +46,7 @@ func Assert(condition bool, msg string, code ...int) {
 // 若 msg 为空，则默认为 error 中的内容
 func HasError(err error, msg string, code ...int) {
 	if err != nil {
+		global.Logger.WithOptions(zap.AddCallerSkip(1)).Warn("handle error", zap.Error(err))
 		statusCode := 200
 		if len(code) > 0 {
 			statusCode = code[0]

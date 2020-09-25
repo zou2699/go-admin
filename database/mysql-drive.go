@@ -3,9 +3,9 @@ package database
 import (
 	_ "github.com/go-sql-driver/mysql" // 加载mysql
 	"github.com/jinzhu/gorm"
+	"go.uber.org/zap"
 
 	"go-admin/global"
-	"go-admin/tools"
 	"go-admin/tools/config"
 )
 
@@ -18,16 +18,16 @@ func (e *Mysql) Setup() {
 
 	db = new(Mysql)
 	source := db.GetConnect()
-	global.Logger.Info(tools.Green(source))
+	global.Logger.Debug(source)
 	global.DB, err = db.Open(db.GetDriver(), db.GetConnect())
 	if err != nil {
-		global.Logger.Fatal(tools.Red(db.GetDriver()+" connect error :"), err)
+		global.Logger.Error(db.GetDriver()+" connect error", zap.Error(err))
 	} else {
-		global.Logger.Info(tools.Green(db.GetDriver() + " connect success !"))
+		global.Logger.Info(db.GetDriver() + " connect success!")
 	}
 
 	if global.DB.Error != nil {
-		global.Logger.Fatal(tools.Red(" database error :"), global.DB.Error)
+		global.Logger.Fatal("database error", zap.Error(global.DB.Error))
 	}
 	if db.GetDebugModel() {
 		global.Logger.Debug("enabled gorm debug model")

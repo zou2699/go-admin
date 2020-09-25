@@ -3,8 +3,8 @@ package global
 import (
 	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
-	"github.com/gogf/gf/os/glog"
 	"github.com/jinzhu/gorm"
+	"go.uber.org/zap"
 	"istio.io/client-go/pkg/clientset/versioned"
 	"k8s.io/client-go/kubernetes"
 )
@@ -18,7 +18,7 @@ var CasbinEnforcer *casbin.SyncedEnforcer
 
 var DB *gorm.DB
 
-var Logger *glog.Logger
+var Logger *zap.Logger
 
 // k8s client
 var K8sClient *kubernetes.Clientset

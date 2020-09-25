@@ -26,13 +26,13 @@ func CustomError(c *gin.Context) {
 						break
 					}
 					c.Status(statusCode)
-					global.Logger.Warningf(
-						"method: %v, url: %v, statusCode: %d, clientIP: %v, errMsg: %v",
-						c.Request.Method,
-						c.Request.URL,
-						statusCode,
-						c.ClientIP(),
-						p[2],
+					global.Logger.Sugar().Warnw(
+						"CustomError",
+						"method", c.Request.Method,
+						"url", c.Request.URL,
+						"statusCode", statusCode,
+						"clientIP", c.ClientIP(),
+						"errMsg", p[2],
 					)
 					c.JSON(http.StatusOK, gin.H{
 						"code": statusCode,

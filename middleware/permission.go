@@ -23,11 +23,11 @@ func AuthCheckRole() gin.HandlerFunc {
 		res, err := e.Enforce(v["rolekey"], c.Request.URL.Path, c.Request.Method)
 		tools.HasError(err, "", 500)
 
-		global.Logger.Infof("%s  method: %s, url: %s, role: %s",
-			tools.GetCurrentTimeStr(),
-			c.Request.Method,
-			c.Request.URL.Path,
-			v["rolekey"],
+		global.Logger.Sugar().Debugw(
+			"AuthCheckRole",
+			"method", c.Request.Method,
+			"url", c.Request.URL.Path,
+			"role", v["rolekey"],
 		)
 
 		if res {
