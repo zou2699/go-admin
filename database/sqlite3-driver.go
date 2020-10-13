@@ -34,9 +34,9 @@ func (e *SqLite) Setup() {
 		log.Fatalf("database error %v", global.DB.Error)
 	}
 
-	if db.GetDebugModel() {
+	if db.GetDebugMode() {
 		global.Logger.Debug("enabled gorm debug model")
-		global.DB.LogMode(db.GetDebugModel())
+		global.DB.LogMode(db.GetDebugMode())
 	}
 }
 

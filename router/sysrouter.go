@@ -1,19 +1,13 @@
 package router
 
 import (
-	"mime"
-
 	log2 "go-admin/apis/log"
-	"go-admin/apis/monitor"
-	"go-admin/apis/public"
 	"go-admin/apis/system"
 	"go-admin/apis/system/dict"
-	. "go-admin/apis/tools"
 	_ "go-admin/docs"
 	"go-admin/handler"
 	"go-admin/middleware"
 	jwt "go-admin/pkg/jwtauth"
-	"go-admin/pkg/ws"
 
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -24,7 +18,7 @@ func InitSysRouter(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.Rou
 	g := r.Group("")
 	sysBaseRouter(g)
 	// 静态文件
-	sysStaticFileRouter(g)
+	// sysStaticFileRouter(g)
 
 	// swagger；注意：生产环境可以注释掉
 	sysSwaggerRouter(g)
@@ -38,24 +32,17 @@ func InitSysRouter(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.Rou
 }
 
 func sysBaseRouter(r *gin.RouterGroup) {
-
-	go ws.WebsocketManager.Start()
-	go ws.WebsocketManager.SendService()
-	go ws.WebsocketManager.SendAllService()
-
 	// r.GET("/", system.HelloWorld)
 
-	r.GET("/ws", ws.WebsocketManager.WsClient)
-
-	r.GET("/info", handler.Ping)
+	r.GET("/ping", handler.Ping)
 }
 
-func sysStaticFileRouter(r *gin.RouterGroup) {
-	mime.AddExtensionType(".js", "application/javascript")
-
-	r.Static("/static", "./static")
-	r.Static("/form-generator", "./static/form-generator")
-}
+// func sysStaticFileRouter(r *gin.RouterGroup) {
+// 	mime.AddExtensionType(".js", "application/javascript")
+//
+// 	r.Static("/static", "./static")
+// 	r.Static("/form-generator", "./static/form-generator")
+// }
 
 func sysSwaggerRouter(r *gin.RouterGroup) {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -64,44 +51,14 @@ func sysSwaggerRouter(r *gin.RouterGroup) {
 func sysNoCheckRoleRouter(r *gin.RouterGroup) {
 	v1 := r.Group("/api/v1")
 
-	v1.GET("/monitor/server", monitor.ServerInfo)
 	v1.GET("/getCaptcha", system.GenerateCaptchaHandler)
-	v1.GET("/gen/preview/:tableId", Preview)
-	v1.GET("/gen/toproject/:tableId", GenCode)
-	v1.GET("/gen/todb/:tableId", GenMenuAndApi)
 	v1.GET("/menuTreeselect", system.GetMenuTreeelect)
 	v1.GET("/dict/databytype/:dictType", dict.GetDictDataByDictType)
 
-	registerDBRouter(v1)
+	// registerPublicRouter(v1)
 
-	registerSysTableRouter(v1)
+	registerGetSysSettingRouter(v1)
 
-	registerPublicRouter(v1)
-
-	registerSysSettingRouter(v1)
-
-}
-
-func registerDBRouter(api *gin.RouterGroup) {
-	db := api.Group("/db")
-	{
-		db.GET("/tables/page", GetDBTableList)
-		db.GET("/columns/page", GetDBColumnList)
-	}
-}
-
-func registerSysTableRouter(v1 *gin.RouterGroup) {
-	systables := v1.Group("/sys/tables")
-	{
-		systables.GET("/page", GetSysTableList)
-		tablesinfo := systables.Group("/info")
-		{
-			tablesinfo.POST("", InsertSysTable)
-			tablesinfo.PUT("", UpdateSysTable)
-			tablesinfo.DELETE("/:tableId", DeleteSysTables)
-			tablesinfo.GET("/:tableId", GetSysTables)
-		}
-	}
 }
 
 func sysCheckRoleRouterInit(r *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
@@ -123,6 +80,7 @@ func sysCheckRoleRouterInit(r *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddle
 	registerMenuRouter(v1, authMiddleware)
 	registerLoginLogRouter(v1, authMiddleware)
 	registerOperLogRouter(v1, authMiddleware)
+	registerPostSysSettingRouter(v1, authMiddleware)
 }
 
 func registerBaseRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
@@ -262,18 +220,23 @@ func registerDeptRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddlewar
 		dept.DELETE("/:id", system.DeleteDept)
 	}
 }
-func registerSysSettingRouter(v1 *gin.RouterGroup) {
+func registerGetSysSettingRouter(v1 *gin.RouterGroup) {
 	setting := v1.Group("/setting")
 	{
 		setting.GET("", system.GetSetting)
-		setting.POST("", system.CreateSetting)
-		setting.GET("/serverInfo", monitor.ServerInfo)
 	}
 }
 
-func registerPublicRouter(v1 *gin.RouterGroup) {
-	p := v1.Group("/public")
+func registerPostSysSettingRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
+	setting := v1.Group("/setting").Use(authMiddleware.MiddlewareFunc()).Use(middleware.AuthCheckRole())
 	{
-		p.POST("/uploadFile", public.UploadFile)
+		setting.POST("", system.CreateSetting)
 	}
 }
+
+// func registerPublicRouter(v1 *gin.RouterGroup) {
+// 	p := v1.Group("/public")
+// 	{
+// 		p.POST("/uploadFile", public.UploadFile)
+// 	}
+// }

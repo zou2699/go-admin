@@ -17,7 +17,7 @@ func AuthInit() (*jwt.GinJWTMiddleware, error) {
 		PayloadFunc:     handler.PayloadFunc,
 		IdentityHandler: handler.IdentityHandler,
 		Authenticator:   handler.Authenticator,
-		Authorizator:    handler.Authorizator,
+		Authorizator:    handler.Authorizer,
 		Unauthorized:    handler.Unauthorized,
 		TokenLookup:     "header: Authorization, query: token, cookie: jwt",
 		TokenHeadName:   "Bearer",

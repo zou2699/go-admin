@@ -3,24 +3,14 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 
-	"go-admin/global"
-	"go-admin/handler"
 	"go-admin/middleware"
 	_ "go-admin/pkg/jwtauth"
 	"go-admin/tools"
-	"go-admin/tools/config"
 )
 
 func InitRouter() *gin.Engine {
-	var r *gin.Engine
-	if global.GinEngine == nil {
-		r = gin.New()
-	} else {
-		r = global.GinEngine
-	}
-	if config.SslConfig.Enable {
-		r.Use(handler.TlsHandler())
-	}
+	r := gin.New()
+
 	middleware.InitMiddleware(r)
 	// the jwt middleware
 	authMiddleware, err := middleware.AuthInit()
@@ -30,7 +20,6 @@ func InitRouter() *gin.Engine {
 	InitSysRouter(r, authMiddleware)
 
 	// 注册业务路由
-	// TODO: 这里可存放业务路由，里边并无实际路由只有演示代码
 	InitExamplesRouter(r, authMiddleware)
 
 	return r

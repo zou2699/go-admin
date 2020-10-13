@@ -3,7 +3,7 @@ package system
 import (
 	"github.com/gin-gonic/gin"
 
-	"go-admin/models"
+	"go-admin/models/system"
 	"go-admin/tools"
 	"go-admin/tools/app"
 )
@@ -19,7 +19,7 @@ func GetInfo(c *gin.Context) {
 	var buttons = make([]string, 1)
 	buttons[0] = "*:*:*"
 
-	RoleMenu := models.RoleMenu{}
+	RoleMenu := system.RoleMenu{}
 	RoleMenu.RoleId = tools.GetRoleId(c)
 
 	var mp = make(map[string]interface{})
@@ -33,10 +33,13 @@ func GetInfo(c *gin.Context) {
 		mp["buttons"] = list
 	}
 
-	sysuser := models.SysUser{}
+	sysuser := system.SysUser{}
 	sysuser.UserId = tools.GetUserId(c)
 	user, err := sysuser.Get()
-	tools.HasError(err, "", 500)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 
 	mp["introduction"] = " am a super administrator"
 

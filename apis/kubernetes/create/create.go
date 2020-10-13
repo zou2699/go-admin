@@ -11,13 +11,11 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/pkg/errors"
 	"istio.io/client-go/pkg/apis/networking/v1alpha3"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 
 	"go-admin/global"
-	"go-admin/tools"
 	"go-admin/tools/app"
 )
 
@@ -30,46 +28,86 @@ func Resource(c *gin.Context) {
 	case "deployment":
 		var res appsv1.Deployment
 		err = c.ShouldBindJSON(&res)
-		tools.HasError(err, "", -1)
+		if err != nil {
+			app.Error(c, -1, err, "")
+			return
+		}
 
 		_, err := global.K8sClient.AppsV1().Deployments(namespaceName).Create(&res)
-		tools.HasError(err, "", -1)
+		if err != nil {
+			app.Error(c, -1, err, "")
+			return
+		}
+		app.OK(c, "", "创建成功")
 	case "service":
 		var res corev1.Service
 		err = c.ShouldBindJSON(&res)
-		tools.HasError(err, "", -1)
+		if err != nil {
+			app.Error(c, -1, err, "")
+			return
+		}
 
 		_, err := global.K8sClient.CoreV1().Services(namespaceName).Create(&res)
-		tools.HasError(err, "", -1)
+		if err != nil {
+			app.Error(c, -1, err, "")
+			return
+		}
+		app.OK(c, "", "创建成功")
 	case "gateway":
 		var res v1alpha3.Gateway
 		err = c.ShouldBindJSON(&res)
-		tools.HasError(err, "", -1)
+		if err != nil {
+			app.Error(c, -1, err, "")
+			return
+		}
 
 		_, err := global.IstioClient.NetworkingV1alpha3().Gateways(namespaceName).Create(&res)
-		tools.HasError(err, "", -1)
+		if err != nil {
+			app.Error(c, -1, err, "")
+			return
+		}
+		app.OK(c, "", "创建成功")
 	case "virtualService":
 		var res v1alpha3.VirtualService
 		err = c.ShouldBindJSON(&res)
-		tools.HasError(err, "", -1)
+		if err != nil {
+			app.Error(c, -1, err, "")
+			return
+		}
 
 		_, err := global.IstioClient.NetworkingV1alpha3().VirtualServices(namespaceName).Create(&res)
-		tools.HasError(err, "", -1)
+		if err != nil {
+			app.Error(c, -1, err, "")
+			return
+		}
 	case "serviceEntry":
 		var res v1alpha3.ServiceEntry
 		err = c.ShouldBindJSON(&res)
-		tools.HasError(errors.Wrap(err, ""), "", -1)
-		fmt.Printf("%+v\n", &res)
+		if err != nil {
+			app.Error(c, -1, err, "")
+			return
+		}
 
 		_, err := global.IstioClient.NetworkingV1alpha3().ServiceEntries(namespaceName).Create(&res)
-		tools.HasError(errors.Wrap(err, ""), "", -1)
+		if err != nil {
+			app.Error(c, -1, err, "")
+			return
+		}
+		app.OK(c, "", "创建成功")
 	case "destinationRule":
 		var res v1alpha3.DestinationRule
 		err = c.ShouldBindJSON(&res)
-		tools.HasError(errors.Wrap(err, ""), "", -1)
+		if err != nil {
+			app.Error(c, -1, err, "")
+			return
+		}
 
 		_, err := global.IstioClient.NetworkingV1alpha3().DestinationRules(namespaceName).Create(&res)
-		tools.HasError(err, "", -1)
+		if err != nil {
+			app.Error(c, -1, err, "")
+			return
+		}
+		app.OK(c, "", "创建成功")
 	default:
 		var res app.Response
 		res.Msg = fmt.Sprintf("not supported kind: %s", kind)

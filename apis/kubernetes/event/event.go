@@ -28,7 +28,10 @@ func GetEventList(c *gin.Context) {
 			ts = 0
 		}
 		w, err := global.K8sClient.CoreV1().Events(namespaceName).Watch(metav1.ListOptions{Watch: true, ResourceVersion: resourceVersion, TimeoutSeconds: &ts})
-		tools.HasError(err, "", -1)
+		if err != nil {
+			app.Error(c, -1, err, "")
+			return
+		}
 		defer w.Stop()
 		res := <-w.ResultChan()
 		app.OK(c, res, "")
@@ -37,7 +40,10 @@ func GetEventList(c *gin.Context) {
 
 	eventList, err := global.K8sClient.CoreV1().Events(namespaceName).List(metav1.ListOptions{})
 
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 
 	app.OK(c, eventList, "")
 }

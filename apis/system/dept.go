@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 
-	"go-admin/models"
+	"go-admin/models/system"
 	"go-admin/tools"
 	"go-admin/tools/app"
 	"go-admin/tools/app/msg"
@@ -20,23 +20,29 @@ import (
 // @Router /api/v1/deptList [get]
 // @Security Bearer
 func GetDeptList(c *gin.Context) {
-	var Dept models.SysDept
+	var Dept system.SysDept
 	Dept.DeptName = c.Request.FormValue("deptName")
 	Dept.Status = c.Request.FormValue("status")
 	Dept.DeptId, _ = tools.StringToInt(c.Request.FormValue("deptId"))
 	Dept.DataScope = tools.GetUserIdStr(c)
 	result, err := Dept.SetDept(true)
-	tools.HasError(err, "抱歉未找到相关信息", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 	app.OK(c, result, "")
 }
 
 func GetDeptTree(c *gin.Context) {
-	var Dept models.SysDept
+	var Dept system.SysDept
 	Dept.DeptName = c.Request.FormValue("deptName")
 	Dept.Status = c.Request.FormValue("status")
 	Dept.DeptId, _ = tools.StringToInt(c.Request.FormValue("deptId"))
 	result, err := Dept.SetDept(false)
-	tools.HasError(err, "抱歉未找到相关信息", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 	app.OK(c, result, "")
 }
 
@@ -49,7 +55,7 @@ func GetDeptTree(c *gin.Context) {
 // @Router /api/v1/dept/{deptId} [get]
 // @Security Bearer
 func GetDept(c *gin.Context) {
-	var Dept models.SysDept
+	var Dept system.SysDept
 	Dept.DeptId, _ = tools.StringToInt(c.Param("deptId"))
 	Dept.DataScope = tools.GetUserIdStr(c)
 	result, err := Dept.Get()
@@ -68,12 +74,18 @@ func GetDept(c *gin.Context) {
 // @Router /api/v1/dept [post]
 // @Security Bearer
 func InsertDept(c *gin.Context) {
-	var data models.SysDept
+	var data system.SysDept
 	err := c.BindWith(&data, binding.JSON)
-	tools.HasError(err, "", 500)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 	data.CreateBy = tools.GetUserIdStr(c)
 	result, err := data.Create()
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 	app.OK(c, result, msg.CreatedSuccess)
 }
 
@@ -89,12 +101,18 @@ func InsertDept(c *gin.Context) {
 // @Router /api/v1/dept [put]
 // @Security Bearer
 func UpdateDept(c *gin.Context) {
-	var data models.SysDept
+	var data system.SysDept
 	err := c.BindJSON(&data)
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 	data.UpdateBy = tools.GetUserIdStr(c)
 	result, err := data.Update(data.DeptId)
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 	app.OK(c, result, msg.UpdatedSuccess)
 }
 
@@ -106,7 +124,7 @@ func UpdateDept(c *gin.Context) {
 // @Success 200 {string} string	"{"code": -1, "message": "删除失败"}"
 // @Router /api/v1/dept/{id} [delete]
 func DeleteDept(c *gin.Context) {
-	var data models.SysDept
+	var data system.SysDept
 	id, err := tools.StringToInt(c.Param("id"))
 	_, err = data.Delete(id)
 	tools.HasError(err, "删除失败", 500)
@@ -114,8 +132,8 @@ func DeleteDept(c *gin.Context) {
 }
 
 func GetDeptTreeRoleselect(c *gin.Context) {
-	var Dept models.SysDept
-	var SysRole models.SysRole
+	var Dept system.SysDept
+	var SysRole system.SysRole
 	id, err := tools.StringToInt(c.Param("roleId"))
 	SysRole.RoleId = id
 	result, err := Dept.SetDeptLable()
@@ -123,7 +141,10 @@ func GetDeptTreeRoleselect(c *gin.Context) {
 	menuIds := make([]int, 0)
 	if id != 0 {
 		menuIds, err = SysRole.GetRoleDeptId()
-		tools.HasError(err, "抱歉未找到相关信息", -1)
+		if err != nil {
+			app.Error(c, -1, err, "")
+			return
+		}
 	}
 	app.Custum(c, gin.H{
 		"code":        200,

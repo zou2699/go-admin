@@ -206,7 +206,7 @@ var (
 	// IdentityKey default identity key
 	IdentityKey = "identity"
 
-	NiceKey = "nice"
+	NiceKey = "nicekey"
 
 	DataScopeKey = "datascope"
 

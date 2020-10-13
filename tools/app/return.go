@@ -4,10 +4,14 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
+
+	"go-admin/global"
 )
 
 // 失败数据处理
 func Error(c *gin.Context, code int, err error, msg string) {
+	global.Logger.Named("errResp").WithOptions(zap.AddCallerSkip(1)).Info("handle error", zap.Error(err))
 	var res Response
 	res.Msg = err.Error()
 	if msg != "" {

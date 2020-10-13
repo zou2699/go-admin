@@ -3,7 +3,6 @@ package database
 import (
 	_ "github.com/go-sql-driver/mysql" // 加载mysql
 	"github.com/jinzhu/gorm"
-	"go.uber.org/zap"
 
 	"go-admin/global"
 	"go-admin/tools/config"
@@ -15,23 +14,26 @@ type Mysql struct {
 func (e *Mysql) Setup() {
 	var err error
 	var db Database
+	var log = global.Sugar.Named("database")
 
 	db = new(Mysql)
 	source := db.GetConnect()
-	global.Logger.Debug(source)
+	log.Debugf("source: %s", source)
+
 	global.DB, err = db.Open(db.GetDriver(), db.GetConnect())
 	if err != nil {
-		global.Logger.Error(db.GetDriver()+" connect error", zap.Error(err))
+		log.Fatalf("%s connect error, %s", db.GetDriver(), err)
 	} else {
-		global.Logger.Info(db.GetDriver() + " connect success!")
+		log.Infof("%s connect success!", db.GetDriver())
 	}
 
 	if global.DB.Error != nil {
-		global.Logger.Fatal("database error", zap.Error(global.DB.Error))
+		log.Fatalf("database error %s", global.DB.Error)
 	}
-	if db.GetDebugModel() {
-		global.Logger.Debug("enabled gorm debug model")
-		global.DB.LogMode(db.GetDebugModel())
+
+	if db.GetDebugMode() {
+		log.Debug("enabled gorm debug mode")
+		global.DB.LogMode(db.GetDebugMode())
 	}
 }
 
@@ -45,10 +47,12 @@ func (e *Mysql) GetConnect() string {
 	return config.DatabaseConfig.Source
 }
 
+// 获取数据类型
 func (e *Mysql) GetDriver() string {
 	return config.DatabaseConfig.Driver
 }
 
-func (e *Mysql) GetDebugModel() bool {
+// 是否开启 gorm debug mode
+func (e *Mysql) GetDebugMode() bool {
 	return config.DatabaseConfig.Debug
 }

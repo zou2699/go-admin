@@ -25,7 +25,10 @@ func GetDeploymentList(c *gin.Context) {
 	namespaceName := c.Param("namespaceName")
 
 	deploymentList, err := global.K8sClient.AppsV1().Deployments(namespaceName).List(metav1.ListOptions{})
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 
 	app.OK(c, deploymentList, "")
 }
@@ -34,7 +37,10 @@ func GetDeployment(c *gin.Context) {
 	namespaceName := c.Param("namespaceName")
 	deploymentName := c.Param("deploymentName")
 	deployment, err := global.K8sClient.AppsV1().Deployments(namespaceName).Get(deploymentName, metav1.GetOptions{})
-	tools.HasError(err, "抱歉未找到相关信息", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 
 	app.OK(c, deployment, "")
 }
@@ -65,10 +71,16 @@ func ChangeDeployment(c *gin.Context) {
 	namespaceName := c.Param("namespaceName")
 	var deployment appsv1.Deployment
 	err := c.ShouldBindJSON(&deployment)
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 
 	dp, err := global.K8sClient.AppsV1().Deployments(namespaceName).Update(&deployment)
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 
 	app.OK(c, dp, "")
 }

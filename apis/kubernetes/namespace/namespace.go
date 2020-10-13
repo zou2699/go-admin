@@ -11,22 +11,27 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"go-admin/global"
-	"go-admin/tools"
 	"go-admin/tools/app"
 )
 
 func GetNamespaceList(c *gin.Context) {
 	var err error
 	namespaceList, err := global.K8sClient.CoreV1().Namespaces().List(metav1.ListOptions{})
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 
-	app.OK(c, namespaceList,"")
+	app.OK(c, namespaceList, "")
 }
 
 func GetNamespace(c *gin.Context) {
-	namespaceName:=c.Param("namespaceName")
-	namespace, err := global.K8sClient.CoreV1().Namespaces().Get(namespaceName,metav1.GetOptions{})
-	tools.HasError(err, "抱歉未找到相关信息", -1)
+	namespaceName := c.Param("namespaceName")
+	namespace, err := global.K8sClient.CoreV1().Namespaces().Get(namespaceName, metav1.GetOptions{})
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 
 	app.OK(c, namespace, "")
 }

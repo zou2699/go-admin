@@ -1,12 +1,10 @@
 package migrate
 
 import (
-	"fmt"
-
 	"go-admin/database"
 	"go-admin/global"
-	"go-admin/models"
 	"go-admin/models/gorm"
+	"go-admin/models/system"
 	"go-admin/pkg/logger"
 	"go-admin/tools/config"
 
@@ -32,8 +30,9 @@ func init() {
 }
 
 func run() {
+	var log = global.Sugar.Named("migrate")
 	usage := `start init`
-	fmt.Println(usage)
+	log.Info(usage)
 	// 1. 读取配置
 	config.Setup(configYml)
 	// 2. 设置日志
@@ -42,13 +41,13 @@ func run() {
 	database.Setup(config.DatabaseConfig.Driver)
 	// 4. 数据库迁移
 	_ = migrateModel()
-	fmt.Println("数据库结构初始化成功！")
+	log.Info("数据库结构初始化成功！")
 	// 5. 数据初始化完成
-	if err := models.InitDb(); err != nil {
-		global.Logger.Fatal("数据库基础数据初始化失败！")
+	if err := system.InitDb(); err != nil {
+		log.Fatal("数据库基础数据初始化失败！")
 	}
 	usage = `数据库基础数据初始化成功`
-	fmt.Println(usage)
+	log.Info(usage)
 }
 
 func migrateModel() error {

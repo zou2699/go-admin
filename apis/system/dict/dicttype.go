@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 
-	"go-admin/models"
+	"go-admin/models/system"
 	"go-admin/tools"
 	"go-admin/tools/app"
 )
@@ -23,7 +23,7 @@ import (
 // @Router /api/v1/dict/type/list [get]
 // @Security Bearer
 func GetDictTypeList(c *gin.Context) {
-	var data models.DictType
+	var data system.DictType
 	var err error
 	var pageSize = 10
 	var pageIndex = 1
@@ -42,7 +42,10 @@ func GetDictTypeList(c *gin.Context) {
 	data.DictType = c.Request.FormValue("dictType")
 	data.DataScope = tools.GetUserIdStr(c)
 	result, count, err := data.GetPage(pageSize, pageIndex)
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 
 	var mp = make(map[string]interface{}, 3)
 	mp["list"] = result
@@ -63,22 +66,28 @@ func GetDictTypeList(c *gin.Context) {
 // @Router /api/v1/dict/type/{dictId} [get]
 // @Security Bearer
 func GetDictType(c *gin.Context) {
-	var DictType models.DictType
+	var DictType system.DictType
 	DictType.DictName = c.Request.FormValue("dictName")
 	DictType.DictId, _ = tools.StringToInt(c.Param("dictId"))
 	result, err := DictType.Get()
-	tools.HasError(err, "抱歉未找到相关信息", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 	var res app.Response
 	res.Data = result
 	c.JSON(http.StatusOK, res.ReturnOK())
 }
 
 func GetDictTypeOptionSelect(c *gin.Context) {
-	var DictType models.DictType
+	var DictType system.DictType
 	DictType.DictName = c.Request.FormValue("dictName")
 	DictType.DictId, _ = tools.StringToInt(c.Param("dictId"))
 	result, err := DictType.GetList()
-	tools.HasError(err, "抱歉未找到相关信息", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 	var res app.Response
 	res.Data = result
 	c.JSON(http.StatusOK, res.ReturnOK())
@@ -95,12 +104,18 @@ func GetDictTypeOptionSelect(c *gin.Context) {
 // @Router /api/v1/dict/type [post]
 // @Security Bearer
 func InsertDictType(c *gin.Context) {
-	var data models.DictType
+	var data system.DictType
 	err := c.BindWith(&data, binding.JSON)
 	data.CreateBy = tools.GetUserIdStr(c)
-	tools.HasError(err, "", 500)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 	result, err := data.Create()
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 	var res app.Response
 	res.Data = result
 	c.JSON(http.StatusOK, res.ReturnOK())
@@ -117,12 +132,18 @@ func InsertDictType(c *gin.Context) {
 // @Router /api/v1/dict/type [put]
 // @Security Bearer
 func UpdateDictType(c *gin.Context) {
-	var data models.DictType
+	var data system.DictType
 	err := c.BindWith(&data, binding.JSON)
 	data.UpdateBy = tools.GetUserIdStr(c)
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 	result, err := data.Update(data.DictId)
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 	var res app.Response
 	res.Data = result
 	c.JSON(http.StatusOK, res.ReturnOK())
@@ -136,7 +157,7 @@ func UpdateDictType(c *gin.Context) {
 // @Success 200 {string} string	"{"code": -1, "message": "删除失败"}"
 // @Router /api/v1/dict/type/{dictId} [delete]
 func DeleteDictType(c *gin.Context) {
-	var data models.DictType
+	var data system.DictType
 	data.UpdateBy = tools.GetUserIdStr(c)
 	IDS := tools.IdsStrToIdsIntGroup("dictId", c)
 	result, err := data.BatchDelete(IDS)

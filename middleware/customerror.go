@@ -26,7 +26,7 @@ func CustomError(c *gin.Context) {
 						break
 					}
 					c.Status(statusCode)
-					global.Logger.Sugar().Warnw(
+					global.Sugar.Named("middleware").Warnw(
 						"CustomError",
 						"method", c.Request.Method,
 						"url", c.Request.URL,

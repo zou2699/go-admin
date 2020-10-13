@@ -2,7 +2,6 @@ package api
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
@@ -11,7 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"go.uber.org/zap"
 
 	"go-admin/database"
 	"go-admin/global"
@@ -25,8 +23,6 @@ import (
 
 var (
 	configYml string
-	port      string
-	mode      string
 	StartCmd  = &cobra.Command{
 		Use:          "server",
 		Short:        "Start API server",
@@ -43,12 +39,9 @@ var (
 
 func init() {
 	StartCmd.PersistentFlags().StringVarP(&configYml, "config", "c", "config/settings.yml", "Start server with provided configuration file")
-	StartCmd.PersistentFlags().StringVarP(&port, "port", "p", "8000", "Tcp port server listening on")
-	StartCmd.PersistentFlags().StringVarP(&mode, "mode", "m", "dev", "server mode ; eg:dev,test,prod")
 }
 
 func setup() {
-
 	// 1. 读取配置
 	config.Setup(configYml)
 	// 2. 设置日志
@@ -59,15 +52,16 @@ func setup() {
 	mycasbin.Setup()
 	// 5. 初始化k8sClient
 	client.Setup(config.KubernetesConfig.Path)
-	usageStr := `starting api server`
-	global.Logger.Info(usageStr)
 
+	global.Sugar.Named("init").Debug("successful setup")
 }
 
 func run() error {
+	var log = global.Sugar.Named("init")
 	if viper.GetString("settings.application.mode") == string(tools.ModeProd) {
 		gin.SetMode(gin.ReleaseMode)
 	}
+	log.Infof("gin running in %s mode", viper.GetString("settings.application.mode"))
 
 	r := router.InitRouter()
 	defer global.DB.Close()
@@ -76,48 +70,38 @@ func run() error {
 		Addr:    config.ApplicationConfig.Host + ":" + config.ApplicationConfig.Port,
 		Handler: r,
 	}
-	go func() {
-		// jobs.InitJob()
-		// jobs.Setup()
-
-	}()
 
 	go func() {
 		// 服务连接
-		if config.SslConfig.Enable {
-			if err := srv.ListenAndServeTLS(config.SslConfig.Pem, config.SslConfig.KeyStr); err != nil && err != http.ErrServerClosed {
-				global.Logger.Fatal("listen: ", zap.Error(err))
-			}
-		} else {
-			if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-				global.Logger.Fatal("listen: ", zap.Error(err))
-			}
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatal("listen: ", err)
 		}
 	}()
-	// content, _ := ioutil.ReadFile("./static/go-admin.txt")
-	// fmt.Println(tools.Red(string(content)))
-	// tip()
-	fmt.Println(tools.Green("Server run at:"))
-	fmt.Printf("-  Local:   http://localhost:%s/ \r\n", config.ApplicationConfig.Port)
-	fmt.Printf("-  Network: http://%s:%s/ \r\n", tools.GetLocaHonst(), config.ApplicationConfig.Port)
-	fmt.Println(tools.Green("Swagger run at:"))
-	fmt.Printf("-  Local:   http://localhost:%s/swagger/index.html \r\n", config.ApplicationConfig.Port)
-	fmt.Printf("-  Network: http://%s:%s/swagger/index.html \r\n", tools.GetLocaHonst(), config.ApplicationConfig.Port)
-	fmt.Printf("%s Enter Control + C Shutdown Server \r\n", tools.GetCurrentTimeStr())
+
+	log.Infof("Server Run http://%s:%s/",
+		config.ApplicationConfig.Host,
+		config.ApplicationConfig.Port)
+	log.Infof("Swagger URL http://%s:%s/swagger/index.html",
+		config.ApplicationConfig.Host,
+		config.ApplicationConfig.Port)
+
+	log.Infof("Enter Control + C Shutdown Server")
+
 	// 等待中断信号以优雅地关闭服务器（设置 5 秒的超时时间）
 	version, _ := global.K8sClient.ServerVersion()
-	fmt.Println("kubernetes version: ", version)
+	log.Infof("remote kubernetes version: %s", version)
+
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt)
 	<-quit
-	fmt.Printf("%s Shutdown Server ... \r\n", tools.GetCurrentTimeStr())
+	log.Infof("Shutdown Server ...")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	if err := srv.Shutdown(ctx); err != nil {
-		global.Logger.Fatal("Server Shutdown:", zap.Error(err))
+		log.Fatalf("Server Shutdown: %s", err)
 	}
-	global.Logger.Info("Server exiting")
+	log.Info("Server exiting")
 
 	return nil
 }

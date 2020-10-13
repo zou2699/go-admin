@@ -47,47 +47,37 @@ func Setup(path string) {
 
 	cfgDatabase = viper.Sub("settings.database")
 	if cfgDatabase == nil {
-		panic("No found settings.database in the configuration")
+		panic("Not found settings.database in the configuration")
 	}
 	DatabaseConfig = InitDatabase(cfgDatabase)
 
 	cfgApplication = viper.Sub("settings.application")
 	if cfgApplication == nil {
-		panic("No found settings.application in the configuration")
+		panic("Not found settings.application in the configuration")
 	}
 	ApplicationConfig = InitApplication(cfgApplication)
 
 	cfgJwt = viper.Sub("settings.jwt")
 	if cfgJwt == nil {
-		panic("No found settings.jwt in the configuration")
+		panic("Not found settings.jwt in the configuration")
 	}
 	JwtConfig = InitJwt(cfgJwt)
 
 	cfgLogger = viper.Sub("settings.logger")
 	if cfgLogger == nil {
-		panic("No found settings.logger in the configuration")
+		panic("Not found settings.logger in the configuration")
 	}
 	LoggerConfig = InitLog(cfgLogger)
 
-	cfgSsl = viper.Sub("settings.ssl")
-	if cfgSsl == nil {
-		// Ssl不是系统强制要求的配置，默认可以不用配置，将设置为关闭状态
-		fmt.Println("warning config not found settings.ssl in the configuration")
-		SslConfig = new(Ssl)
-		SslConfig.Enable = false
-	} else {
-		SslConfig = InitSsl(cfgSsl)
-	}
-
 	cfgGen = viper.Sub("settings.gen")
 	if cfgGen == nil {
-		panic("No found settings.gen")
+		panic("Not found settings.gen")
 	}
 	GenConfig = InitGen(cfgGen)
 
 	cfgKubernetes = viper.Sub("settings.kubernetes")
 	if cfgKubernetes == nil {
-		panic("No found settings.kubernetes in the configuration")
+		panic("Not found settings.kubernetes in the configuration")
 	}
 	KubernetesConfig = InitKubernetes(cfgKubernetes)
 }

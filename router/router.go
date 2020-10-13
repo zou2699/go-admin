@@ -32,8 +32,6 @@ func examplesNoCheckRoleRouter(r *gin.Engine) {
 func examplesCheckRoleRouter(r *gin.Engine, authMiddleware *jwtauth.GinJWTMiddleware) {
 	// 可根据业务需求来设置接口版本
 	v1 := r.Group("/api/v1")
-	// 空接口防止v1定义无使用报错
-	v1.GET("/checkrole", nil)
 
 	// {{认证路由自动补充在此处请勿删除}}
 	registerArticleRouter(v1, authMiddleware)

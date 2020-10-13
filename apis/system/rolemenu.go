@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"go-admin/models"
+	"go-admin/models/system"
 	"go-admin/tools/app"
 )
 
@@ -19,7 +19,7 @@ import (
 // @Router /api/v1/rolemenu [get]
 // @Security Bearer
 func GetRoleMenu(c *gin.Context) {
-	var Rm models.RoleMenu
+	var Rm system.RoleMenu
 	err := c.ShouldBind(&Rm)
 	result, err := Rm.Get()
 	var res app.Response
@@ -34,7 +34,7 @@ func GetRoleMenu(c *gin.Context) {
 
 type RoleMenuPost struct {
 	RoleId   string
-	RoleMenu []models.RoleMenu
+	RoleMenu []system.RoleMenu
 }
 
 func InsertRoleMenu(c *gin.Context) {
@@ -55,7 +55,7 @@ func InsertRoleMenu(c *gin.Context) {
 // @Success 200 {string} string	"{"code": -1, "message": "删除失败"}"
 // @Router /api/v1/rolemenu/{id} [delete]
 func DeleteRoleMenu(c *gin.Context) {
-	var t models.RoleMenu
+	var t system.RoleMenu
 	id := c.Param("id")
 	menuId := c.Request.FormValue("menu_id")
 	fmt.Println(menuId)

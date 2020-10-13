@@ -23,7 +23,7 @@ func AuthCheckRole() gin.HandlerFunc {
 		res, err := e.Enforce(v["rolekey"], c.Request.URL.Path, c.Request.Method)
 		tools.HasError(err, "", 500)
 
-		global.Logger.Sugar().Debugw(
+		global.Sugar.Named("middleware").Debugw(
 			"AuthCheckRole",
 			"method", c.Request.Method,
 			"url", c.Request.URL.Path,

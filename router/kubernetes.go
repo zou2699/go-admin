@@ -24,7 +24,8 @@ import (
 func registerKubernetesRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
 
 	// handle create resource
-	v1.POST("/namespaces/:namespaceName/kind/:kind", create.Resource)
+	createApi := v1.Group("").Use(authMiddleware.MiddlewareFunc()).Use(middleware.AuthCheckRole())
+	createApi.POST("/namespaces/:namespaceName/kind/:kind", create.Resource)
 
 	apiv1 := v1.Group("/api/v1").Use(authMiddleware.MiddlewareFunc()).Use(middleware.AuthCheckRole())
 	{

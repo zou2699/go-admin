@@ -9,7 +9,7 @@ import (
 	"go.uber.org/zap"
 
 	"go-admin/global"
-	"go-admin/models"
+	"go-admin/models/system"
 	jwt "go-admin/pkg/jwtauth"
 	"go-admin/tools"
 	"go-admin/tools/config"
@@ -19,8 +19,8 @@ var store = base64Captcha.DefaultMemStore
 
 func PayloadFunc(data interface{}) jwt.MapClaims {
 	if v, ok := data.(map[string]interface{}); ok {
-		u, _ := v["user"].(models.SysUser)
-		r, _ := v["role"].(models.SysRole)
+		u, _ := v["user"].(system.SysUser)
+		r, _ := v["role"].(system.SysRole)
 		return jwt.MapClaims{
 			jwt.IdentityKey:  u.UserId,
 			jwt.RoleIdKey:    r.RoleId,
@@ -37,7 +37,7 @@ func IdentityHandler(c *gin.Context) interface{} {
 	claims := jwt.ExtractClaims(c)
 	return map[string]interface{}{
 		"IdentityKey": claims["identity"],
-		"UserName":    claims["nice"],
+		"UserName":    claims["nicekey"],
 		"RoleKey":     claims["rolekey"],
 		"UserId":      claims["identity"],
 		"RoleIds":     claims["roleid"],
@@ -58,7 +58,7 @@ func IdentityHandler(c *gin.Context) interface{} {
 // @Success 200 {string} string "{"code": 200, "expire": "2019-08-07T12:45:48+08:00", "token": ".eyJleHAiOjE1NjUxNTMxNDgsImlkIjoiYWRtaW4iLCJvcmlnX2lhdCI6MTU2NTE0OTU0OH0.-zvzHvbg0A" }"
 // @Router /login [post]
 func Authenticator(c *gin.Context) (interface{}, error) {
-	var loginVals models.Login
+	var loginVals system.Login
 	var status = "0"
 	var msg = "登录成功"
 	var username = ""
@@ -99,7 +99,7 @@ func Authenticator(c *gin.Context) (interface{}, error) {
 // Write log to database
 func LoginLogToDB(c *gin.Context, status string, msg string, username string) {
 	if config.LoggerConfig.EnabledDB {
-		var loginlog models.LoginLog
+		var loginlog system.LoginLog
 		ua := user_agent.New(c.Request.UserAgent())
 		loginlog.Ipaddr = c.ClientIP()
 		loginlog.Username = username
@@ -114,8 +114,9 @@ func LoginLogToDB(c *gin.Context, status string, msg string, username string) {
 		loginlog.Msg = msg
 		loginlog.Platform = ua.Platform()
 		_, err := loginlog.Create()
-		global.Logger.Warn("login log create err", zap.Error(err))
-
+		if err != nil {
+			global.Sugar.Warnf("login log create err, %s", err)
+		}
 	}
 }
 
@@ -129,7 +130,7 @@ func LoginLogToDB(c *gin.Context, status string, msg string, username string) {
 // @Router /logout [post]
 // @Security Bearer
 func LogOut(c *gin.Context) {
-	var loginlog models.LoginLog
+	var loginlog system.LoginLog
 	ua := user_agent.New(c.Request.UserAgent())
 	loginlog.Ipaddr = c.ClientIP()
 	location := tools.GetLocation(c.ClientIP())
@@ -144,7 +145,9 @@ func LogOut(c *gin.Context) {
 	loginlog.Username = tools.GetUserName(c)
 	loginlog.Msg = "退出成功"
 	_, err := loginlog.Create()
-	global.Logger.Warn("login log create err", zap.Error(err))
+	if err != nil {
+		global.Sugar.Warnf("LogOut log create err, %s", err)
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
@@ -153,11 +156,11 @@ func LogOut(c *gin.Context) {
 
 }
 
-func Authorizator(data interface{}, c *gin.Context) bool {
+func Authorizer(data interface{}, c *gin.Context) bool {
 
 	if v, ok := data.(map[string]interface{}); ok {
-		u, _ := v["user"].(models.SysUser)
-		r, _ := v["role"].(models.SysRole)
+		u, _ := v["user"].(system.SysUser)
+		r, _ := v["role"].(system.SysRole)
 		c.Set("role", r.RoleName)
 		c.Set("roleIds", r.RoleId)
 		c.Set("userId", u.UserId)

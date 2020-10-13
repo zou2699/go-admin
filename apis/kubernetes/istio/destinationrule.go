@@ -12,7 +12,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"go-admin/global"
-	"go-admin/tools"
 	"go-admin/tools/app"
 )
 
@@ -21,7 +20,10 @@ func GetDestinationRuleList(c *gin.Context) {
 	namespaceName := c.Param("namespaceName")
 
 	drList, err := global.IstioClient.NetworkingV1alpha3().DestinationRules(namespaceName).List(metav1.ListOptions{})
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 
 	app.OK(c, drList, "")
 }
@@ -30,7 +32,10 @@ func GetDestinationRule(c *gin.Context) {
 	namespaceName := c.Param("namespaceName")
 	destinationRuleName := c.Param("destinationRuleName")
 	dr, err := global.IstioClient.NetworkingV1alpha3().DestinationRules(namespaceName).Get(destinationRuleName, metav1.GetOptions{})
-	tools.HasError(err, "抱歉未找到相关信息", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 
 	app.OK(c, dr, "")
 }
@@ -39,10 +44,16 @@ func ChangeDestinationRule(c *gin.Context) {
 	namespaceName := c.Param("namespaceName")
 	var destinationRule v1alpha3.DestinationRule
 	err := c.ShouldBindJSON(&destinationRule)
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 
 	dr, err := global.IstioClient.NetworkingV1alpha3().DestinationRules(namespaceName).Update(&destinationRule)
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 
 	app.OK(c, dr, "")
 }

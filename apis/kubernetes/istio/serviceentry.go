@@ -12,7 +12,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"go-admin/global"
-	"go-admin/tools"
 	"go-admin/tools/app"
 )
 
@@ -21,7 +20,10 @@ func GetServiceEntryList(c *gin.Context) {
 	namespaceName := c.Param("namespaceName")
 
 	seList, err := global.IstioClient.NetworkingV1alpha3().ServiceEntries(namespaceName).List(metav1.ListOptions{})
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 
 	app.OK(c, seList, "")
 }
@@ -30,7 +32,10 @@ func GetServiceEntry(c *gin.Context) {
 	namespaceName := c.Param("namespaceName")
 	serviceEntryName := c.Param("serviceEntryName")
 	se, err := global.IstioClient.NetworkingV1alpha3().ServiceEntries(namespaceName).Get(serviceEntryName, metav1.GetOptions{})
-	tools.HasError(err, "抱歉未找到相关信息", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 
 	app.OK(c, se, "")
 }
@@ -39,10 +44,16 @@ func ChangeServiceEntry(c *gin.Context) {
 	namespaceName := c.Param("namespaceName")
 	var serviceEntry v1alpha3.ServiceEntry
 	err := c.ShouldBindJSON(&serviceEntry)
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 
 	se, err := global.IstioClient.NetworkingV1alpha3().ServiceEntries(namespaceName).Update(&serviceEntry)
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 
 	app.OK(c, se, "")
 }

@@ -3,7 +3,7 @@ package system
 import (
 	"github.com/gin-gonic/gin"
 
-	"go-admin/models"
+	"go-admin/models/system"
 	"go-admin/tools"
 	"go-admin/tools/app"
 )
@@ -19,7 +19,7 @@ import (
 // @Router /api/v1/post [get]
 // @Security Bearer
 func GetPostList(c *gin.Context) {
-	var data models.Post
+	var data system.Post
 	var err error
 	var pageSize = 10
 	var pageIndex = 1
@@ -41,7 +41,10 @@ func GetPostList(c *gin.Context) {
 
 	data.DataScope = tools.GetUserIdStr(c)
 	result, count, err := data.GetPage(pageSize, pageIndex)
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 	app.PageOK(c, result, count, pageIndex, pageSize, "")
 }
 
@@ -53,10 +56,13 @@ func GetPostList(c *gin.Context) {
 // @Router /api/v1/post/{postId} [get]
 // @Security Bearer
 func GetPost(c *gin.Context) {
-	var Post models.Post
+	var Post system.Post
 	Post.PostId, _ = tools.StringToInt(c.Param("postId"))
 	result, err := Post.Get()
-	tools.HasError(err, "抱歉未找到相关信息", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 	app.OK(c, result, "")
 }
 
@@ -71,12 +77,18 @@ func GetPost(c *gin.Context) {
 // @Router /api/v1/post [post]
 // @Security Bearer
 func InsertPost(c *gin.Context) {
-	var data models.Post
+	var data system.Post
 	err := c.Bind(&data)
 	data.CreateBy = tools.GetUserIdStr(c)
-	tools.HasError(err, "", 500)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 	result, err := data.Create()
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 	app.OK(c, result, "")
 }
 
@@ -91,13 +103,19 @@ func InsertPost(c *gin.Context) {
 // @Router /api/v1/post/ [put]
 // @Security Bearer
 func UpdatePost(c *gin.Context) {
-	var data models.Post
+	var data system.Post
 
 	err := c.Bind(&data)
 	data.UpdateBy = tools.GetUserIdStr(c)
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 	result, err := data.Update(data.PostId)
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 	app.OK(c, result, "修改成功")
 }
 
@@ -109,7 +127,7 @@ func UpdatePost(c *gin.Context) {
 // @Success 500 {string} string	"{"code": 500, "message": "删除失败"}"
 // @Router /api/v1/post/{postId} [delete]
 func DeletePost(c *gin.Context) {
-	var data models.Post
+	var data system.Post
 	data.UpdateBy = tools.GetUserIdStr(c)
 	IDS := tools.IdsStrToIdsIntGroup("postId", c)
 	result, err := data.BatchDelete(IDS)

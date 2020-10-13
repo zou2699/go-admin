@@ -20,6 +20,6 @@ func Setup(model string) {
 		logger, _ = zap.NewDevelopment()
 	}
 	zap.AddCaller()
-	logger.Debug("Global Logger init success!")
 	global.Logger = logger
+	global.Sugar = logger.Sugar()
 }

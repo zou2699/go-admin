@@ -12,9 +12,4 @@ func Setup(driver string) {
 	//	var db = new(SqLite)
 	//	db.Setup()
 	// }
-
-	if dbType == "postgres" {
-		var db = new(PgSql)
-		db.Setup()
-	}
 }

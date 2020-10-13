@@ -7,7 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"go-admin/models"
+	"go-admin/models/system"
 	"go-admin/tools"
 	"go-admin/tools/app"
 )
@@ -19,7 +19,7 @@ import (
 // @Success 200 {string} string	"{"code": -1, "message": "添加失败"}"
 // @Router /api/v1/setting [get]
 func GetSetting(c *gin.Context) {
-	var s models.SysSetting
+	var s system.SysSetting
 	r, e := s.Get()
 
 	if r.Logo != "" {
@@ -40,13 +40,13 @@ func GetSetting(c *gin.Context) {
 // @Success 200 {string} string	"{"code": -1, "message": "添加失败"}"
 // @Router /api/v1/system/setting [post]
 func CreateSetting(c *gin.Context) {
-	var s models.ResponseSystemConfig
+	var s system.ResponseSystemConfig
 	if err := c.ShouldBind(&s); err != nil {
 		app.Error(c, 200, errors.New("缺少必要参数"), "")
 		return
 	}
 
-	var sModel models.SysSetting
+	var sModel system.SysSetting
 	sModel.Logo = s.Logo
 	sModel.Name = s.Name
 

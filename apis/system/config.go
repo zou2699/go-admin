@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 
-	"go-admin/models"
+	"go-admin/models/system"
 	"go-admin/tools"
 	"go-admin/tools/app"
 	"go-admin/tools/app/msg"
@@ -24,7 +24,7 @@ import (
 // @Router /api/v1/configList [get]
 // @Security Bearer
 func GetConfigList(c *gin.Context) {
-	var data models.SysConfig
+	var data system.SysConfig
 	var err error
 	var pageSize = 10
 	var pageIndex = 1
@@ -42,7 +42,10 @@ func GetConfigList(c *gin.Context) {
 	data.ConfigType = c.Request.FormValue("configType")
 	data.DataScope = tools.GetUserIdStr(c)
 	result, count, err := data.GetPage(pageSize, pageIndex)
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 
 	var mp = make(map[string]interface{}, 3)
 	mp["list"] = result
@@ -64,10 +67,13 @@ func GetConfigList(c *gin.Context) {
 // @Router /api/v1/config/{configId} [get]
 // @Security Bearer
 func GetConfig(c *gin.Context) {
-	var Config models.SysConfig
+	var Config system.SysConfig
 	Config.ConfigId, _ = tools.StringToInt(c.Param("configId"))
 	result, err := Config.Get()
-	tools.HasError(err, "抱歉未找到相关信息", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 
 	var res app.Response
 	res.Data = result
@@ -83,10 +89,13 @@ func GetConfig(c *gin.Context) {
 // @Router /api/v1/configKey/{configKey} [get]
 // @Security Bearer
 func GetConfigByConfigKey(c *gin.Context) {
-	var Config models.SysConfig
+	var Config system.SysConfig
 	Config.ConfigKey = c.Param("configKey")
 	result, err := Config.Get()
-	tools.HasError(err, "抱歉未找到相关信息", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 
 	app.OK(c, result, result.ConfigValue)
 }
@@ -102,12 +111,18 @@ func GetConfigByConfigKey(c *gin.Context) {
 // @Router /api/v1/dict/data [post]
 // @Security Bearer
 func InsertConfig(c *gin.Context) {
-	var data models.SysConfig
+	var data system.SysConfig
 	err := c.BindWith(&data, binding.JSON)
 	data.CreateBy = tools.GetUserIdStr(c)
-	tools.HasError(err, "", 500)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 	result, err := data.Create()
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 
 	app.OK(c, result, "")
 }
@@ -123,12 +138,15 @@ func InsertConfig(c *gin.Context) {
 // @Router /api/v1/config [put]
 // @Security Bearer
 func UpdateConfig(c *gin.Context) {
-	var data models.SysConfig
+	var data system.SysConfig
 	err := c.BindWith(&data, binding.JSON)
 	tools.HasError(err, "数据解析失败", -1)
 	data.UpdateBy = tools.GetUserIdStr(c)
 	result, err := data.Update(data.ConfigId)
-	tools.HasError(err, "", -1)
+	if err != nil {
+		app.Error(c, -1, err, "")
+		return
+	}
 	app.OK(c, result, "")
 }
 
@@ -140,7 +158,7 @@ func UpdateConfig(c *gin.Context) {
 // @Success 200 {string} string	"{"code": -1, "message": "删除失败"}"
 // @Router /api/v1/config/{configId} [delete]
 func DeleteConfig(c *gin.Context) {
-	var data models.SysConfig
+	var data system.SysConfig
 	data.UpdateBy = tools.GetUserIdStr(c)
 	IDS := tools.IdsStrToIdsIntGroup("configId", c)
 	result, err := data.BatchDelete(IDS)

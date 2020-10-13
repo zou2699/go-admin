@@ -37,10 +37,10 @@ func GetUserIdStr(c *gin.Context) string {
 
 func GetUserName(c *gin.Context) string {
 	data := ExtractClaims(c)
-	if data["nice"] != nil {
-		return (data["nice"]).(string)
+	if data["nicekey"] != nil {
+		return (data["nicekey"]).(string)
 	}
-	fmt.Println(GetCurrentTimeStr() + " [WARING] " + c.Request.Method + " " + c.Request.URL.Path + " GetUserName 缺少nice")
+	fmt.Println(GetCurrentTimeStr() + " [WARING] " + c.Request.Method + " " + c.Request.URL.Path + " GetUserName 缺少nicekey")
 	return ""
 }
 

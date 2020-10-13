@@ -6,7 +6,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"go-admin/models"
+	"go-admin/global"
+	"go-admin/models/system"
 	"go-admin/tools"
 )
 
@@ -59,28 +60,29 @@ func OperLogToDB() gin.HandlerFunc {
 // 写入操作日志表
 // 该方法后续即将弃用
 func SetDBOperLog(c *gin.Context, clientIP string, statusCode int, reqUri string, reqMethod string, latencyTime time.Duration) {
-	menu := models.Menu{}
+	if reqUri == "/login" || strings.Contains(reqUri, "/api/v1/logout") { // 不在这里记录登录登出
+		return
+	}
+	menu := system.Menu{}
 	menu.Path = reqUri
 	menu.Action = reqMethod
 	menuList, _ := menu.Get()
-	sysOperLog := models.SysOperLog{}
+	sysOperLog := system.SysOperLog{}
 	sysOperLog.OperIp = clientIP
 	sysOperLog.OperLocation = tools.GetLocation(clientIP)
 	sysOperLog.Status = tools.IntToString(statusCode)
 	sysOperLog.OperName = tools.GetUserName(c)
 	sysOperLog.RequestMethod = c.Request.Method
 	sysOperLog.OperUrl = reqUri
-	if reqUri == "/login" || strings.Contains(reqUri, "/api/v1/logout") { // 不在这里记录登录登出
-		return
-	} else {
-		if reqMethod == "POST" {
-			sysOperLog.BusinessType = "1"
-		} else if reqMethod == "PUT" {
-			sysOperLog.BusinessType = "2"
-		} else if reqMethod == "DELETE" {
-			sysOperLog.BusinessType = "3"
-		}
+
+	if reqMethod == "POST" {
+		sysOperLog.BusinessType = "1"
+	} else if reqMethod == "PUT" {
+		sysOperLog.BusinessType = "2"
+	} else if reqMethod == "DELETE" {
+		sysOperLog.BusinessType = "3"
 	}
+
 	sysOperLog.Method = reqMethod
 	if len(menuList) > 0 {
 		sysOperLog.Title = menuList[0].Title
@@ -96,5 +98,8 @@ func SetDBOperLog(c *gin.Context, clientIP string, statusCode int, reqUri string
 	} else {
 		sysOperLog.Status = "1"
 	}
-	_, _ = sysOperLog.Create()
+	_, err := sysOperLog.Create()
+	if err != nil {
+		global.Sugar.Warnf("sysOperLog  create err, %s", err)
+	}
 }
