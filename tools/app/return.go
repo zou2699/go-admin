@@ -44,6 +44,6 @@ func PageOK(c *gin.Context, result interface{}, count int, pageIndex int, pageSi
 }
 
 // 兼容函数
-func Custum(c *gin.Context, data gin.H) {
+func Customer(c *gin.Context, data gin.H) {
 	c.JSON(http.StatusOK, data)
 }

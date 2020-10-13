@@ -146,7 +146,7 @@ func GetDeptTreeRoleselect(c *gin.Context) {
 			return
 		}
 	}
-	app.Custum(c, gin.H{
+	app.Customer(c, gin.H{
 		"code":        200,
 		"depts":       result,
 		"checkedKeys": menuIds,

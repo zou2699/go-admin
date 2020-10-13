@@ -70,7 +70,7 @@ func GetMenuTreeRoleselect(c *gin.Context) {
 			return
 		}
 	}
-	app.Custum(c, gin.H{
+	app.Customer(c, gin.H{
 		"code":        200,
 		"menus":       result,
 		"checkedKeys": menuIds,
