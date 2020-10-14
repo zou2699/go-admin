@@ -36,7 +36,7 @@ func run() {
 	// 1. 读取配置
 	config.Setup(configYml)
 	// 2. 设置日志
-	logger.Setup(config.LoggerConfig.Model)
+	logger.Setup(config.LoggerConfig.Mode)
 	// 3. 初始化数据库链接
 	database.Setup(config.DatabaseConfig.Driver)
 	// 4. 数据库迁移

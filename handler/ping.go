@@ -5,7 +5,5 @@ import (
 )
 
 func Ping(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "ok",
-	})
+	c.String(200, "pong")
 }

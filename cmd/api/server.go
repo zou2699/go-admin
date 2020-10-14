@@ -45,7 +45,7 @@ func setup() {
 	// 1. 读取配置
 	config.Setup(configYml)
 	// 2. 设置日志
-	logger.Setup(config.LoggerConfig.Model)
+	logger.Setup(config.LoggerConfig.Mode)
 	// 3. 初始化数据库链接
 	database.Setup(config.DatabaseConfig.Driver)
 	// 4. 接口访问控制加载
@@ -61,6 +61,9 @@ func run() error {
 	if viper.GetString("settings.application.mode") == string(tools.ModeProd) {
 		gin.SetMode(gin.ReleaseMode)
 	}
+	version, _ := global.K8sClient.ServerVersion()
+	log.Infof("remote kubernetes version: %s", version)
+
 	log.Infof("gin running in %s mode", viper.GetString("settings.application.mode"))
 
 	r := router.InitRouter()
@@ -88,9 +91,6 @@ func run() error {
 	log.Infof("Enter Control + C Shutdown Server")
 
 	// 等待中断信号以优雅地关闭服务器（设置 5 秒的超时时间）
-	version, _ := global.K8sClient.ServerVersion()
-	log.Infof("remote kubernetes version: %s", version)
-
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt)
 	<-quit

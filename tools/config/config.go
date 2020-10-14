@@ -22,12 +22,6 @@ var cfgJwt *viper.Viper
 // Log配置项
 var cfgLogger *viper.Viper
 
-// Ssl配置项 非必须
-var cfgSsl *viper.Viper
-
-// 代码生成配置项 非必须
-var cfgGen *viper.Viper
-
 // k8s 配置
 var cfgKubernetes *viper.Viper
 
@@ -68,12 +62,6 @@ func Setup(path string) {
 		panic("Not found settings.logger in the configuration")
 	}
 	LoggerConfig = InitLog(cfgLogger)
-
-	cfgGen = viper.Sub("settings.gen")
-	if cfgGen == nil {
-		panic("Not found settings.gen")
-	}
-	GenConfig = InitGen(cfgGen)
 
 	cfgKubernetes = viper.Sub("settings.kubernetes")
 	if cfgKubernetes == nil {

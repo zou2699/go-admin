@@ -4,7 +4,7 @@
 @Description :
 */
 
-package router
+package k8s
 
 import (
 	"github.com/gin-gonic/gin"
@@ -20,9 +20,12 @@ import (
 	jwt "go-admin/pkg/jwtauth"
 )
 
+func InitRouter(g *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
+	registerKubernetesRouter(g, authMiddleware)
+}
+
 // 需认证的路由代码
 func registerKubernetesRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
-
 	// handle create resource
 	createApi := v1.Group("").Use(authMiddleware.MiddlewareFunc()).Use(middleware.AuthCheckRole())
 	createApi.POST("/namespaces/:namespaceName/kind/:kind", create.Resource)

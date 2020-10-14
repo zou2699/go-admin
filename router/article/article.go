@@ -1,4 +1,4 @@
-package router
+package article
 
 import (
 	"github.com/gin-gonic/gin"
@@ -7,6 +7,11 @@ import (
 	"go-admin/middleware"
 	jwt "go-admin/pkg/jwtauth"
 )
+
+func InitRouter(g *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
+	// 可根据业务需求来设置接口版本
+	registerArticleRouter(g, authMiddleware)
+}
 
 // 需认证的路由代码
 func registerArticleRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {

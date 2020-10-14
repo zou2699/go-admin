@@ -1,6 +1,9 @@
-package router
+package system
 
 import (
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
+
 	log2 "go-admin/apis/log"
 	"go-admin/apis/system"
 	"go-admin/apis/system/dict"
@@ -10,12 +13,9 @@ import (
 	jwt "go-admin/pkg/jwtauth"
 
 	"github.com/gin-gonic/gin"
-	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
-func InitSysRouter(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.RouterGroup {
-	g := r.Group("")
+func InitRouter(g *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
 	sysBaseRouter(g)
 	// 静态文件
 	// sysStaticFileRouter(g)
@@ -27,8 +27,6 @@ func InitSysRouter(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.Rou
 	sysNoCheckRoleRouter(g)
 	// 需要认证
 	sysCheckRoleRouterInit(g, authMiddleware)
-
-	return g
 }
 
 func sysBaseRouter(r *gin.RouterGroup) {

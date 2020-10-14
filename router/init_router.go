@@ -4,7 +4,9 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"go-admin/middleware"
-	_ "go-admin/pkg/jwtauth"
+	"go-admin/router/article"
+	"go-admin/router/k8s"
+	"go-admin/router/system"
 	"go-admin/tools"
 )
 
@@ -17,10 +19,16 @@ func InitRouter() *gin.Engine {
 	tools.HasError(err, "JWT Init Error", 500)
 
 	// 注册系统路由
-	InitSysRouter(r, authMiddleware)
+	root := r.Group("")
+	system.InitRouter(root, authMiddleware)
+
+	// k8s
+	k8sApi := r.Group("k8s-api")
+	k8s.InitRouter(k8sApi, authMiddleware)
 
 	// 注册业务路由
-	InitExamplesRouter(r, authMiddleware)
+	v1 := r.Group("/api/v1")
+	article.InitRouter(v1, authMiddleware)
 
 	return r
 }
