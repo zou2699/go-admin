@@ -5,6 +5,7 @@ import (
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 
 	log2 "go-admin/apis/log"
+	"go-admin/apis/public"
 	"go-admin/apis/system"
 	"go-admin/apis/system/dict"
 	_ "go-admin/docs"
@@ -18,7 +19,7 @@ import (
 func InitRouter(g *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
 	sysBaseRouter(g)
 	// 静态文件
-	// sysStaticFileRouter(g)
+	sysStaticFileRouter(g)
 
 	// swagger；注意：生产环境可以注释掉
 	sysSwaggerRouter(g)
@@ -35,12 +36,12 @@ func sysBaseRouter(r *gin.RouterGroup) {
 	r.GET("/ping", handler.Ping)
 }
 
-// func sysStaticFileRouter(r *gin.RouterGroup) {
-// 	mime.AddExtensionType(".js", "application/javascript")
-//
-// 	r.Static("/static", "./static")
-// 	r.Static("/form-generator", "./static/form-generator")
-// }
+func sysStaticFileRouter(r *gin.RouterGroup) {
+	// mime.AddExtensionType(".js", "application/javascript")
+
+	r.Static("/static", "./static")
+	// r.Static("/form-generator", "./static/form-generator")
+}
 
 func sysSwaggerRouter(r *gin.RouterGroup) {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -52,11 +53,9 @@ func sysNoCheckRoleRouter(r *gin.RouterGroup) {
 	v1.GET("/getCaptcha", system.GenerateCaptchaHandler)
 	v1.GET("/menuTreeselect", system.GetMenuTreeelect)
 	v1.GET("/dict/databytype/:dictType", dict.GetDictDataByDictType)
+	v1.GET("/setting", system.GetSetting)
 
-	// registerPublicRouter(v1)
-
-	registerGetSysSettingRouter(v1)
-
+	registerPublicRouter(v1)
 }
 
 func sysCheckRoleRouterInit(r *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
@@ -78,7 +77,7 @@ func sysCheckRoleRouterInit(r *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddle
 	registerMenuRouter(v1, authMiddleware)
 	registerLoginLogRouter(v1, authMiddleware)
 	registerOperLogRouter(v1, authMiddleware)
-	registerPostSysSettingRouter(v1, authMiddleware)
+	registerSysSettingRouter(v1, authMiddleware)
 }
 
 func registerBaseRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
@@ -218,23 +217,24 @@ func registerDeptRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddlewar
 		dept.DELETE("/:id", system.DeleteDept)
 	}
 }
-func registerGetSysSettingRouter(v1 *gin.RouterGroup) {
-	setting := v1.Group("/setting")
-	{
-		setting.GET("", system.GetSetting)
-	}
-}
 
-func registerPostSysSettingRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
+// func registerGetSysSettingRouter(v1 *gin.RouterGroup) {
+// 	setting := v1.Group("/setting")
+// 	{
+// 		setting.GET("", system.GetSetting)
+// 	}
+// }
+
+func registerSysSettingRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
 	setting := v1.Group("/setting").Use(authMiddleware.MiddlewareFunc()).Use(middleware.AuthCheckRole())
 	{
 		setting.POST("", system.CreateSetting)
 	}
 }
 
-// func registerPublicRouter(v1 *gin.RouterGroup) {
-// 	p := v1.Group("/public")
-// 	{
-// 		p.POST("/uploadFile", public.UploadFile)
-// 	}
-// }
+func registerPublicRouter(v1 *gin.RouterGroup) {
+	p := v1.Group("/public")
+	{
+		p.POST("/uploadFile", public.UploadFile)
+	}
+}

@@ -8,7 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"go-admin/models/system"
-	"go-admin/tools"
 	"go-admin/tools/app"
 )
 
@@ -20,7 +19,11 @@ import (
 // @Router /api/v1/setting [get]
 func GetSetting(c *gin.Context) {
 	var s system.SysSetting
-	r, e := s.Get()
+	r, err := s.Get()
+	if err != nil {
+		app.Error(c, -1, fmt.Errorf("查询数据失败，%v", err.Error()), "")
+		return
+	}
 
 	if r.Logo != "" {
 		if !strings.HasPrefix(r.Logo, "http") {
@@ -28,7 +31,6 @@ func GetSetting(c *gin.Context) {
 		}
 	}
 
-	tools.HasError(e, "查询失败", 500)
 	app.OK(c, r, "查询成功")
 }
 
@@ -38,7 +40,7 @@ func GetSetting(c *gin.Context) {
 // @Param data body models.SysUser true "body"
 // @Success 200 {string} string	"{"code": 200, "message": "添加成功"}"
 // @Success 200 {string} string	"{"code": -1, "message": "添加失败"}"
-// @Router /api/v1/system/setting [post]
+// @Router /api/v1/setting [post]
 func CreateSetting(c *gin.Context) {
 	var s system.ResponseSystemConfig
 	if err := c.ShouldBind(&s); err != nil {
