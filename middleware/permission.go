@@ -28,6 +28,7 @@ func AuthCheckRole() gin.HandlerFunc {
 			"method", c.Request.Method,
 			"url", c.Request.URL.Path,
 			"role", v["rolekey"],
+			"user", v["nicekey"],
 		)
 
 		if res {

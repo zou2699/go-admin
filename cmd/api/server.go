@@ -13,8 +13,9 @@ import (
 
 	"go-admin/database"
 	"go-admin/global"
+	"go-admin/pkg/cache"
 	mycasbin "go-admin/pkg/casbin"
-	"go-admin/pkg/kubernetes/client"
+	"go-admin/pkg/client/kubernetes"
 	"go-admin/pkg/logger"
 	"go-admin/router"
 	"go-admin/tools"
@@ -51,7 +52,9 @@ func setup() {
 	// 4. 接口访问控制加载
 	mycasbin.Setup()
 	// 5. 初始化k8sClient
-	client.Setup(config.KubernetesConfig.Path)
+	kubernetes.Setup(config.KubernetesConfig.Path)
+	// 6. 初始化缓存
+	cache.InitCache()
 
 	global.Sugar.Named("init").Debug("successful setup")
 }

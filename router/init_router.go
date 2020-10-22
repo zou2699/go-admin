@@ -5,6 +5,7 @@ import (
 
 	"go-admin/middleware"
 	"go-admin/router/article"
+	"go-admin/router/dashboard"
 	"go-admin/router/k8s"
 	"go-admin/router/system"
 	"go-admin/tools"
@@ -22,8 +23,12 @@ func InitRouter() *gin.Engine {
 	root := r.Group("")
 	system.InitRouter(root, authMiddleware)
 
+	// 注册dashboard
+	dashboardApi := r.Group("/api/v1/dashboard")
+	dashboard.InitRouter(dashboardApi, authMiddleware)
+
 	// k8s
-	k8sApi := r.Group("k8s-api")
+	k8sApi := r.Group("/k8s-api")
 	k8s.InitRouter(k8sApi, authMiddleware)
 
 	// 注册业务路由

@@ -1,6 +1,7 @@
 package global
 
 import (
+	"github.com/allegro/bigcache"
 	"github.com/casbin/casbin/v2"
 	"github.com/jinzhu/gorm"
 	"go.uber.org/zap"
@@ -22,3 +23,6 @@ var Sugar *zap.SugaredLogger
 var K8sClient *kubernetes.Clientset
 
 var IstioClient *versioned.Clientset
+
+// cache
+var Cache *bigcache.BigCache

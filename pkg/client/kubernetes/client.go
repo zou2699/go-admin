@@ -4,7 +4,7 @@
 @Description :
 */
 
-package client
+package kubernetes
 
 import (
 	versionedclient "istio.io/client-go/pkg/clientset/versioned"
