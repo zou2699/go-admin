@@ -16,6 +16,7 @@ import (
 	"go-admin/pkg/cache"
 	mycasbin "go-admin/pkg/casbin"
 	"go-admin/pkg/client/kubernetes"
+	"go-admin/pkg/client/prometheus"
 	"go-admin/pkg/logger"
 	"go-admin/router"
 	"go-admin/tools"
@@ -55,6 +56,8 @@ func setup() {
 	kubernetes.Setup(config.KubernetesConfig.Path)
 	// 6. 初始化缓存
 	cache.InitCache()
+	//
+	prometheus.Setup("http://10.6.64.131:31182")
 
 	global.Sugar.Named("init").Debug("successful setup")
 }

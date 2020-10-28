@@ -15,6 +15,8 @@ import (
 	"go-admin/apis/kubernetes/istio"
 	"go-admin/apis/kubernetes/namespace"
 	"go-admin/apis/kubernetes/node"
+	"go-admin/apis/kubernetes/pod"
+	"go-admin/apis/kubernetes/replicaset"
 	"go-admin/apis/kubernetes/service"
 	"go-admin/middleware"
 	jwt "go-admin/pkg/jwtauth"
@@ -30,6 +32,8 @@ func registerKubernetesRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMid
 	createApi := v1.Group("").Use(authMiddleware.MiddlewareFunc()).Use(middleware.AuthCheckRole())
 	createApi.POST("/namespaces/:namespaceName/kind/:kind", create.Resource)
 
+	v1.Group("/api/v1").GET("/namespaces/:namespaceName/pods/:podName/log", pod.Log)
+
 	apiv1 := v1.Group("/api/v1").Use(authMiddleware.MiddlewareFunc()).Use(middleware.AuthCheckRole())
 	{
 		// node
@@ -39,6 +43,10 @@ func registerKubernetesRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMid
 		// namespace
 		apiv1.GET("/namespaces", namespace.GetNamespaceList)
 		apiv1.GET("/namespaces/:namespaceName", namespace.GetNamespace)
+
+		// pod
+		apiv1.GET("/namespaces/:namespaceName/pods", pod.GetPodList)
+		// apiv1.GET("/namespaces/:namespaceName/pods/:podName/log", pod.Log)
 
 		// service
 		apiv1.GET("/namespaces/:namespaceName/services", service.GetServiceList)
@@ -51,11 +59,15 @@ func registerKubernetesRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMid
 
 	appsv1 := v1.Group("/apis/apps/v1").Use(authMiddleware.MiddlewareFunc()).Use(middleware.AuthCheckRole())
 	{
+		// replicaset
+		appsv1.GET("/namespaces/:namespaceName/replicasets", replicaset.GetReplicasetList)
+
 		// deployment
 		appsv1.GET("/namespaces/:namespaceName/deployments", deployment.GetDeploymentList)
 		appsv1.GET("/namespaces/:namespaceName/deployments/:deploymentName", deployment.GetDeployment)
 		appsv1.PATCH("/namespaces/:namespaceName/deployments/:deploymentName", deployment.RestartDeployment)
 		appsv1.PUT("/namespaces/:namespaceName/deployments/:deploymentName", deployment.ChangeDeployment)
+
 	}
 
 	// istio

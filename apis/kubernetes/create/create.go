@@ -114,6 +114,4 @@ func Resource(c *gin.Context) {
 		c.JSON(http.StatusOK, res.ReturnOK())
 		return
 	}
-
-	app.OK(c, "", "")
 }

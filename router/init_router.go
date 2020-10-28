@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 
+	"go-admin/global"
 	"go-admin/middleware"
 	"go-admin/router/article"
 	"go-admin/router/dashboard"
@@ -17,6 +18,7 @@ func InitRouter() *gin.Engine {
 	middleware.InitMiddleware(r)
 	// the jwt middleware
 	authMiddleware, err := middleware.AuthInit()
+	global.Jwt = authMiddleware
 	tools.HasError(err, "JWT Init Error", 500)
 
 	// 注册系统路由
