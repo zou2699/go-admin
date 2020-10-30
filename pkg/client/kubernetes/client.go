@@ -19,7 +19,7 @@ func Setup(kubeconfigPath string) {
 	if err != nil {
 		panic(err)
 	}
-
+	global.K8sConfig = config
 	global.K8sClient, err = kubernetes.NewForConfig(config)
 	if err != nil {
 		panic(err)

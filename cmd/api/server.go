@@ -54,6 +54,8 @@ func setup() {
 	mycasbin.Setup()
 	// 5. 初始化k8sClient
 	kubernetes.Setup(config.KubernetesConfig.Path)
+	kubernetes.SetupTerminal()
+
 	// 6. 初始化缓存
 	cache.InitCache()
 	//

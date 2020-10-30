@@ -33,6 +33,7 @@ func registerKubernetesRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMid
 	createApi.POST("/namespaces/:namespaceName/kind/:kind", create.Resource)
 
 	v1.Group("/api/v1").GET("/namespaces/:namespaceName/pods/:podName/log", pod.Log)
+	v1.Group("/api/v1").GET("/namespaces/:namespaceName/pods/:podName/exec", pod.Exec)
 
 	apiv1 := v1.Group("/api/v1").Use(authMiddleware.MiddlewareFunc()).Use(middleware.AuthCheckRole())
 	{

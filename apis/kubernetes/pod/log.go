@@ -24,14 +24,13 @@ import (
 const (
 	// Time allowed to write a message to the peer.
 	writeWait = 10 * time.Second
-
-	// Time to wait before force close on connection.
 )
 
 var upGrader = websocket.Upgrader{
-	CheckOrigin: func(r *http.Request) bool {
-		return true
-	},
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+	// Allow connections from any Origin
+	CheckOrigin: func(r *http.Request) bool { return true },
 }
 
 func Log(c *gin.Context) {

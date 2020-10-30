@@ -25,6 +25,8 @@ func InitRouter() *gin.Engine {
 	root := r.Group("")
 	system.InitRouter(root, authMiddleware)
 
+	//test
+	// root.GET("/ws",pod.Ping)
 	// 注册dashboard
 	dashboardApi := r.Group("/api/v1/dashboard")
 	dashboard.InitRouter(dashboardApi, authMiddleware)
