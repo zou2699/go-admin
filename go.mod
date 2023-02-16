@@ -16,13 +16,12 @@ require (
 	github.com/gorilla/websocket v1.4.0
 	github.com/imdario/mergo v0.3.8 // indirect
 	github.com/jinzhu/gorm v1.9.10
-	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/mailru/easyjson v0.7.1 // indirect
 	github.com/mattn/go-sqlite3 v1.14.0 // indirect
 	github.com/mojocn/base64Captcha v1.3.1
 	github.com/mssola/user_agent v0.5.1
 	github.com/pkg/errors v0.9.1
-	github.com/prometheus/client_golang v1.8.0
+	github.com/prometheus/client_golang v1.11.1
 	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/cast v1.3.1 // indirect
 	github.com/spf13/cobra v1.0.0
@@ -32,7 +31,9 @@ require (
 	github.com/swaggo/swag v1.6.5
 	go.uber.org/zap v1.13.0
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
+	golang.org/x/time v0.0.0-20191024005414-555d28b269f0 // indirect
 	golang.org/x/tools v0.0.0-20200402223321-bcf690261a44 // indirect
+	google.golang.org/grpc v1.26.0 // indirect
 	istio.io/client-go v0.0.0-20191113122552-9bd0ba57c3d2
 	k8s.io/api v0.16.10
 	k8s.io/apimachinery v0.16.10
